@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OficinaFlow — Gestão Profissional</title>
+  <meta name="description" content="OficinaFlow - sistema profissional para funilaria e pintura" />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --bg-2:#111a2e;
+      --card:#ffffff;
+      --card-2:#f7f8fb;
+      --text:#182033;
+      --muted:#5e677c;
+      --line:#e7eaf1;
+      --primary:#b8621a;
+      --primary-2:#d9812e;
+      --primary-soft:#fff2e8;
+      --green:#169b62;
+      --red:#d64545;
+      --blue:#2563eb;
+      --amber:#d97706;
+      --shadow:0 14px 40px rgba(6,17,38,.08);
+      --radius:18px;
+      --radius-sm:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#f4f6fb 0%,#edf1f7 100%);color:var(--text)}
+    body{min-height:100vh}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    .sidebar{background:linear-gradient(180deg,#0c1425 0%,#111b31 100%);color:#fff;padding:22px 18px;position:sticky;top:0;height:100vh}
+    .brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+    .brand-badge{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;box-shadow:0 10px 25px rgba(184,98,26,.35)}
+    .brand h1{margin:0;font-size:24px;line-height:1}
+    .brand p{margin:4px 0 0;color:#c9d2e6;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .menu{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .menu button{border:1px solid rgba(255,255,255,.07);background:transparent;color:#dce4f6;padding:13px 14px;border-radius:14px;text-align:left;cursor:pointer;font-size:15px;transition:.2s;display:flex;align-items:center;gap:10px}
+    .menu button:hover,.menu button.active{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#fff;transform:translateX(2px)}
+    .sidebar-footer{position:absolute;left:18px;right:18px;bottom:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px}
+    .sidebar-footer strong{display:block;font-size:14px}
+    .sidebar-footer span{display:block;color:#c8d1e4;font-size:12px;margin-top:4px}
+    .main{padding:24px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+    .topbar h2{margin:0;font-size:30px}
+    .topbar p{margin:6px 0 0;color:var(--muted)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn,.btn-secondary,.btn-danger,.btn-ghost{border:none;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;transition:.2s;font-size:14px}
+    .btn{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 8px 20px rgba(184,98,26,.2)}
+    .btn:hover{filter:brightness(1.02);transform:translateY(-1px)}
+    .btn-secondary{background:#eef3ff;color:#294b9a}
+    .btn-danger{background:#fff0f0;color:#b42318}
+    .btn-ghost{background:#fff;color:var(--text);border:1px solid var(--line)}
+    .grid{display:grid;gap:18px}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .card{background:var(--card);border:1px solid rgba(23,35,65,.06);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+    .card h3{margin:0 0 14px;font-size:18px}
+    .card-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+    .muted{color:var(--muted)}
+    .kpi{padding:18px;border-radius:16px;background:linear-gradient(180deg,#fff 0%,#fbfcff 100%);border:1px solid var(--line)}
+    .kpi label{display:block;color:var(--muted);font-size:13px;margin-bottom:10px}
+    .kpi .value{font-size:32px;font-weight:800;line-height:1.1}
+    .kpi.green .value{color:var(--green)} .kpi.red .value{color:var(--red)} .kpi.blue .value{color:var(--blue)} .kpi.amber .value{color:var(--amber)}
+    .panel{display:none}
+    .panel.active{display:block}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .form-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field label{font-size:13px;font-weight:700;color:#374151}
+    input,select,textarea{width:100%;border:1px solid #dbe1ec;background:#fff;border-radius:12px;padding:12px 13px;font:inherit;color:var(--text);outline:none}
+    input:focus,select:focus,textarea:focus{border-color:#c9854a;box-shadow:0 0 0 4px rgba(184,98,26,.08)}
+    textarea{min-height:100px;resize:vertical}
+    .section-note{font-size:12px;color:var(--muted);margin-top:-4px;margin-bottom:10px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px;text-align:left;vertical-align:top}
+    th{background:#f8fafc;color:#374151;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+    tr:hover td{background:#fcfdff}
+    .tag{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .tag.green{background:#e8f8ef;color:#0f7a4b}.tag.red{background:#fff0f0;color:#b42318}.tag.amber{background:#fff5e6;color:#a16207}.tag.blue{background:#eef4ff;color:#1d4ed8}
+    .list{display:flex;flex-direction:column;gap:12px}
+    .item{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+    .item-head{display:flex;justify-content:space-between;gap:12px;align-items:start}
+    .item h4{margin:0 0 6px;font-size:16px}
+    .item p{margin:0;color:var(--muted);font-size:14px}
+    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tiny{padding:8px 11px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer}
+    .tiny.edit{background:#eef4ff;color:#1d4ed8}.tiny.delete{background:#fff0f0;color:#b42318}.tiny.ok{background:#e8f8ef;color:#0f7a4b}.tiny.warn{background:#fff5e6;color:#a16207}
+    .split{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    .timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    .step{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff;text-align:center;font-size:13px;font-weight:700;color:#475467}
+    .step.active{background:var(--primary-soft);border-color:#efc19b;color:#8b4512}
+    .damage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .damage-grid button{padding:10px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:600}
+    .damage-grid button.active{background:#fff0f0;border-color:#efb6b6;color:#b42318}
+    .empty{padding:28px;border:1px dashed #ced5e3;border-radius:16px;text-align:center;color:var(--muted);background:#fbfcff}
+    .searchbar{display:flex;gap:10px;flex-wrap:wrap}
+    .searchbar input{max-width:360px}
+    .footer-note{margin-top:18px;color:var(--muted);font-size:12px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .statusline{display:flex;gap:10px;flex-wrap:wrap}
+    @media (max-width: 1200px){.grid-4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.grid-3,.form-grid-3{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 920px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.main{padding:16px}.grid-2,.grid-3,.form-grid,.form-grid-3,.grid-4{grid-template-columns:1fr}.timeline{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">OF</div>
+        <div>
+          <h1>OficinaFlow</h1>
+          <p>Gestão Profissional</p>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="nav-btn active" data-panel="dashboard">📊 Dashboard</button>
+        <button class="nav-btn" data-panel="orcamentos">🧾 Orçamentos</button>
+        <button class="nav-btn" data-panel="os">🛠️ Ordens de Serviço</button>
+        <button class="nav-btn" data-panel="estoque">📦 Estoque</button>
+        <button class="nav-btn" data-panel="financeiro">💰 Financeiro</button>
+        <button class="nav-btn" data-panel="clientes">👥 Clientes</button>
+        <button class="nav-btn" data-panel="agenda">🗓️ Agenda</button>
+        <button class="nav-btn" data-panel="backup">💾 Backup</button>
+      </div>
+      <div class="sidebar-footer">
+        <strong>Versão local estável</strong>
+        <span>HTML único • UTF-8 • pronto para GitHub Pages</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p id="pageDesc">Visão geral da operação, produção, estoque e resultado financeiro.</p>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary" id="btnPopularDemo">Popular dados demo</button>
+          <button class="btn-ghost" id="btnLimparTudo">Limpar tudo</button>
+        </div>
+      </div>
+
+      <section class="panel active" id="panel-dashboard">
+        <div class="grid grid-4">
+          <div class="kpi green"><label>Receita</label><div class="value" id="kpiReceita">R$ 0,00</div></div>
+          <div class="kpi red"><label>Despesas</label><div class="value" id="kpiDespesas">R$ 0,00</div></div>
+          <div class="kpi amber"><label>Lucro</label><div class="value" id="kpiLucro">R$ 0,00</div></div>
+          <div class="kpi blue"><label>OS em aberto</label><div class="value" id="kpiOsAbertas">0</div></div>
+        </div>
+        <div class="grid grid-2" style="margin-top:18px;">
+          <div class="card">
+            <div class="card-header"><h3>Resumo operacional</h3><span class="muted">Indicadores rápidos</span></div>
+            <div class="statusline">
+              <span class="tag blue" id="dashOrcamentos">0 orçamentos</span>
+              <span class="tag amber" id="dashClientes">0 clientes</span>
+              <span class="tag green" id="dashEstoque">0 itens em estoque</span>
+              <span class="tag red" id="dashBaixoEstoque">0 em estoque baixo</span>
+            </div>
+            <div class="footer-note">Os totais são calculados em tempo real com base nos dados salvos no navegador.</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Produção por etapa</h3><span class="muted">OS abertas</span></div>
+            <div class="list" id="listaEtapasDashboard"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <div class="card-header"><h3>Movimentações recentes</h3><span class="muted">Últimos lançamentos e serviços</span></div>
+          <div id="dashRecentes"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-orcamentos">
+        <div class="split">
+          <div class="card">
+            <div class="card-header"><h3>Novo orçamento</h3><span class="muted">Base profissional para funilaria e pintura</span></div>
+            <form id="formOrcamento" class="grid">
+              <div class="form-grid">
+                <div class="field"><label>Cliente</label><input required id="orcCliente" placeholder="Nome do cliente"></div>
+                <div class="field"><label>Telefone</label><input id="orcTelefone" placeholder="WhatsApp / telefone"></div>
+                <div class="field"><label>Veículo</label><input required id="orcVeiculo" placeholder="Ex.: Focus 2012"></div>
+                <div class="field"><label>Placa</label><input id="orcPlaca" placeholder="ABC1D23"></div>
+                <div class="field"><label>Nível de complexidade</label>
+                  <select id="orcComplexidade">
+                    <option>Básico</option>
+                    <option>Médio</option>
+                    <option>Alto</option>
+                  </select>
+                </div>
+                <div class="field"><label>Status</label>
+                  <select id="orcStatus">
+                    <option>Rascunho</option>
+                    <option>Enviado</option>
+                    <option>Aprovado</option>
+                    <option>Recusado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-3">
+                <div class="field"><label>Horas estimadas</label><input type="number" min="0" step="0.5" id="orcHoras" value="0"></div>
+                <div class="field"><label>Valor por hora (R$)</label><input type="number" min="0" step="0.01" id="orcValorHora" value="0"></div>
+                <div class="field"><label>Materiais/peças (R$)</label><input type="number" min="0" step="0.01" id="orcMateriais" value="0"></div>
+              </div>
+
+              <div class="field">
+                <label>Processos necessários</label>
+                <select id="orcProcessos" multiple size="9">
+                  <option>Desmontagem</option>
+                  <option>Alinhamento</option>
+                  <option>Funilaria</option>
+                  <option>Recuperação</option>
+                  <option>Solda</option>
+                  <option>Preparação</option>
+                  <option>Pintura parcial</option>
+                  <option>Pintura total</option>
+                  <option>Polimento técnico</option>
+                </select>
+                <div class="section-note">Segure Ctrl para selecionar mais de um processo.</div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field"><label>Observações técnicas</label><textarea id="orcObs" placeholder="Descreva avarias, peças, alinhamento, pintura e observações."></textarea></div>
+                <div class="field">
+                  <label>Resumo financeiro</label>
+                  <div class="card" style="padding:16px;background:var(--card-2)">
+                    <div class="list">
+                      <div class="item"><div class="item-head"><div><h4>Mão de obra</h4><p>Horas estimadas × valor/hora</p></div><strong id="orcMaoObraPreview">R$ 0,00</strong></div></div>
+                      <div class="item"><div class="item-head"><div><h4>Total estimado</h4><p>Materiais + mão de obra</p></div><strong id="orcTotalPreview">R$ 0,00</strong></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="actions">
+                <button type="submit" class="btn">Salvar orçamento</button>
+                <button type="button" class="btn-secondary" id="btnVirarOsDireto">Salvar e virar OS</button>
+                <button type="button" class="btn-ghost" id="btnPdfOrcamento">Gerar PDF</button>
+                <button type="button" class="btn-ghost" id="btnImprimirOrcamento">Imprimir orçamento</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Orçamentos salvos</h3><span class="muted">Busca rápida</span></div>
+            <div class="searchbar"><input id="buscaOrc" placeholder="Buscar por cliente, veículo ou placa"></div>
+            <div id="listaOrcamentos" class="list" style="margin-top:14px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-os">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Nova ordem de serviço</h3><span class="muted">Pode ser criada direto ou a partir de orçamento</span></div>
+            <form id="formOS" class="grid">
+              <input type="hidden" id="osOrigemOrcamentoId" value="">
+              <div class="form-grid">
+                <div class="field"><label>Cliente</label><input required id="osCliente"></div>
+                <div class="field"><label>Veículo</label><input required id="osVeiculo"></div>
+                <div class="field"><label>Previsão de entrega</label><input type="date" id="osEntrega"></div>
+                <div class="field"><label>Etapa atual</label>
+                  <select id="osEtapa">
+                    <option>Recepção</option>
+                    <option>Desmontagem</option>
+                    <option>Funilaria</option>
+                    <option>Pintura</option>
+                    <option>Finalização</option>
+                    <option>Entregue</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field"><label>Descrição do serviço</label><textarea id="osDescricao" placeholder="Descreva o serviço executado."></textarea></div>
+              <div class="field"><label>Peças/itens usados (separe por vírgula)</label><input id="osItensUsados" placeholder="Ex.: porta dianteira, primer PU, verniz"></div>
+              <div class="field"><label>Observações</label><textarea id="osObs"></textarea></div>
+              <div class="actions">
+                <button class="btn" type="submit">Salvar OS</button>
+                <button class="btn-ghost" type="button" id="btnImprimirOS">Imprimir OS</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Painel visual da OS</h3><span class="muted">Timeline e mapa de danos</span></div>
+            <div class="timeline" id="timelineOSPreview">
+              <div class="step active">Recepção</div>
+              <div class="step">Desmontagem</div>
+              <div class="step">Funilaria</div>
+              <div class="step">Pintura</div>
+              <div class="step">Finalização</div>
+            </div>
+            <h3 style="margin-top:18px;">Mapa de danos</h3>
+            <div class="damage-grid" id="damageGrid">
+              <button type="button" data-part="Frente">Frente</button>
+              <button type="button" data-part="Lateral esquerda">Lateral esquerda</button>
+              <button type="button" data-part="Lateral direita">Lateral direita</button>
+              <button type="button" data-part="Teto">Teto</button>
+              <button type="button" data-part="Traseira">Traseira</button>
+              <button type="button" data-part="Porta-malas">Porta-malas</button>
+            </div>
+            <div class="footer-note">As áreas marcadas serão gravadas junto com a OS.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <div class="card-header"><h3>Ordens de serviço</h3><span class="muted">Lista operacional</span></div>
+          <div id="listaOS" class="list"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-estoque">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Cadastrar item</h3><span class="muted">Novo, usado ou recuperado</span></div>
+            <form id="formEstoque" class="grid">
+              <div class="form-grid">
+                <div class="field"><label>Nome da peça/material</label><input required id="estNome"></div>
+                <div class="field"><label>Categoria</label><input id="estCategoria" placeholder="Ex.: tinta, verniz, peça"></div>
+                <div class="field"><label>Quantidade</label><input type="number" min="0" step="1" required id="estQuantidade"></div>
+                <div class="field"><label>Estoque mínimo</label><input type="number" min="0" step="1" id="estMinimo" value="1"></div>
+                <div class="field"><label>Custo unitário (R$)</label><input type="number" min="0" step="0.01" id="estCusto"></div>
+                <div class="field"><label>Condição</label>
+                  <select id="estCondicao">
+                    <option>Novo</option>
+                    <option>Usado</option>
+                    <option>Recuperado</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field"><label>Observações</label><textarea id="estObs"></textarea></div>
+              <div class="actions"><button class="btn" type="submit">Salvar item</button></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Estoque atual</h3><span class="muted">Controle de baixa e alerta</span></div>
+            <div class="searchbar"><input id="buscaEstoque" placeholder="Buscar item ou categoria"></div>
+            <div id="listaEstoque" class="list" style="margin-top:14px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-financeiro">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Lançamento financeiro</h3><span class="muted">Receita ou despesa</span></div>
+            <form id="formFinanceiro" class="grid">
+              <div class="form-grid">
+                <div class="field"><label>Tipo</label>
+                  <select id="finTipo"><option>Receita</option><option>Despesa</option></select>
+                </div>
+                <div class="field"><label>Categoria</label><input id="finCategoria" placeholder="Ex.: serviço, material, aluguel"></div>
+                <div class="field"><label>Descrição</label><input required id="finDescricao"></div>
+                <div class="field"><label>Valor (R$)</label><input type="number" min="0" step="0.01" required id="finValor"></div>
+                <div class="field"><label>Data</label><input type="date" id="finData"></div>
+                <div class="field"><label>Forma de pagamento</label><input id="finForma" placeholder="Pix, dinheiro, cartão..."></div>
+              </div>
+              <div class="actions"><button class="btn" type="submit">Salvar lançamento</button></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Resumo financeiro</h3><span class="muted">Base do dashboard</span></div>
+            <div class="grid grid-3">
+              <div class="kpi green"><label>Receitas</label><div class="value" id="finReceitas">R$ 0,00</div></div>
+              <div class="kpi red"><label>Despesas</label><div class="value" id="finDespesas">R$ 0,00</div></div>
+              <div class="kpi amber"><label>Saldo</label><div class="value" id="finSaldo">R$ 0,00</div></div>
+            </div>
+            <div class="footer-note">Use “Lançar receita” dentro dos orçamentos ou cadastre manualmente aqui.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <div class="card-header"><h3>Lançamentos</h3><span class="muted">Histórico</span></div>
+          <div id="listaFinanceiro" class="list"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-clientes">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Cadastrar cliente</h3><span class="muted">Histórico simplificado</span></div>
+            <form id="formCliente" class="grid">
+              <div class="form-grid">
+                <div class="field"><label>Nome</label><input required id="cliNome"></div>
+                <div class="field"><label>Telefone</label><input id="cliTelefone"></div>
+                <div class="field"><label>E-mail</label><input type="email" id="cliEmail"></div>
+                <div class="field"><label>Veículo principal</label><input id="cliVeiculo"></div>
+              </div>
+              <div class="field"><label>Observações</label><textarea id="cliObs"></textarea></div>
+              <div class="actions"><button class="btn" type="submit">Salvar cliente</button></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Clientes</h3><span class="muted">Cadastro e busca</span></div>
+            <div class="searchbar"><input id="buscaClientes" placeholder="Buscar cliente"></div>
+            <div id="listaClientes" class="list" style="margin-top:14px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-agenda">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Novo compromisso</h3><span class="muted">Agenda local</span></div>
+            <form id="formAgenda" class="grid">
+              <div class="form-grid">
+                <div class="field"><label>Título</label><input required id="agTitulo"></div>
+                <div class="field"><label>Cliente/veículo</label><input id="agReferencia"></div>
+                <div class="field"><label>Data</label><input type="date" id="agData"></div>
+                <div class="field"><label>Hora</label><input type="time" id="agHora"></div>
+              </div>
+              <div class="field"><label>Observação</label><textarea id="agObs"></textarea></div>
+              <div class="actions"><button class="btn" type="submit">Salvar compromisso</button></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Agenda</h3><span class="muted">Compromissos salvos</span></div>
+            <div id="listaAgenda" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-backup">
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Backup</h3><span class="muted">Exporte tudo em JSON</span></div>
+            <div class="actions">
+              <button class="btn" id="btnExportarBackup">Exportar backup</button>
+              <label class="btn-secondary" style="display:inline-flex;align-items:center;cursor:pointer;">Importar backup<input type="file" id="inputImportarBackup" accept="application/json" style="display:none"></label>
+            </div>
+            <div class="footer-note">Ideal para trocar de computador ou criar versões de segurança do sistema.</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Resumo do banco local</h3><span class="muted">Dados armazenados neste navegador</span></div>
+            <div id="resumoBackup"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const STORAGE_KEY = 'oficinaflow_profissional_v1';
+const stageOrder = ['Recepção','Desmontagem','Funilaria','Pintura','Finalização','Entregue'];
+const state = loadState();
+let editing = {orcamento:null, os:null, estoque:null, cliente:null, agenda:null, financeiro:null};
+let selectedDamageParts = [];
+
+function defaultState(){
+  return {orcamentos:[], os:[], estoque:[], financeiro:[], clientes:[], agenda:[]};
+}
+function loadState(){
+  try{
+    return Object.assign(defaultState(), JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'));
+  }catch(e){
+    return defaultState();
+  }
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  renderAll();
+}
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function money(v){ return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function toast(msg){ alert(msg); }
+function esc(str){ return String(str??'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function selectedValues(sel){ return Array.from(sel.selectedOptions).map(o=>o.value); }
+
+function renderAll(){
+  renderDashboard(); renderOrcamentos(); renderOS(); renderEstoque(); renderFinanceiro(); renderClientes(); renderAgenda(); renderBackup();
+}
+
+function renderDashboard(){
+  const receita = state.financeiro.filter(x=>x.tipo==='Receita').reduce((a,b)=>a+Number(b.valor||0),0);
+  const despesas = state.financeiro.filter(x=>x.tipo==='Despesa').reduce((a,b)=>a+Number(b.valor||0),0);
+  const abertas = state.os.filter(x=>x.etapa!=='Entregue').length;
+  document.getElementById('kpiReceita').textContent = money(receita);
+  document.getElementById('kpiDespesas').textContent = money(despesas);
+  document.getElementById('kpiLucro').textContent = money(receita-despesas);
+  document.getElementById('kpiOsAbertas').textContent = abertas;
+  document.getElementById('dashOrcamentos').textContent = `${state.orcamentos.length} orçamentos`;
+  document.getElementById('dashClientes').textContent = `${state.clientes.length} clientes`;
+  document.getElementById('dashEstoque').textContent = `${state.estoque.length} itens em estoque`;
+  document.getElementById('dashBaixoEstoque').textContent = `${state.estoque.filter(x=>Number(x.quantidade)<=Number(x.minimo||0)).length} em estoque baixo`;
+
+  const etapaWrap = document.getElementById('listaEtapasDashboard');
+  const counts = stageOrder.map(et=>({et, qtd: state.os.filter(o=>o.etapa===et).length}));
+  etapaWrap.innerHTML = counts.map(c=>`<div class="item"><div class="item-head"><div><h4>${c.et}</h4><p>Ordens nesta etapa</p></div><strong>${c.qtd}</strong></div></div>`).join('');
+
+  const recentes = [];
+  state.financeiro.slice(-3).reverse().forEach(x=>recentes.push({t:'Financeiro',titulo:x.descricao,sub:`${x.tipo} • ${x.categoria||'Sem categoria'}`,valor:money(x.valor)}));
+  state.os.slice(-3).reverse().forEach(x=>recentes.push({t:'OS',titulo:`${x.cliente} • ${x.veiculo}`,sub:`${x.etapa}`,valor:x.previsaoEntrega||'-'}));
+  const wrap = document.getElementById('dashRecentes');
+  if(!recentes.length){ wrap.innerHTML = '<div class="empty">Sem movimentações ainda.</div>'; return; }
+  wrap.innerHTML = `<div class="list">${recentes.slice(0,6).map(r=>`<div class="item"><div class="item-head"><div><h4>${esc(r.titulo)}</h4><p>${esc(r.t)} • ${esc(r.sub)}</p></div><strong>${esc(r.valor)}</strong></div></div>`).join('')}</div>`;
+}
+
+function calcOrcamentoTotal(){
+  const maoObra = Number(document.getElementById('orcHoras').value||0) * Number(document.getElementById('orcValorHora').value||0);
+  const total = maoObra + Number(document.getElementById('orcMateriais').value||0);
+  document.getElementById('orcMaoObraPreview').textContent = money(maoObra);
+  document.getElementById('orcTotalPreview').textContent = money(total);
+}
+['orcHoras','orcValorHora','orcMateriais'].forEach(id=>document.addEventListener('input', e=>{ if(e.target && e.target.id===id) calcOrcamentoTotal(); }));
+
+function renderOrcamentos(){
+  const q = (document.getElementById('buscaOrc')?.value || '').toLowerCase();
+  const lista = state.orcamentos.filter(o => [o.cliente,o.veiculo,o.placa].join(' ').toLowerCase().includes(q));
+  const wrap = document.getElementById('listaOrcamentos');
+  if(!lista.length){ wrap.innerHTML = '<div class="empty">Nenhum orçamento encontrado.</div>'; return; }
+  wrap.innerHTML = lista.slice().reverse().map(o=>`
+    <div class="item">
+      <div class="item-head">
+        <div>
+          <h4>${esc(o.cliente)} • ${esc(o.veiculo)}</h4>
+          <p>${esc(o.placa||'Sem placa')} • ${esc(o.complexidade)} • <span class="mono">${money(o.total)}</span></p>
+        </div>
+        <span class="tag ${o.status==='Aprovado'?'green':o.status==='Recusado'?'red':'blue'}">${esc(o.status)}</span>
+      </div>
+      <p style="margin-top:8px;">${esc((o.processos||[]).join(', ') || 'Sem processos')}</p>
+      <div class="row-actions" style="margin-top:12px;">
+        <button class="tiny edit" onclick="editarOrcamento('${o.id}')">Editar</button>
+        <button class="tiny ok" onclick="virarOS('${o.id}')">Virar OS</button>
+        <button class="tiny ghost" onclick="gerarPdfOrcamento('${o.id}')">PDF</button>
+        <button class="tiny warn" onclick="lancarReceitaOrcamento('${o.id}')">Lançar receita</button>
+        <button class="tiny delete" onclick="excluirRegistro('orcamentos','${o.id}')">Excluir</button>
+      </div>
+    </div>`).join('');
+}
+
+function editarOrcamento(id){
+  const o = state.orcamentos.find(x=>x.id===id); if(!o) return;
+  editing.orcamento = id;
+  ['orcCliente','orcTelefone','orcVeiculo','orcPlaca','orcComplexidade','orcStatus','orcHoras','orcValorHora','orcMateriais','orcObs'].forEach(k=>document.getElementById(k).value = o[ mapOrcField(k) ] ?? '');
+  const sel = document.getElementById('orcProcessos');
+  Array.from(sel.options).forEach(opt=> opt.selected = (o.processos||[]).includes(opt.value));
+  calcOrcamentoTotal();
+  switchPanel('orcamentos');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function mapOrcField(id){
+  return {orcCliente:'cliente',orcTelefone:'telefone',orcVeiculo:'veiculo',orcPlaca:'placa',orcComplexidade:'complexidade',orcStatus:'status',orcHoras:'horas',orcValorHora:'valorHora',orcMateriais:'materiais',orcObs:'obs'}[id];
+}
+
+function renderOS(){
+  const wrap = document.getElementById('listaOS');
+  if(!state.os.length){ wrap.innerHTML = '<div class="empty">Nenhuma ordem de serviço cadastrada.</div>'; return; }
+  wrap.innerHTML = state.os.slice().reverse().map(o=>`
+    <div class="item">
+      <div class="item-head">
+        <div>
+          <h4>${esc(o.cliente)} • ${esc(o.veiculo)}</h4>
+          <p>${esc(o.etapa)} • previsão: ${esc(o.previsaoEntrega||'-')}</p>
+        </div>
+        <span class="tag ${o.etapa==='Entregue'?'green':'amber'}">${esc(o.etapa)}</span>
+      </div>
+      <p style="margin-top:8px;">${esc(o.descricao||'Sem descrição')}</p>
+      <p style="margin-top:8px;">Danos: ${esc((o.damageParts||[]).join(', ') || 'Não informado')}</p>
+      <div class="row-actions" style="margin-top:12px;">
+        <button class="tiny edit" onclick="editarOS('${o.id}')">Editar</button>
+        <button class="tiny warn" onclick="marcarEntregue('${o.id}')">Marcar entregue</button>
+        <button class="tiny delete" onclick="excluirRegistro('os','${o.id}')">Excluir</button>
+      </div>
+    </div>`).join('');
+}
+function editarOS(id){
+  const o = state.os.find(x=>x.id===id); if(!o) return;
+  editing.os = id;
+  document.getElementById('osCliente').value = o.cliente || '';
+  document.getElementById('osVeiculo').value = o.veiculo || '';
+  document.getElementById('osEntrega').value = o.previsaoEntrega || '';
+  document.getElementById('osEtapa').value = o.etapa || 'Recepção';
+  document.getElementById('osDescricao').value = o.descricao || '';
+  document.getElementById('osItensUsados').value = (o.itensUsados||[]).join(', ');
+  document.getElementById('osObs').value = o.obs || '';
+  document.getElementById('osOrigemOrcamentoId').value = o.orcamentoId || '';
+  selectedDamageParts = o.damageParts || [];
+  updateDamageUI();
+  updateTimelinePreview(o.etapa);
+  switchPanel('os');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function marcarEntregue(id){ const o = state.os.find(x=>x.id===id); if(!o) return; o.etapa='Entregue'; saveState(); }
+function virarOS(id){
+  const o = state.orcamentos.find(x=>x.id===id); if(!o) return;
+  const existente = state.os.find(x=>x.orcamentoId===id);
+  if(existente){
+    if(confirm('Já existe uma OS vinculada a este orçamento. Deseja editar a OS existente?')){ editarOS(existente.id); }
+    return;
+  }
+  document.getElementById('osCliente').value = o.cliente;
+  document.getElementById('osVeiculo').value = o.veiculo;
+  document.getElementById('osDescricao').value = `Serviços: ${(o.processos||[]).join(', ')}\nObservações: ${o.obs||''}`;
+  document.getElementById('osOrigemOrcamentoId').value = o.id;
+  document.getElementById('osObs').value = `Origem do orçamento: ${o.id}`;
+  document.getElementById('osEntrega').value = '';
+  document.getElementById('osEtapa').value = 'Recepção';
+  selectedDamageParts = [];
+  updateDamageUI();
+  updateTimelinePreview('Recepção');
+  switchPanel('os');
+}
+
+function renderEstoque(){
+  const q = (document.getElementById('buscaEstoque')?.value || '').toLowerCase();
+  const lista = state.estoque.filter(i => [i.nome,i.categoria].join(' ').toLowerCase().includes(q));
+  const wrap = document.getElementById('listaEstoque');
+  if(!lista.length){ wrap.innerHTML = '<div class="empty">Nenhum item no estoque.</div>'; return; }
+  wrap.innerHTML = lista.slice().reverse().map(i=>{
+    const baixo = Number(i.quantidade) <= Number(i.minimo||0);
+    return `<div class="item"><div class="item-head"><div><h4>${esc(i.nome)}</h4><p>${esc(i.categoria||'Sem categoria')} • ${esc(i.condicao)}</p></div><span class="tag ${baixo?'red':'green'}">Qtd: ${esc(i.quantidade)}</span></div><p style="margin-top:8px;">Mínimo: ${esc(i.minimo||0)} • Custo: ${money(i.custo||0)}</p><div class="row-actions" style="margin-top:12px;"><button class="tiny edit" onclick="editarEstoque('${i.id}')">Editar</button><button class="tiny warn" onclick="baixarEstoque('${i.id}')">Dar baixa</button><button class="tiny delete" onclick="excluirRegistro('estoque','${i.id}')">Excluir</button></div></div>`;
+  }).join('');
+}
+function editarEstoque(id){
+  const i = state.estoque.find(x=>x.id===id); if(!i) return;
+  editing.estoque = id;
+  estNome.value = i.nome||''; estCategoria.value=i.categoria||''; estQuantidade.value=i.quantidade||0; estMinimo.value=i.minimo||0; estCusto.value=i.custo||0; estCondicao.value=i.condicao||'Novo'; estObs.value=i.obs||'';
+  switchPanel('estoque'); window.scrollTo({top:0,behavior:'smooth'});
+}
+function baixarEstoque(id){ const i = state.estoque.find(x=>x.id===id); if(!i) return; i.quantidade = Math.max(0, Number(i.quantidade)-1); saveState(); }
+
+function renderFinanceiro(){
+  const receitas = state.financeiro.filter(x=>x.tipo==='Receita').reduce((a,b)=>a+Number(b.valor||0),0);
+  const despesas = state.financeiro.filter(x=>x.tipo==='Despesa').reduce((a,b)=>a+Number(b.valor||0),0);
+  finReceitas.textContent = money(receitas); finDespesas.textContent = money(despesas); finSaldo.textContent = money(receitas-despesas);
+  const wrap = document.getElementById('listaFinanceiro');
+  if(!state.financeiro.length){ wrap.innerHTML = '<div class="empty">Nenhum lançamento financeiro.</div>'; return; }
+  wrap.innerHTML = state.financeiro.slice().reverse().map(i=>`<div class="item"><div class="item-head"><div><h4>${esc(i.descricao)}</h4><p>${esc(i.tipo)} • ${esc(i.categoria||'Sem categoria')} • ${esc(i.data||'-')}</p></div><strong style="color:${i.tipo==='Receita'?'var(--green)':'var(--red)'}">${money(i.valor)}</strong></div><div class="row-actions" style="margin-top:12px;"><button class="tiny delete" onclick="excluirRegistro('financeiro','${i.id}')">Excluir</button></div></div>`).join('');
+}
+function lancarReceitaOrcamento(id){
+  const o = state.orcamentos.find(x=>x.id===id); if(!o) return;
+  const descricao = `Orçamento ${o.cliente} • ${o.veiculo}`;
+  const existente = state.financeiro.find(x=>x.tipo==='Receita' && x.orcamentoId===id);
+  if(existente){ alert('Esta receita já foi lançada no financeiro.'); return; }
+  state.financeiro.push({id:uid(),tipo:'Receita',categoria:'Serviço',descricao,valor:Number(o.total||0),data:today(),forma:'A definir',orcamentoId:id});
+  saveState();
+  alert('Receita lançada no financeiro.');
+}
+
+function renderClientes(){
+  const q = (document.getElementById('buscaClientes')?.value || '').toLowerCase();
+  const lista = state.clientes.filter(c => [c.nome,c.telefone,c.veiculo].join(' ').toLowerCase().includes(q));
+  const wrap = document.getElementById('listaClientes');
+  if(!lista.length){ wrap.innerHTML = '<div class="empty">Nenhum cliente cadastrado.</div>'; return; }
+  wrap.innerHTML = lista.slice().reverse().map(c=>`<div class="item"><div class="item-head"><div><h4>${esc(c.nome)}</h4><p>${esc(c.telefone||'-')} • ${esc(c.email||'-')}</p></div></div><p>${esc(c.veiculo||'Sem veículo principal')}</p><div class="row-actions" style="margin-top:12px;"><button class="tiny edit" onclick="editarCliente('${c.id}')">Editar</button><button class="tiny delete" onclick="excluirRegistro('clientes','${c.id}')">Excluir</button></div></div>`).join('');
+}
+function editarCliente(id){
+  const c = state.clientes.find(x=>x.id===id); if(!c) return;
+  editing.cliente = id;
+  cliNome.value=c.nome||''; cliTelefone.value=c.telefone||''; cliEmail.value=c.email||''; cliVeiculo.value=c.veiculo||''; cliObs.value=c.obs||'';
+  switchPanel('clientes'); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderAgenda(){
+  const wrap = document.getElementById('listaAgenda');
+  if(!state.agenda.length){ wrap.innerHTML = '<div class="empty">Nenhum compromisso salvo.</div>'; return; }
+  wrap.innerHTML = state.agenda.slice().sort((a,b)=>(`${a.data} ${a.hora}`).localeCompare(`${b.data} ${b.hora}`)).map(a=>`<div class="item"><div class="item-head"><div><h4>${esc(a.titulo)}</h4><p>${esc(a.data||'-')} ${esc(a.hora||'')} • ${esc(a.referencia||'-')}</p></div></div><p>${esc(a.obs||'')}</p><div class="row-actions" style="margin-top:12px;"><button class="tiny edit" onclick="editarAgenda('${a.id}')">Editar</button><button class="tiny delete" onclick="excluirRegistro('agenda','${a.id}')">Excluir</button></div></div>`).join('');
+}
+function editarAgenda(id){ const a = state.agenda.find(x=>x.id===id); if(!a) return; editing.agenda=id; agTitulo.value=a.titulo||''; agReferencia.value=a.referencia||''; agData.value=a.data||''; agHora.value=a.hora||''; agObs.value=a.obs||''; switchPanel('agenda'); }
+
+function renderBackup(){
+  document.getElementById('resumoBackup').innerHTML = `<div class="list">
+    <div class="item"><div class="item-head"><div><h4>Orçamentos</h4><p>Total salvo</p></div><strong>${state.orcamentos.length}</strong></div></div>
+    <div class="item"><div class="item-head"><div><h4>Ordens de serviço</h4><p>Total salvo</p></div><strong>${state.os.length}</strong></div></div>
+    <div class="item"><div class="item-head"><div><h4>Estoque</h4><p>Total salvo</p></div><strong>${state.estoque.length}</strong></div></div>
+    <div class="item"><div class="item-head"><div><h4>Financeiro</h4><p>Total salvo</p></div><strong>${state.financeiro.length}</strong></div></div>
+    <div class="item"><div class="item-head"><div><h4>Clientes</h4><p>Total salvo</p></div><strong>${state.clientes.length}</strong></div></div>
+    <div class="item"><div class="item-head"><div><h4>Agenda</h4><p>Total salvo</p></div><strong>${state.agenda.length}</strong></div></div>
+  </div>`;
+}
+
+function excluirRegistro(chave,id){
+  if(!confirm('Excluir este registro?')) return;
+  state[chave] = state[chave].filter(x=>x.id!==id);
+  saveState();
+}
+
+function updateTimelinePreview(etapa){
+  const timeline = document.getElementById('timelineOSPreview');
+  timeline.innerHTML = ['Recepção','Desmontagem','Funilaria','Pintura','Finalização'].map(s=>`<div class="step ${s===etapa?'active':''}">${s}</div>`).join('');
+}
+function updateDamageUI(){
+  document.querySelectorAll('#damageGrid button').forEach(btn=> btn.classList.toggle('active', selectedDamageParts.includes(btn.dataset.part)));
+}
+
+function buildOrcamentoPayloadFromForm(){
+  const horas = Number(orcHoras.value||0), valorHora = Number(orcValorHora.value||0), materiais = Number(orcMateriais.value||0);
+  return {
+    id: editing.orcamento || uid(),
+    cliente:orcCliente.value.trim(), telefone:orcTelefone.value.trim(), veiculo:orcVeiculo.value.trim(), placa:orcPlaca.value.trim(),
+    complexidade:orcComplexidade.value, status:orcStatus.value, horas, valorHora, materiais,
+    maoObra: horas*valorHora, total: horas*valorHora+materiais, processos:selectedValues(orcProcessos),
+    obs:orcObs.value.trim(), criadoEm: today()
+  };
+}
+
+function gerarHtmlPdfOrcamento(o){
+  const processos = (o.processos||[]).length ? o.processos.map(p=>`<li>${esc(p)}</li>`).join('') : '<li>Sem processos informados</li>';
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Orçamento ${esc(o.cliente)} - OficinaFlow</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;color:#111827;margin:0;background:#f3f4f6}
+  .sheet{max-width:900px;margin:24px auto;background:#fff;padding:32px;border:1px solid #e5e7eb}
+  .head{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #111827;padding-bottom:16px;margin-bottom:24px}
+  .brand h1{margin:0;font-size:30px;color:#111827}
+  .brand p{margin:6px 0 0;color:#4b5563;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+  .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:12px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;margin-bottom:18px}
+  .box{border:1px solid #e5e7eb;border-radius:10px;padding:14px}
+  .label{font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .value{font-size:16px;font-weight:700}
+  .section{margin-top:20px}
+  .section h2{font-size:15px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.06em;color:#374151}
+  ul{margin:0;padding-left:20px}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{border:1px solid #e5e7eb;padding:12px;text-align:left;font-size:14px}
+  th{background:#f9fafb}
+  .total{font-size:28px;font-weight:800;color:#111827}
+  .footer{margin-top:26px;padding-top:14px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:12px}
+  .obs{white-space:pre-wrap}
+  @media print{body{background:#fff}.sheet{margin:0;max-width:none;border:none}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <div class="brand">
+      <h1>OficinaFlow</h1>
+      <p>Orçamento profissional de funilaria e pintura</p>
+    </div>
+    <div style="text-align:right">
+      <div class="label">Data</div>
+      <div class="value">${esc(o.criadoEm||today())}</div>
+      <div style="margin-top:10px" class="tag">${esc(o.status||'Rascunho')}</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="box"><div class="label">Cliente</div><div class="value">${esc(o.cliente||'-')}</div></div>
+    <div class="box"><div class="label">Telefone</div><div class="value">${esc(o.telefone||'-')}</div></div>
+    <div class="box"><div class="label">Veículo</div><div class="value">${esc(o.veiculo||'-')}</div></div>
+    <div class="box"><div class="label">Placa</div><div class="value">${esc(o.placa||'-')}</div></div>
+    <div class="box"><div class="label">Complexidade</div><div class="value">${esc(o.complexidade||'-')}</div></div>
+    <div class="box"><div class="label">Valor por hora</div><div class="value">${money(o.valorHora||0)}</div></div>
+  </div>
+  <div class="section">
+    <h2>Processos necessários</h2>
+    <div class="box"><ul>${processos}</ul></div>
+  </div>
+  <div class="section">
+    <h2>Observações técnicas</h2>
+    <div class="box obs">${esc(o.obs||'Sem observações adicionais.')}</div>
+  </div>
+  <div class="section">
+    <h2>Resumo financeiro</h2>
+    <table>
+      <tr><th>Item</th><th>Detalhe</th><th>Valor</th></tr>
+      <tr><td>Mão de obra</td><td>${esc(o.horas||0)} horas × ${money(o.valorHora||0)}</td><td>${money(o.maoObra||0)}</td></tr>
+      <tr><td>Materiais/peças</td><td>Estimativa de materiais e componentes</td><td>${money(o.materiais||0)}</td></tr>
+      <tr><td><strong>Total estimado</strong></td><td></td><td class="total">${money(o.total||0)}</td></tr>
+    </table>
+  </div>
+  <div class="footer">
+    Documento gerado pelo OficinaFlow. Valores sujeitos à conferência técnica presencial e eventuais ajustes conforme desmontagem, alinhamento e necessidade de material.
+  </div>
+</div>
+<script>window.onload=()=>window.print()<\/script>
+</body>
+</html>`;
+}
+
+function gerarPdfOrcamento(id){
+  let o = id ? state.orcamentos.find(x=>x.id===id) : null;
+  if(!o){
+    o = buildOrcamentoPayloadFromForm();
+    if(!o.cliente || !o.veiculo){
+      alert('Preencha pelo menos cliente e veículo antes de gerar o PDF.');
+      return;
+    }
+  }
+  const w = window.open('', '_blank');
+  if(!w){ alert('O navegador bloqueou a janela do PDF. Libere pop-ups para este site.'); return; }
+  w.document.open();
+  w.document.write(gerarHtmlPdfOrcamento(o));
+  w.document.close();
+}
+
+// Navigation
+const panelMeta = {
+  dashboard:['Dashboard','Visão geral da operação, produção, estoque e resultado financeiro.'],
+  orcamentos:['Orçamentos','Cadastro, cálculo de mão de obra e conversão em ordem de serviço.'],
+  os:['Ordens de Serviço','Acompanhamento técnico com timeline e mapa de danos.'],
+  estoque:['Estoque','Controle de materiais, peças usadas e alertas de mínimo.'],
+  financeiro:['Financeiro','Receitas, despesas e saldo operacional.'],
+  clientes:['Clientes','Cadastro e histórico básico de atendimento.'],
+  agenda:['Agenda','Compromissos e organização da produção.'],
+  backup:['Backup','Exportação e restauração do sistema local.']
+};
+function switchPanel(name){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.panel===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===`panel-${name}`));
+  pageTitle.textContent = panelMeta[name][0]; pageDesc.textContent = panelMeta[name][1];
+}
+document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>switchPanel(btn.dataset.panel)));
+
+// Forms
+formOrcamento.addEventListener('submit', e=>{
+  e.preventDefault();
+  const reg = buildOrcamentoPayloadFromForm();
+  upsert('orcamentos', reg, 'orcamento');
+  formOrcamento.reset(); orcStatus.value='Rascunho'; orcComplexidade.value='Básico'; calcOrcamentoTotal();
+  toast('Orçamento salvo com sucesso.');
+});
+btnVirarOsDireto.addEventListener('click', ()=>{ const reg = buildOrcamentoPayloadFromForm(); upsert('orcamentos', reg, 'orcamento'); virarOS(reg.id); toast('Orçamento salvo e pronto para conversão manual em OS.'); });
+btnPdfOrcamento.addEventListener('click', ()=> gerarPdfOrcamento());
+btnImprimirOrcamento.addEventListener('click', ()=> window.print());
+['buscaOrc','buscaEstoque','buscaClientes'].forEach(id=> document.getElementById(id).addEventListener('input', renderAll));
+
+formOS.addEventListener('submit', e=>{
+  e.preventDefault();
+  const origem = document.getElementById('osOrigemOrcamentoId').value || '';
+  if(!editing.os && origem && state.os.some(x=>x.orcamentoId===origem)){
+    alert('Já existe uma OS vinculada a este orçamento. Edite a OS existente.');
+    return;
+  }
+  const reg = {id: editing.os || uid(), cliente:osCliente.value.trim(), veiculo:osVeiculo.value.trim(), previsaoEntrega:osEntrega.value, etapa:osEtapa.value, descricao:osDescricao.value.trim(), itensUsados:osItensUsados.value.split(',').map(s=>s.trim()).filter(Boolean), obs:osObs.value.trim(), damageParts:[...selectedDamageParts], orcamentoId: origem || null};
+  upsert('os', reg, 'os');
+  formOS.reset(); document.getElementById('osOrigemOrcamentoId').value=''; selectedDamageParts=[]; updateDamageUI(); updateTimelinePreview('Recepção');
+  toast('OS salva com sucesso.');
+});
+osEtapa.addEventListener('change', ()=> updateTimelinePreview(osEtapa.value));
+btnImprimirOS.addEventListener('click', ()=> window.print());
+document.querySelectorAll('#damageGrid button').forEach(btn=>btn.addEventListener('click', ()=>{
+  const p = btn.dataset.part; if(selectedDamageParts.includes(p)) selectedDamageParts = selectedDamageParts.filter(x=>x!==p); else selectedDamageParts.push(p); updateDamageUI();
+}));
+
+formEstoque.addEventListener('submit', e=>{
+  e.preventDefault();
+  const reg = {id: editing.estoque || uid(), nome:estNome.value.trim(), categoria:estCategoria.value.trim(), quantidade:Number(estQuantidade.value||0), minimo:Number(estMinimo.value||0), custo:Number(estCusto.value||0), condicao:estCondicao.value, obs:estObs.value.trim()};
+  upsert('estoque', reg, 'estoque'); formEstoque.reset(); estCondicao.value='Novo'; estMinimo.value=1;
+});
+
+formFinanceiro.addEventListener('submit', e=>{
+  e.preventDefault();
+  const reg = {id: uid(), tipo:finTipo.value, categoria:finCategoria.value.trim(), descricao:finDescricao.value.trim(), valor:Number(finValor.value||0), data:finData.value || today(), forma:finForma.value.trim()};
+  state.financeiro.push(reg); saveState(); formFinanceiro.reset(); finTipo.value='Receita'; finData.value=today();
+});
+finData.value = today();
+
+formCliente.addEventListener('submit', e=>{
+  e.preventDefault();
+  const reg = {id: editing.cliente || uid(), nome:cliNome.value.trim(), telefone:cliTelefone.value.trim(), email:cliEmail.value.trim(), veiculo:cliVeiculo.value.trim(), obs:cliObs.value.trim()};
+  upsert('clientes', reg, 'cliente'); formCliente.reset();
+});
+
+formAgenda.addEventListener('submit', e=>{
+  e.preventDefault();
+  const reg = {id: editing.agenda || uid(), titulo:agTitulo.value.trim(), referencia:agReferencia.value.trim(), data:agData.value, hora:agHora.value, obs:agObs.value.trim()};
+  upsert('agenda', reg, 'agenda'); formAgenda.reset();
+});
+
+function upsert(chave, reg, editKey){
+  const idx = state[chave].findIndex(x=>x.id===reg.id);
+  if(idx>=0) state[chave][idx] = reg; else state[chave].push(reg);
+  editing[editKey] = null; saveState();
+}
+
+// Backup
+btnExportarBackup.addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = `oficinaflow-backup-${today()}.json`; a.click(); URL.revokeObjectURL(a.href);
+});
+inputImportarBackup.addEventListener('change', async e=>{
+  const file = e.target.files[0]; if(!file) return;
+  try{ const data = JSON.parse(await file.text()); Object.assign(state, defaultState(), data); saveState(); alert('Backup importado com sucesso.'); }
+  catch{ alert('Arquivo de backup inválido.'); }
+  e.target.value='';
+});
+
+btnLimparTudo.addEventListener('click', ()=>{
+  if(!confirm('Isso vai apagar todos os dados locais deste navegador. Continuar?')) return;
+  localStorage.removeItem(STORAGE_KEY); location.reload();
+});
+btnPopularDemo.addEventListener('click', ()=>{
+  if(state.orcamentos.length || state.os.length || state.financeiro.length || state.estoque.length || state.clientes.length || state.agenda.length){
+    if(!confirm('Já existem dados salvos. Deseja misturar com dados demo?')) return;
+  }
+  popularDemo(); saveState();
+});
+
+function popularDemo(){
+  state.clientes.push({id:uid(),nome:'Wilian',telefone:'(19) 99999-0001',email:'',veiculo:'Focus 2012',obs:'Cliente recorrente'});
+  state.estoque.push({id:uid(),nome:'Porta dianteira esquerda',categoria:'Peça',quantidade:1,minimo:0,custo:1279,condicao:'Recuperado',obs:''});
+  state.estoque.push({id:uid(),nome:'Porta traseira esquerda',categoria:'Peça',quantidade:1,minimo:0,custo:1179,condicao:'Recuperado',obs:''});
+  state.estoque.push({id:uid(),nome:'Verniz HS',categoria:'Pintura',quantidade:2,minimo:1,custo:320,condicao:'Novo',obs:''});
+  const oid = uid();
+  state.orcamentos.push({id:oid,cliente:'Wilian',telefone:'(19) 99999-0001',veiculo:'Focus 2012',placa:'',complexidade:'Médio',status:'Aprovado',horas:18,valorHora:120,materiais:3058,maoObra:2160,total:5218,processos:['Desmontagem','Funilaria','Preparação','Pintura parcial','Polimento técnico'],obs:'Lado esquerdo sinistrado',criadoEm:today()});
+  state.os.push({id:uid(),cliente:'Wilian',veiculo:'Focus 2012',previsaoEntrega:today(),etapa:'Funilaria',descricao:'Funilaria e pintura do lado esquerdo.',itensUsados:['Porta dianteira esquerda','Porta traseira esquerda','Verniz HS'],obs:'Prioridade média',damageParts:['Lateral esquerda'],orcamentoId:oid});
+  state.financeiro.push({id:uid(),tipo:'Receita',categoria:'Serviço',descricao:'Orçamento Wilian • Focus 2012',valor:5218,data:today(),forma:'Pix'});
+  state.financeiro.push({id:uid(),tipo:'Despesa',categoria:'Material',descricao:'Compra de verniz HS',valor:320,data:today(),forma:'Cartão'});
+  state.agenda.push({id:uid(),titulo:'Entrega Focus 2012',referencia:'Wilian • Focus 2012',data:today(),hora:'17:00',obs:'Conferir acabamento final'});
+}
+</script>
+</body>
+</html>
