@@ -1,270 +1,1275 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OficinaOS</title>
+    <head>
+        <meta charset="utf-8">
 
-<style>
-:root{
-  --bg:#f8f6f3;
-  --card:#ffffff;
-  --text:#2a1a08;
-  --primary:#b8621a;
-  --green:#16a34a;
-  --red:#dc2626;
-  --blue:#1d6fa4;
-}
+<meta http-equiv='content-type' content='text/html'>
 
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
 
-header{
-  background:#000;
-  color:#fff;
-  padding:12px;
-  display:flex;
-  justify-content:space-between;
-}
+<title>Organizze | Plano Expirado</title>
 
-nav{
-  display:flex;
-  gap:10px;
-  background:#111;
-  padding:8px;
-}
-
-nav button{
-  background:#222;
-  color:#fff;
-  border:none;
-  padding:10px;
-  cursor:pointer;
-}
-
-main{
-  padding:15px;
-}
-
-.card{
-  background:var(--card);
-  padding:15px;
-  margin-bottom:10px;
-  border-radius:8px;
-}
-
-input, select{
-  width:100%;
-  padding:8px;
-  margin:5px 0;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <div><b>OficinaOS</b></div>
-  <div id="syncStatus">Local</div>
-</header>
-
-<nav>
-  <button onclick="show('orcamento')">Orçamento</button>
-  <button onclick="show('financeiro')">Financeiro</button>
-  <button onclick="show('clientes')">Clientes</button>
-</nav>
-
-<main id="app"></main>
+<meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="iu7EQlRERwVh_VtEB3FCz7hTs3y7MCzGwf250AjQw8cvG71qL_HE4yIdk1Li36gKHngV8ighKrKxqhiycE2iow"/>
 
 <script>
+	window.ZZE_FRONT_VERSION = "1.3.50";
+</script>
+<script type="text/javascript" src="/zze-front/1.3.50/js/zze-libraries-min.js"></script>
+<script type="text/javascript" src="/zze-front/1.3.50/js/zze-appModules-min.js"></script>
 
-/* =========================
-   STORE CENTRAL (BASE LIMPA)
-========================= */
+<script>
+  // i18n port to legacy js
+  window.i18n = {
+    locale: 'pt',
+    strings: {
+        today: "hoje",
+        tomorrow: "amanhã",
+        yesterday: "ontem"
+    }
+  };
+</script>
+<script src="/highcharts.js"></script>
+<script src="/assets/application-dfd5d49f3b25577f208d19a436519ef14c4a2ad824e9dfd97a65af1902a5a665.js"></script>
 
-const store = {
-  clientes: [],
-  orcamentos: [],
-  ordensServico: [],
-  transacoes: []
-}
 
-/* =========================
-   UTIL
-========================= */
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
 
-function uid(){
-  return Date.now().toString()
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-function salvarLocal(){
-  localStorage.setItem('oficinaOS', JSON.stringify(store))
-}
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&display=swap" rel="stylesheet">
 
-function carregarLocal(){
-  const data = localStorage.getItem('oficinaOS')
-  if(data){
-    Object.assign(store, JSON.parse(data))
-  }
-}
+<link rel="stylesheet" media="screen" href="/assets/application-e3a6eb7102c95a40426541885aa88ac3e0e6665d34581bbd118eb460f731891b.css" />
 
-/* =========================
-   ROUTER
-========================= */
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 
-function show(tela){
-  if(tela === 'orcamento') renderOrcamento()
-  if(tela === 'financeiro') renderFinanceiro()
-  if(tela === 'clientes') renderClientes()
-}
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-/* =========================
-   ORÇAMENTO
-========================= */
+<meta name="mobile-web-app-capable" content="yes">
 
-function criarOrcamento(){
-  const o = {
-    id: uid(),
-    cliente: document.getElementById('cliente').value,
-    veiculo: document.getElementById('veiculo').value,
-    servico: document.getElementById('servico').value,
-    valor: parseFloat(document.getElementById('valor').value || 0),
-    status:'pendente'
-  }
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  store.orcamentos.push(o)
-  salvarLocal()
-  alert('Orçamento criado')
-}
+<meta name="theme-color" content="#16C64F">
 
-function aprovar(id){
-  const o = store.orcamentos.find(x=>x.id===id)
-  if(!o) return
+<meta name="robots" content="nofollow, noindex, noarchive, noimageindex, nosnippet">
 
-  o.status='aprovado'
+<link rel='chrome-webstore-item' href='https://chrome.google.com/webstore/detail/anpkfkpfhpmfadnpldgmamneenjcdokh'>
 
-  store.ordensServico.push({
-    ...o,
-    etapa:'execucao'
-  })
+<!--link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /-->
 
-  lancarReceita(o)
-  salvarLocal()
-  renderOrcamento()
-}
+<!-- Tracking code for analytics -->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KC53CPT');</script>
+<!-- End Google Tag Manager -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FR0H05Y247"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-function lancarReceita(o){
-  store.transacoes.push({
-    id: uid(),
-    tipo:'receita',
-    descricao:o.servico,
-    valor:o.valor,
-    data:new Date().toLocaleDateString(),
-    pago:false
-  })
-}
+  gtag('config', 'G-FR0H05Y247', { 'debug_mode': false });
+</script>
+<script>
+    Tracking.Clevertap.initwithSettings({
+        appID: "R7W-KWW-8W7Z",
+        entityID: "4377661",
+        sdkURL: ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com')+'/js/clevertap.min.js',
+        debug: false
+    });
 
-/* UI */
-
-function renderOrcamento(){
-  app.innerHTML = `
-  <div class="card">
-    <h3>Novo Orçamento</h3>
-
-    <input id="cliente" placeholder="Cliente">
-    <input id="veiculo" placeholder="Veículo">
-    <input id="servico" placeholder="Serviço">
-    <input id="valor" placeholder="Valor">
-
-    <button onclick="criarOrcamento()">Criar</button>
-  </div>
-
-  <div class="card">
-    <h3>Lista</h3>
-    ${store.orcamentos.map(o=>`
-      <div>
-        ${o.cliente} - R$ ${o.valor} (${o.status})
-        ${o.status==='pendente'
-          ? `<button onclick="aprovar('${o.id}')">Aprovar</button>`
-          : ''
-        }
-      </div>
-    `).join('')}
-  </div>
-  `
-}
-
-/* =========================
-   FINANCEIRO
-========================= */
-
-function togglePago(id){
-  const t = store.transacoes.find(x=>x.id===id)
-  t.pago = !t.pago
-  salvarLocal()
-  renderFinanceiro()
-}
-
-function renderFinanceiro(){
-  app.innerHTML = `
-  <div class="card">
-    <h3>Financeiro</h3>
-
-    ${store.transacoes.map(t=>`
-      <div>
-        ${t.descricao} - R$ ${t.valor}
-        <button onclick="togglePago('${t.id}')">
-          ${t.pago ? 'Pago' : 'Pendente'}
-        </button>
-      </div>
-    `).join('')}
-  </div>
-  `
-}
-
-/* =========================
-   CLIENTES
-========================= */
-
-function addCliente(){
-  store.clientes.push({
-    id: uid(),
-    nome: document.getElementById('nomeCliente').value
-  })
-
-  salvarLocal()
-  renderClientes()
-}
-
-function renderClientes(){
-  app.innerHTML = `
-  <div class="card">
-    <h3>Novo Cliente</h3>
-    <input id="nomeCliente" placeholder="Nome">
-    <button onclick="addCliente()">Adicionar</button>
-  </div>
-
-  <div class="card">
-    <h3>Lista</h3>
-    ${store.clientes.map(c=>`
-      <div>${c.nome}</div>
-    `).join('')}
-  </div>
-  `
-}
-
-/* =========================
-   INIT (CORRETO)
-========================= */
-
-carregarLocal()
-show('orcamento')
-
+    Tracking.Clevertap.track('Open Page', {'Page Location': '/plano-expirado'});
+    Tracking.Clevertap.openPageHistoryBind(window.history);
+    //Tracking.Clevertap.clickTrackingBind(window.jQuery);
 </script>
 
-</body>
+    </head>
+
+    <body class="plans " data-section="plans">
+            
+
+        
+
+        
+<header class="zze-layout_header with-conexoes ">
+    <div>
+        <a href="" id="mobile-menu-toggle" onclick="return false;">
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect y="0" width="20" height="2.5" rx="1.25" fill="#FEFDF9"/>
+    <rect y="6.75" width="20" height="2.5" rx="1.25" fill="#FEFDF9"/>
+    <rect y="13.5" width="20" height="2.5" rx="1.25" fill="#FEFDF9"/>
+</svg>
+
+        </a>
+
+        <a href="/4377661/a/inicio" id="main-logo">
+            <svg width="145" height="32" viewBox="0 0 145 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path opacity="0.5" d="M16.0001 0V8C11.5824 8 8.00007 11.5823 8.00007 16H0C0 7.16463 7.16093 0 16.0001 0Z" fill="#FBF7EA"/>
+    <path opacity="0.75" d="M16.0001 32V24C11.5824 24 8.00007 20.4177 8.00007 16H0C0 24.8354 7.16093 32 16.0001 32Z" fill="#FBF7EA"/>
+    <path d="M32.0001 16C32.0001 24.8354 24.8392 32 16 32V24C20.4177 24 24.0001 20.4177 24.0001 16C24.0001 11.5823 20.4177 8 16 8V0C24.8392 0 32.0001 7.16463 32.0001 16Z" fill="#FBF7EA"/>
+    <path d="M44.2714 8.43652C42.2056 8.43652 40.5273 9.12514 39.2328 10.5287C37.9647 11.9323 37.3325 13.7234 37.3325 15.9549C37.3325 18.1863 37.9647 19.9511 39.2328 21.3283C40.5273 22.6792 42.2056 23.3678 44.2714 23.3678C46.3373 23.3678 47.9892 22.6792 49.2273 21.302C50.4954 19.9248 51.1276 18.1336 51.1276 15.9285C51.1276 13.7234 50.4954 11.9059 49.2273 10.5287C47.9892 9.12514 46.3373 8.43652 44.2714 8.43652ZM44.2451 21.2456C41.4078 21.2456 39.786 19.1797 39.786 15.9022C39.786 12.6247 41.5207 10.5588 44.2451 10.5588C46.9695 10.5588 48.6779 12.651 48.6779 15.8758C48.6779 19.1007 46.9695 21.2493 44.2451 21.2493V21.2456Z" fill="#FBF7EA"/>
+    <path d="M56.2227 11.6351H56.0572V8.71506H53.6602V23.0932H56.0572V16.4554C56.0572 12.6247 57.6527 10.6981 60.8738 10.6417V8.49304C58.5896 8.49304 57.0205 9.53914 56.219 11.6351H56.2227Z" fill="#FBF7EA"/>
+    <path d="M69.7954 20.3124H65.9948C64.7003 20.3124 64.0682 19.8984 64.0682 19.0743C64.0682 18.3293 64.4821 17.889 65.3062 17.7536C65.9384 17.8928 66.5743 17.9756 67.2592 17.9756C70.4539 17.9756 72.5725 16.0753 72.5725 13.2907C72.5725 11.9398 72.1322 10.8109 71.2517 9.93042C71.5527 9.07623 72.5988 8.49674 73.9234 8.49674V6.51367C71.9666 6.51367 70.3975 7.50709 69.8217 9.04613C69.1331 8.6322 68.2262 8.44029 67.0973 8.44029C65.5018 8.44029 64.2074 8.88056 63.1876 9.76109C62.198 10.6153 61.7013 11.7705 61.7013 13.2042C61.7013 14.9125 62.3899 16.207 63.7671 17.0612V17.2267C62.6382 17.5579 61.8969 18.4648 61.8969 19.5974C61.8969 20.4779 62.4764 21.3058 63.3269 21.5541V21.746C62.006 22.16 61.1519 23.2061 61.1519 24.5569C61.1519 26.7319 63.1349 28.0828 67.2102 28.0828C71.5339 28.0828 74.1228 26.6491 74.1228 23.8947C74.1228 21.6632 72.5273 20.3124 69.7992 20.3124H69.7954ZM67.1538 10.175C69.024 10.175 70.2357 11.3302 70.2357 13.2343C70.2357 15.1383 69.1068 16.2634 67.1538 16.2634C65.2008 16.2634 64.0682 15.1346 64.0682 13.2343C64.0682 11.334 65.2535 10.175 67.1538 10.175ZM67.3194 26.2917C64.6477 26.2917 63.3269 25.5767 63.3269 24.1694C63.3269 22.9314 64.1246 22.2954 65.6938 22.2954H69.5771C71.0372 22.2954 71.7521 22.8448 71.7521 23.9775C71.7521 25.5203 70.2658 26.2917 67.3194 26.2917Z" fill="#FBF7EA"/>
+    <path d="M86.9211 20.1995V13.6444C86.9211 10.3669 84.9681 8.43652 81.3594 8.43652C79.7338 8.43652 78.3866 8.85045 77.3104 9.67453C76.2643 10.4723 75.6848 11.5485 75.5757 12.8994H77.8899C77.9727 11.3566 79.2672 10.3368 81.2503 10.3368C83.4516 10.3368 84.5541 11.3829 84.5541 13.4488V14.5212H80.7272C77.175 14.5212 74.9736 16.1468 74.9736 19.1496C74.9736 21.6557 76.9003 23.3641 79.7639 23.3641C81.9953 23.3641 83.8956 22.2916 84.5278 20.7187H84.6934C84.6934 22.4008 85.4911 23.2512 87.1167 23.2512C87.5307 23.2512 87.9446 23.1948 88.3284 23.0856V21.2418C88.1892 21.2681 87.9973 21.2982 87.8053 21.2982C86.9813 21.2982 86.9248 20.7752 86.9248 20.1957L86.9211 20.1995ZM84.5541 17.0311C84.5541 19.5936 82.8194 21.3848 80.2606 21.3848C78.5259 21.3848 77.4233 20.4478 77.4233 18.8787C77.4233 17.2267 78.5786 16.2597 80.9191 16.2597H84.5541V17.0311Z" fill="#FBF7EA"/>
+    <path d="M98.044 8.43652C95.869 8.43652 94.0779 9.53906 93.1973 11.3829H93.0054V8.71122H90.6084V23.0932H93.0054V15.571C93.0054 12.5682 94.7138 10.5588 97.2463 10.5588C99.504 10.5588 100.633 11.8796 100.633 14.4986V23.0932H103.03V14.2503C103.03 10.698 101.16 8.43652 98.0478 8.43652H98.044Z" fill="#FBF7EA"/>
+    <path d="M107.847 8.71497H105.48V23.0969H107.847V8.71497Z" fill="#FBF7EA"/>
+    <path d="M129.74 10.5588V8.71497H110.466V10.698H118.368L110.492 21.3057V23.0969H129.849V21.1138H121.864L129.74 10.5626V10.5588ZM119.173 21.1101H113.329L121.1 10.698H126.902L119.17 21.1101H119.173Z" fill="#FBF7EA"/>
+    <path d="M141.604 18.7696C141.247 20.3387 139.704 21.4149 137.612 21.4149C134.857 21.4149 133.153 19.5711 133.179 16.4027H143.806C143.862 15.9888 143.889 15.4921 143.889 14.9163C143.889 10.9765 141.522 8.44409 137.529 8.44409C135.49 8.44409 133.838 9.13271 132.6 10.5099C131.362 11.8608 130.756 13.6783 130.756 15.9361C130.756 18.1939 131.388 20.0114 132.63 21.3622C133.868 22.7131 135.52 23.3717 137.559 23.3717C139.268 23.3717 140.698 22.9577 141.853 22.1035C143.038 21.2494 143.753 20.1468 144.001 18.7696H141.604ZM137.503 10.3933C140.062 10.3933 141.522 11.9098 141.522 14.6341H133.206C133.288 12.0716 134.997 10.3933 137.499 10.3933H137.503Z" fill="#FBF7EA"/>
+    <path d="M107.847 3.92102H105.48V6.29167H107.847V3.92102Z" fill="#FBF7EA"/>
+</svg>
+
+        </a>
+
+        <nav id="main-nav">
+            <ul zze-scope="main-navigation">
+                <li ui-sref-active="active">
+                    <a ui-sref='dashboard' href="/4377661/a/inicio">
+                        visão geral
+                    </a>
+                </li>
+
+                <li ui-sref-active="active">
+                    <a ui-sref='transactions' href="/4377661/a/lancamentos">
+                        lançamentos
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="/4377661/relatorios/categorias">
+                        relatórios
+                    </a>
+                </li>
+
+                <li ui-sref-active="active">
+                    <a ui-sref='expenses_limit' href="/4377661/limite-de-gastos">
+                        limite de gastos
+                    </a>
+                </li>
+
+                <li class="conexoes">
+                    <a href="https://app2.organizze.com.br/4377661/conexoes-bancarias" onClick="Loader.dataBox.show(); return true;">
+                        conexão bancária
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <nav id="right-nav">
+            <ul>
+                <!-- Settings -->
+                <li class="settings drop-down arrow-right" data-drop-down="hover">
+
+                    <a href="" onclick="return false">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.135 11.1858L15.6373 10.321C15.7885 9.50533 15.7885 8.66861 15.6373 7.85299L17.135 6.98814C17.3072 6.88971 17.3846 6.6858 17.3283 6.49596C16.9381 5.24439 16.2737 4.11236 15.4053 3.17017C15.2717 3.02603 15.0537 2.99088 14.885 3.08932L13.3873 3.95416C12.758 3.41275 12.0338 2.99439 11.2498 2.72017V0.994003C11.2498 0.797128 11.1127 0.624862 10.9194 0.582675C9.62912 0.294393 8.30725 0.308456 7.08029 0.582675C6.88693 0.624862 6.74982 0.797128 6.74982 0.994003V2.72369C5.96936 3.00142 5.24514 3.41978 4.61232 3.95767L3.11818 3.09283C2.94592 2.99439 2.73147 3.02603 2.59787 3.17369C1.72951 4.11236 1.06506 5.24439 0.674825 6.49947C0.615059 6.68931 0.695918 6.89322 0.868184 6.99166L2.36584 7.8565C2.21467 8.67213 2.21467 9.50885 2.36584 10.3245L0.868184 11.1893C0.695918 11.2878 0.618575 11.4917 0.674825 11.6815C1.06506 12.9331 1.72951 14.0651 2.59787 15.0073C2.73147 15.1514 2.94943 15.1866 3.11818 15.0881L4.61584 14.2233C5.24514 14.7647 5.96936 15.1831 6.75334 15.4573V17.187C6.75334 17.3838 6.89045 17.5561 7.08381 17.5983C8.37404 17.8866 9.69592 17.8725 10.9229 17.5983C11.1162 17.5561 11.2533 17.3838 11.2533 17.187V15.4573C12.0338 15.1795 12.758 14.7612 13.3908 14.2233L14.8885 15.0881C15.0608 15.1866 15.2752 15.1549 15.4088 15.0073C16.2772 14.0686 16.9416 12.9366 17.3319 11.6815C17.3846 11.4881 17.3072 11.2842 17.135 11.1858V11.1858ZM8.99982 11.8995C7.44943 11.8995 6.18732 10.6374 6.18732 9.08697C6.18732 7.53658 7.44943 6.27447 8.99982 6.27447C10.5502 6.27447 11.8123 7.53658 11.8123 9.08697C11.8123 10.6374 10.5502 11.8995 8.99982 11.8995Z" fill="#FEFDF9"/>
+</svg>
+
+                    </a>
+
+                    <div class="drop-down-box" data-drop-down="box">
+
+                        <ul>
+                            <li class="main-links">
+                                <a href="/4377661/a/configuracoes/categorias">
+                                    Categorias
+                                </a>
+                            </li>
+
+                            <li class="main-links">
+                                <a href="/4377661/configuracoes/contas">
+                                    Contas
+                                </a>
+                            </li>
+
+                            <li class="main-links">
+                                <a href="/4377661/configuracoes/cartoes-de-credito">
+                                    Cartões de crédito
+                                </a>
+                            </li>
+
+                            <li class="separator"></li>
+
+                            <li class="secondary-links">
+                                <a href="/4377661/configuracoes/preferencias">
+                                    Preferências
+                                </a>
+                            </li>
+
+                            <li class="secondary-links">
+                                <a href="/4377661/configuracoes/plano-e-faturamento">
+                                    Meu Plano
+                                </a>
+                            </li>
+
+                            <li class="secondary-links">
+                                <a href="/4377661/a/configuracoes/tags">
+                                    Tags
+                                </a>
+                            </li>
+
+                            <li class="secondary-links">
+                                <a href="/4377661/configuracoes/alertas">
+                                    Alertas
+                                </a>
+                            </li>
+
+                            <li class="secondary-links">
+                                <a href="/4377661/a/configuracoes/atividades">
+                                    Atividades
+                                </a>
+                            </li>
+
+                            <li class="more-links" zze-scope="settings-menu-more">
+                                <a href="">
+                                    mais opções
+                                </a>
+                                <ul style="display: none">
+                                        <li>
+                                            <a href="/4377661/agenda">
+                                                Agenda
+                                            </a>
+                                        </li>
+
+                                    <li>
+                                        <a href="" data-url="/4377661/calculator" data-popup="true">
+                                            Calculadora
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="" data-url="/4377661/conversor-de-moedas/novo" data-popup="true">
+                                            Conversor de Moedas
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/4377661/metas">
+                                            Metas de receitas
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Notifications -->
+                <li class="notifications drop-down arrow-right" id="messages-app" data-drop-down="hover">
+                    <a href="" onClick="return false;">
+                        <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.99953 18.0869C9.26096 18.0869 10.2842 17.0797 10.2842 15.8369H5.71489C5.71489 17.0797 6.73811 18.0869 7.99953 18.0869ZM15.692 12.8237C15.002 12.0938 13.711 10.9959 13.711 7.39941C13.711 4.66777 11.7652 2.48105 9.14168 1.94457V1.21191C9.14168 0.590703 8.63025 0.0869141 7.99953 0.0869141C7.36882 0.0869141 6.85739 0.590703 6.85739 1.21191V1.94457C4.23382 2.48105 2.28811 4.66777 2.28811 7.39941C2.28811 10.9959 0.997036 12.0938 0.307036 12.8237C0.0927507 13.0504 -0.0022493 13.3215 -0.000463589 13.5869C0.00346498 14.1635 0.463108 14.7119 1.14596 14.7119H14.8531C15.536 14.7119 15.996 14.1635 15.9995 13.5869C16.0013 13.3215 15.9063 13.0501 15.692 12.8237Z" fill="#FEFDF9"/>
+</svg>
+
+                    </a>
+                    <zze-messages></zze-messages>
+                </li>
+
+                <!-- My Account -->
+                <li class="my-account drop-down arrow-right" data-drop-down="hover">
+                    <a href="/4377661/configuracoes/minha-conta">
+                        <img src="https://utils.organizze.com.br/avatar/avatar-missing.png" />
+                    </a>
+
+                    <div class="drop-down-box" data-drop-down='box'>
+                        <div>
+                            <div>
+                                <a href="/4377661/configuracoes/minha-conta">
+                                    <img src="https://utils.organizze.com.br/avatar/avatar-missing.png" />
+                                    <strong>Limaprata Rep Auto</strong>
+                                </a>
+                            </div>
+                            <hr />
+                            <a href="/4377661/configuracoes/minha-conta">
+                                Minha conta
+                            </a>
+                            <a href="/logout?current_entity_id=4377661" title="Deslogar da sua conta" class="logout" data-no-turbolink='true'>
+                                Sair
+                            </a>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <a href="/4377661/configuracoes/minha-conta" id="mobile-avatar">
+            <img src="https://utils.organizze.com.br/avatar/avatar-missing.png" />
+        </a>
+    </div>
+
+</header>
+
+<nav id="mobile-drawer" data-turbolinks-keep>
+    <div class="drawer-header">
+        <a href="/4377661/configuracoes/minha-conta">
+            <img src="https://utils.organizze.com.br/avatar/avatar-missing.png" />
+            <strong>Limaprata Rep Auto</strong>
+        </a>
+    </div>
+
+    <ul class="drawer-nav-links">
+        <li ui-sref-active="active">
+            <a ui-sref='dashboard' href="/4377661/a/inicio">
+                Visão geral
+            </a>
+        </li>
+
+        <li ui-sref-active="active">
+            <a ui-sref='transactions' href="/4377661/a/lancamentos">
+                Lançamentos
+            </a>
+        </li>
+
+        <li class="">
+            <a href="/4377661/relatorios/categorias">Relatórios</a>
+        </li>
+
+        <li ui-sref-active="active">
+            <a ui-sref='expenses_limit' href="/4377661/limite-de-gastos">
+                Limite de gastos
+            </a>
+        </li>
+
+        <li>
+            <a href="https://app2.organizze.com.br/4377661/conexoes-bancarias" onClick="Loader.dataBox.show(); return true;">Conexão bancária</a>
+        </li>
+    </ul>
+
+    <ul class="drawer-settings-links">
+        <li ui-sref-active="active"><a ui-sref="settings.categories" href="/4377661/a/configuracoes/categorias">Categorias</a></li>
+        <li class=""><a href="/4377661/configuracoes/contas">Contas</a></li>
+        <li class=""><a href="/4377661/configuracoes/cartoes-de-credito">Cartões de crédito</a></li>
+    </ul>
+
+    <ul class="drawer-secondary-links">
+        <li class=""><a href="/4377661/configuracoes/preferencias">Preferências</a></li>
+        <li class=""><a href="/4377661/configuracoes/plano-e-faturamento">Meu Plano</a></li>
+        <li ui-sref-active="active"><a ui-sref="settings.tags" href="/4377661/a/configuracoes/tags">Tags</a></li>
+        <li class=""><a href="/4377661/configuracoes/alertas">Alertas</a></li>
+        <li ui-sref-active="active"><a ui-sref="settings.activities" href="/4377661/a/configuracoes/atividades">Atividades</a></li>
+    </ul>
+
+    <ul class="drawer-account-links">
+        <li class=""><a href="/4377661/configuracoes/minha-conta">Minha conta</a></li>
+        <li><a href="/logout?current_entity_id=4377661" data-no-turbolink="true">Sair</a></li>
+    </ul>
+
+</nav>
+
+<div id="mobile-drawer-backdrop"></div>
+
+<div id="pos-carnaval-2026-banner" style="display: none;">
+
+    <div class="flex-container">
+        <div class="flex-left">
+            <img class="character" src="/assets/application/promos/pos-carnaval-2026/character-65161c33d0ba282c3ecf872dbcc4fda655a6ff8aa98a5b79214f81dce6c8f4a0.svg" />
+            <img class="deco deco-leaf-left" src="/assets/application/promos/pos-carnaval-2026/01-12263e30ec63d3b375eb8f7b4d977d3b82ec8a1e30729553ceab07b962c1e2ea.svg" />
+            <img class="deco deco-leaf-small" src="/assets/application/promos/pos-carnaval-2026/02-15b0dc5604eecaddb79ebbf0037cbde4cfa1592a61b1b22c7a526db4b2a0dbec.svg" />
+            <img class="deco deco-bg" src="/assets/application/promos/pos-carnaval-2026/03-1b094a01bffa9a40df568a44139e3919e5fb2000231939a81211e3a2bbc5f103.svg" />
+        </div>
+
+        <div class="flex-center">
+            <big>Agora é pra valer</big>
+            <p>
+                Organize seu <strong>2026</strong> de verdade com <strong>20% OFF</strong>.
+            </p>
+        </div>
+
+        <div class="flex-right">
+            <a href="#" class="cta" id="pos-carnaval-2026-cta">
+                Ativar desconto
+            </a>
+            <img class="deco deco-plant-right" src="/assets/application/promos/pos-carnaval-2026/06-0f7b26e00555777df177c46e0f0c7591f1ecaad51c571410b8208ec7682990f5.svg" />
+            <img class="deco deco-dots-right" src="/assets/application/promos/pos-carnaval-2026/04-243d1008989e5846527b531413a332e6373e9188e2041353b2f224eaf98d129d.svg" />
+            <img class="deco deco-star-right" src="/assets/application/promos/pos-carnaval-2026/05-eeefa26908c272a8cb302204471cdd5375fffb21a47e97051f37b93212f1a001.svg" />
+        </div>
+    </div>
+
+
+    <a href="" class="minimized-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3C8.68629 3 6 5.68629 6 9V13.2L4.2 15.6V17H19.8V15.6L18 13.2V9C18 5.68629 15.3137 3 12 3Z" fill="#FEFDF9"/>
+            <path d="M9.6 17V17.6C9.6 19.0912 10.8088 20.4 12 20.4C13.1912 20.4 14.4 19.0912 14.4 17.6V17" fill="#FEFDF9"/>
+            <circle cx="16.8" cy="6" r="3.6" fill="#F59638"/>
+        </svg>
+    </a>
+
+    <a href="" class="coupon-activated-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <g opacity="0.4">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0861 16.8921C21.8368 17.1374 21.5141 17.2588 21.1914 17.2588C20.8688 17.2588 20.5474 17.1374 20.3021 16.8921C20.0648 16.6574 19.9328 16.3401 19.9328 16.0001C19.9328 15.6601 20.0648 15.3428 20.3061 15.1028C20.7928 14.6188 21.5901 14.6188 22.0821 15.1028C22.0834 15.1054 22.0861 15.1081 22.0861 15.1081C22.5781 15.6001 22.5781 16.4001 22.0861 16.8921ZM17.7554 20.5654C17.7554 21.1174 17.3074 21.5654 16.7554 21.5654C16.2034 21.5654 15.7554 21.1174 15.7554 20.5654V11.3308C15.7554 10.7788 16.2034 10.3308 16.7554 10.3308C17.3074 10.3308 17.7554 10.7788 17.7554 11.3308V20.5654ZM13.0995 16.8921C12.8515 17.1374 12.5275 17.2588 12.2048 17.2588C11.8835 17.2588 11.5622 17.1388 11.3182 16.8974C10.8262 16.3988 10.8262 15.6014 11.3088 15.1121C11.8088 14.6201 12.6035 14.6228 13.0955 15.1028C13.0968 15.1054 13.0995 15.1081 13.0995 15.1081C13.5914 15.6001 13.5914 16.4001 13.0995 16.8921ZM28.7928 12.1268C28.4928 11.5828 28.0328 11.1228 27.0728 10.1628C26.8661 9.95745 26.7514 9.85478 26.6674 9.79878C26.3008 9.55345 26.1168 9.51078 25.6928 9.55611C25.5514 9.57078 25.3848 9.62145 24.7141 9.82678C24.1728 9.99878 23.6088 9.85745 23.2074 9.45611C22.8074 9.05478 22.6688 8.49211 22.8394 7.94945L22.9008 7.75211C23.0528 7.26011 23.0981 7.11345 23.1114 6.98545C23.1594 6.55211 23.1141 6.36678 22.8714 6.00278C22.8168 5.91878 22.7128 5.80411 22.4501 5.53878C21.5381 4.62811 21.0794 4.17078 20.5394 3.87211C19.2248 3.14811 17.6554 3.14678 16.3408 3.87211C15.8021 4.16811 15.3501 4.61878 14.4181 5.54811L6.2075 13.7588C5.29817 14.6694 4.84083 15.1281 4.54483 15.6681C3.81817 16.9841 3.81817 18.5574 4.54617 19.8761C4.84617 20.4188 5.30483 20.8774 6.23683 21.8081C6.46483 22.0334 6.58617 22.1428 6.67017 22.1974C7.03683 22.4428 7.2235 22.4854 7.64617 22.4401C7.73017 22.4308 7.98483 22.3641 8.46883 22.2161L8.6155 22.1708C9.1555 22.0014 9.72217 22.1428 10.1515 22.5721C10.5142 22.9628 10.6422 23.5001 10.4942 24.0108C10.2795 24.7454 10.2355 24.9014 10.2222 25.0361C10.1795 25.4774 10.2222 25.6414 10.4675 26.0041C10.5208 26.0841 10.6248 26.1988 10.8888 26.4654C11.7955 27.3708 12.2515 27.8254 12.7902 28.1254C13.4488 28.4881 14.1714 28.6708 14.8941 28.6708C15.6168 28.6708 16.3408 28.4881 17.0008 28.1254C17.5394 27.8268 17.9954 27.3708 18.9114 26.4561L27.1274 18.2401C28.0394 17.3268 28.4968 16.8681 28.7941 16.3281C29.5168 15.0148 29.5168 13.4441 28.7928 12.1268Z" fill="#1A1C19"></path>
+          </g>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0835 16.8897C21.8342 17.135 21.5115 17.2564 21.1888 17.2564C20.8662 17.2564 20.5448 17.135 20.2995 16.8897C20.0622 16.655 19.9302 16.3377 19.9302 15.9977C19.9302 15.6577 20.0622 15.3404 20.3035 15.1004C20.7902 14.6164 21.5875 14.6164 22.0795 15.1004C22.0808 15.103 22.0835 15.1057 22.0835 15.1057C22.5755 15.5977 22.5755 16.3977 22.0835 16.8897ZM17.7528 20.563C17.7528 21.115 17.3048 21.563 16.7528 21.563C16.2008 21.563 15.7528 21.115 15.7528 20.563V11.3284C15.7528 10.7764 16.2008 10.3284 16.7528 10.3284C17.3048 10.3284 17.7528 10.7764 17.7528 11.3284V20.563ZM13.0968 16.8897C12.8488 17.135 12.5248 17.2564 12.2022 17.2564C11.8808 17.2564 11.5595 17.1364 11.3155 16.895C10.8235 16.3964 10.8235 15.599 11.3062 15.1097C11.8062 14.6177 12.6008 14.6204 13.0928 15.1004C13.0942 15.103 13.0968 15.1057 13.0968 15.1057C13.5888 15.5977 13.5888 16.3977 13.0968 16.8897Z" fill="#1A1C19"></path>
+        </svg>
+    </a>
+
+    <a href="" class="close-button">
+        <i class="icon-close"></i>
+    </a>
+
+</div>
+
+<!-- Pos Carnaval 2026 Dialog (reuses boas-vindas-2026 dialog styling) -->
+<div class="boas-vindas-2026-dialog" id="pos-carnaval-2026-dialog">
+    <div class="dimming"></div>
+    <div class="modal">
+        <button class="close-button" type="button">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L11 11M1 11L11 1" stroke="#858782" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <div class="header">
+            <div class="icon-discount">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <g opacity="0.4">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0861 16.8921C21.8368 17.1374 21.5141 17.2588 21.1914 17.2588C20.8688 17.2588 20.5474 17.1374 20.3021 16.8921C20.0648 16.6574 19.9328 16.3401 19.9328 16.0001C19.9328 15.6601 20.0648 15.3428 20.3061 15.1028C20.7928 14.6188 21.5901 14.6188 22.0821 15.1028C22.0834 15.1054 22.0861 15.1081 22.0861 15.1081C22.5781 15.6001 22.5781 16.4001 22.0861 16.8921ZM17.7554 20.5654C17.7554 21.1174 17.3074 21.5654 16.7554 21.5654C16.2034 21.5654 15.7554 21.1174 15.7554 20.5654V11.3308C15.7554 10.7788 16.2034 10.3308 16.7554 10.3308C17.3074 10.3308 17.7554 10.7788 17.7554 11.3308V20.5654ZM13.0995 16.8921C12.8515 17.1374 12.5275 17.2588 12.2048 17.2588C11.8835 17.2588 11.5622 17.1388 11.3182 16.8974C10.8262 16.3988 10.8262 15.6014 11.3088 15.1121C11.8088 14.6201 12.6035 14.6228 13.0955 15.1028C13.0968 15.1054 13.0995 15.1081 13.0995 15.1081C13.5914 15.6001 13.5914 16.4001 13.0995 16.8921ZM28.7928 12.1268C28.4928 11.5828 28.0328 11.1228 27.0728 10.1628C26.8661 9.95745 26.7514 9.85478 26.6674 9.79878C26.3008 9.55345 26.1168 9.51078 25.6928 9.55611C25.5514 9.57078 25.3848 9.62145 24.7141 9.82678C24.1728 9.99878 23.6088 9.85745 23.2074 9.45611C22.8074 9.05478 22.6688 8.49211 22.8394 7.94945L22.9008 7.75211C23.0528 7.26011 23.0981 7.11345 23.1114 6.98545C23.1594 6.55211 23.1141 6.36678 22.8714 6.00278C22.8168 5.91878 22.7128 5.80411 22.4501 5.53878C21.5381 4.62811 21.0794 4.17078 20.5394 3.87211C19.2248 3.14811 17.6554 3.14678 16.3408 3.87211C15.8021 4.16811 15.3501 4.61878 14.4181 5.54811L6.2075 13.7588C5.29817 14.6694 4.84083 15.1281 4.54483 15.6681C3.81817 16.9841 3.81817 18.5574 4.54617 19.8761C4.84617 20.4188 5.30483 20.8774 6.23683 21.8081C6.46483 22.0334 6.58617 22.1428 6.67017 22.1974C7.03683 22.4428 7.2235 22.4854 7.64617 22.4401C7.73017 22.4308 7.98483 22.3641 8.46883 22.2161L8.6155 22.1708C9.1555 22.0014 9.72217 22.1428 10.1515 22.5721C10.5142 22.9628 10.6422 23.5001 10.4942 24.0108C10.2795 24.7454 10.2355 24.9014 10.2222 25.0361C10.1795 25.4774 10.2222 25.6414 10.4675 26.0041C10.5208 26.0841 10.6248 26.1988 10.8888 26.4654C11.7955 27.3708 12.2515 27.8254 12.7902 28.1254C13.4488 28.4881 14.1714 28.6708 14.8941 28.6708C15.6168 28.6708 16.3408 28.4881 17.0008 28.1254C17.5394 27.8268 17.9954 27.3708 18.9114 26.4561L27.1274 18.2401C28.0394 17.3268 28.4968 16.8681 28.7941 16.3281C29.5168 15.0148 29.5168 13.4441 28.7928 12.1268Z" fill="#1A1C19"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0861 16.8921C21.8368 17.1374 21.5141 17.2588 21.1914 17.2588C20.8688 17.2588 20.5474 17.1374 20.3021 16.8921C20.0648 16.6574 19.9328 16.3401 19.9328 16.0001C19.9328 15.6601 20.0648 15.3428 20.3061 15.1028C20.7928 14.6188 21.5901 14.6188 22.0821 15.1028C22.0834 15.1054 22.0861 15.1081 22.0861 15.1081C22.5781 15.6001 22.5781 16.4001 22.0861 16.8921ZM17.7554 20.5654C17.7554 21.1174 17.3074 21.5654 16.7554 21.5654C16.2034 21.5654 15.7554 21.1174 15.7554 20.5654V11.3308C15.7554 10.7788 16.2034 10.3308 16.7554 10.3308C17.3074 10.3308 17.7554 10.7788 17.7554 11.3308V20.5654ZM13.0995 16.8921C12.8515 17.1374 12.5275 17.2588 12.2048 17.2588C11.8835 17.2588 11.5622 17.1388 11.3182 16.8974C10.8262 16.3988 10.8262 15.6014 11.3088 15.1121C11.8088 14.6201 12.6035 14.6228 13.0955 15.1028C13.0968 15.1054 13.0995 15.1081 13.0995 15.1081C13.5914 15.6001 13.5914 16.4001 13.0995 16.8921ZM28.7928 12.1268C28.4928 11.5828 28.0328 11.1228 27.0728 10.1628C26.8661 9.95745 26.7514 9.85478 26.6674 9.79878C26.3008 9.55345 26.1168 9.51078 25.6928 9.55611C25.5514 9.57078 25.3848 9.62145 24.7141 9.82678C24.1728 9.99878 23.6088 9.85745 23.2074 9.45611C22.8074 9.05478 22.6688 8.49211 22.8394 7.94945L22.9008 7.75211C23.0528 7.26011 23.0981 7.11345 23.1114 6.98545C23.1594 6.55211 23.1141 6.36678 22.8714 6.00278C22.8168 5.91878 22.7128 5.80411 22.4501 5.53878C21.5381 4.62811 21.0794 4.17078 20.5394 3.87211C19.2248 3.14811 17.6554 3.14678 16.3408 3.87211C15.8021 4.16811 15.3501 4.61878 14.4181 5.54811L6.2075 13.7588C5.29817 14.6694 4.84083 15.1281 4.54483 15.6681C3.81817 16.9841 3.81817 18.5574 4.54617 19.8761C4.84617 20.4188 5.30483 20.8774 6.23683 21.8081C6.46483 22.0334 6.58617 22.1428 6.67017 22.1974C7.03683 22.4428 7.2235 22.4854 7.64617 22.4401C7.73017 22.4308 7.98483 22.3641 8.46883 22.2161L8.6155 22.1708C9.1555 22.0014 9.72217 22.1428 10.1515 22.5721C10.5142 22.9628 10.6422 23.5001 10.4942 24.0108C10.2795 24.7454 10.2355 24.9014 10.2222 25.0361C10.1795 25.4774 10.2222 25.6414 10.4675 26.0041C10.5208 26.0841 10.6248 26.1988 10.8888 26.4654C11.7955 27.3708 12.2515 27.8254 12.7902 28.1254C13.4488 28.4881 14.1714 28.6708 14.8941 28.6708C15.6168 28.6708 16.3408 28.4881 17.0008 28.1254C17.5394 27.8268 17.9954 27.3708 18.9114 26.4561L27.1274 18.2401C28.0394 17.3268 28.4968 16.8681 28.7941 16.3281C29.5168 15.0148 29.5168 13.4441 28.7928 12.1268Z" fill="#1A1C19"/>
+  </g>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0835 16.8897C21.8342 17.135 21.5115 17.2564 21.1888 17.2564C20.8662 17.2564 20.5448 17.135 20.2995 16.8897C20.0622 16.655 19.9302 16.3377 19.9302 15.9977C19.9302 15.6577 20.0622 15.3404 20.3035 15.1004C20.7902 14.6164 21.5875 14.6164 22.0795 15.1004C22.0808 15.103 22.0835 15.1057 22.0835 15.1057C22.5755 15.5977 22.5755 16.3977 22.0835 16.8897ZM17.7528 20.563C17.7528 21.115 17.3048 21.563 16.7528 21.563C16.2008 21.563 15.7528 21.115 15.7528 20.563V11.3284C15.7528 10.7764 16.2008 10.3284 16.7528 10.3284C17.3048 10.3284 17.7528 10.7764 17.7528 11.3284V20.563ZM13.0968 16.8897C12.8488 17.135 12.5248 17.2564 12.2022 17.2564C11.8808 17.2564 11.5595 17.1364 11.3155 16.895C10.8235 16.3964 10.8235 15.599 11.3062 15.1097C11.8062 14.6177 12.6008 14.6204 13.0928 15.1004C13.0942 15.103 13.0968 15.1057 13.0968 15.1057C13.5888 15.5977 13.5888 16.3977 13.0968 16.8897Z" fill="#1A1C19"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M22.0835 16.8897C21.8342 17.135 21.5115 17.2564 21.1888 17.2564C20.8662 17.2564 20.5448 17.135 20.2995 16.8897C20.0622 16.655 19.9302 16.3377 19.9302 15.9977C19.9302 15.6577 20.0622 15.3404 20.3035 15.1004C20.7902 14.6164 21.5875 14.6164 22.0795 15.1004C22.0808 15.103 22.0835 15.1057 22.0835 15.1057C22.5755 15.5977 22.5755 16.3977 22.0835 16.8897ZM17.7528 20.563C17.7528 21.115 17.3048 21.563 16.7528 21.563C16.2008 21.563 15.7528 21.115 15.7528 20.563V11.3284C15.7528 10.7764 16.2008 10.3284 16.7528 10.3284C17.3048 10.3284 17.7528 10.7764 17.7528 11.3284V20.563ZM13.0968 16.8897C12.8488 17.135 12.5248 17.2564 12.2022 17.2564C11.8808 17.2564 11.5595 17.1364 11.3155 16.895C10.8235 16.3964 10.8235 15.599 11.3062 15.1097C11.8062 14.6177 12.6008 14.6204 13.0928 15.1004C13.0942 15.103 13.0968 15.1057 13.0968 15.1057C13.5888 15.5977 13.5888 16.3977 13.0968 16.8897Z" fill="#1A1C19"/>
+</svg>
+            </div>
+            <h2>Benefício ativado!</h2>
+            <p>Um <strong>desconto de 20%</strong> foi vinculado à sua conta.</p>
+        </div>
+
+        <div class="container-values">
+            <div class="plan-info">
+                <p class="plan-title">Plano Conectado Anual</p>
+                <p class="plan-description">Conexão Bancária com até 3 instituições financeiras</p>
+            </div>
+            <p class="plan-price-old">De <span class="strikethrough">R$ 399,90</span> /ano</p>
+            <p class="plan-price-new">
+                por <strong>R$ 319,90</strong> à vista
+                <span class="divider">ou</span>
+                <strong>12x</strong> de <strong>R$ 31,90</strong>
+            </p>
+        </div>
+
+        <a href="/4377661/pagamentos/novo/boasvindas2026-20OFF" class="cta-button">
+            Confirmar e assinar
+        </a>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        let $banner = $('#pos-carnaval-2026-banner');
+        let $dialog = $('#pos-carnaval-2026-dialog');
+
+        const BANNER_STATES = ['maximized', 'minimized', 'coupon-activated'],
+              BANNER_STATE_COOKIE = "POS-CARNAVAL-2026-BANNERSTATE";
+
+        const setBannerState = function(state) {
+            if (BANNER_STATES.includes(state)) {
+                $banner.attr('class', state);
+                Cookies.set(BANNER_STATE_COOKIE, state, {expires: 31});
+            }
+        }
+
+        const getBannerState = function() {
+            const state = Cookies.get(BANNER_STATE_COOKIE);
+            if (BANNER_STATES.includes(state)) {
+                return state;
+            } else {
+                return 'maximized';
+            }
+        }
+
+        const minimizeBanner = function(e) {
+            setBannerState('minimized');
+            e.preventDefault();
+            return false;
+        }
+
+        const maximizeBanner = function(e) {
+            setBannerState('maximized');
+            e.preventDefault();
+            return false;
+        }
+
+        const openDialogAnimated = function(e) {
+            $(this).attr('disabled', true);
+            Loader.top.show();
+            window.setTimeout(function(){
+                Loader.top.hide();
+                setBannerState('coupon-activated');
+            }, 1300);
+            window.setTimeout(function(){
+                $dialog.fadeIn(200);
+                $('body').css('overflow', 'hidden');
+            }, 1500);
+            e.preventDefault();
+            return false;
+        }
+
+        const openDialog = function(e) {
+            $dialog.fadeIn(200);
+            $('body').css('overflow', 'hidden');
+            if (e) {
+                e.preventDefault();
+            }
+            return false;
+        }
+
+        const closeDialog = function(e) {
+            $dialog.fadeOut(200, function() {
+                $('body').css('overflow', '');
+                $('a.coupon-activated-button', $banner).effect('highlight', 2800);
+            });
+            if (e) {
+                e.preventDefault();
+                return false;
+            }
+        }
+
+        const Banner = function() {
+            $banner.addClass(getBannerState());
+            $banner.show();
+            $('a.close-button', $banner).on('click', minimizeBanner);
+            $('a.minimized-button', $banner).on('click', maximizeBanner);
+
+            $('a.cta', $banner).on('click', openDialogAnimated);
+            $('a.coupon-activated-button', $banner).on('click', openDialog);
+
+            $dialog.find('.close-button').on('click', closeDialog);
+            $dialog.find('.dimming').on('click', closeDialog);
+
+            $(document).on('keydown.posCarnaval2026Dialog', function(e) {
+                if (e.key === 'Escape' && $dialog.is(':visible')) {
+                    closeDialog();
+                }
+            });
+        };
+
+        const showDialogIfDefaultPaymentURLDetected = function() {
+            const paymentURL = "https://app.organizze.com.br/4377661/planos/conectado/pagamentos/novo?p=conectado-anual";
+            if (window.location.href === paymentURL) {
+                window.setTimeout(function() {
+                    openDialog();
+                }, 600);
+            }
+        }
+
+        Banner();
+
+        showDialogIfDefaultPaymentURLDetected();
+    });
+</script>
+
+
+
+
+<script type='text/javascript'>
+    $(function () {
+
+        var SettingsMenuMore = function () {
+            var $scope = $('*[zze-scope=settings-menu-more]:first'),
+                $link = $('a:first', $scope),
+                $ul = $('ul:first', $scope);
+
+                $link.on('click.SettingsMenuMore', function(e) {
+                    e.preventDefault();
+                    $ul.toggle();
+                    $link.parent().toggleClass('active');
+                    return false;
+                });
+        };
+
+        new SettingsMenuMore();
+
+
+        var MainNav = function () {
+            var $mainNav = $('#main-nav');
+
+            $('a', $mainNav).on('click', function(e) {
+                let $li = $(this).parent();
+                $('li.active', $li.parent()).removeClass('active');
+                $li.addClass('active');
+                return true;
+            });
+        };
+
+        new MainNav();
+
+
+        var MobileDrawer = function () {
+            var $body = $('body');
+
+            function open() {
+                $body.addClass('drawer-open');
+            }
+
+            function close() {
+                $body.removeClass('drawer-open');
+            }
+
+            function ensureDrawerClosed() {
+                $body.removeClass('drawer-open');
+            }
+
+            $(document).off('click.mobileDrawer', '#mobile-menu-toggle').on('click.mobileDrawer', '#mobile-menu-toggle', function (e) {
+                e.preventDefault();
+                $body.hasClass('drawer-open') ? close() : open();
+            });
+
+            $(document).off('click.mobileDrawer', '#mobile-drawer-backdrop').on('click.mobileDrawer', '#mobile-drawer-backdrop', function (e) {
+                e.preventDefault();
+                close();
+            });
+
+            $(document).off('click.mobileDrawer', '#mobile-drawer a').on('click.mobileDrawer', '#mobile-drawer a', function () {
+                close();
+                return true;
+            });
+
+            $(document).off('keyup.mobileDrawer').on('keyup.mobileDrawer', function (e) {
+                if (e.keyCode === 27 && $body.hasClass('drawer-open')) {
+                    close();
+                }
+            });
+
+            $(document).off('page:load.mobileDrawer').on('page:load.mobileDrawer', ensureDrawerClosed);
+        };
+
+        new MobileDrawer();
+
+
+        var NavActiveState = function () {
+            var $mainNavItems = $('#main-nav > ul > li, .drawer-nav-links > li');
+            var $settingsItems = $('.drawer-settings-links > li, .drawer-secondary-links > li');
+            var $accountItems = $('.drawer-account-links > li');
+
+            var sectionMap = {
+                'settings accounts':          'a[href$="/contas"]',
+                'settings credit_cards':      'a[href*="cartoes-de-credito"]',
+                'settings transactions':      'a[href*="preferencias"]',
+                'plano-e-faturamento':        'a[href*="plano-e-faturamento"]',
+                'settings alerts':            'a[href*="alertas"]'
+            };
+
+            $(document).on('page:load', function () {
+                var section = document.body.getAttribute('data-section') || '';
+
+                $mainNavItems.removeClass('active');
+                $settingsItems.removeClass('active');
+                $accountItems.removeClass('active');
+
+                if (/reports/.test(section)) {
+                    $mainNavItems.has('a[href*="relatorios"]').addClass('active');
+                }
+
+                if (/my-account/.test(section)) {
+                    $accountItems.has('a[href*="minha-conta"]').addClass('active');
+                }
+
+                for (var key in sectionMap) {
+                    if (section.indexOf(key) !== -1) {
+                        $settingsItems.has(sectionMap[key]).addClass('active');
+                        break;
+                    }
+                }
+            });
+        };
+
+        new NavActiveState();
+
+    });
+</script>
+
+
+        <section class="content">
+            <div class="container-legacy main-container" id="content">
+                <div class="title-bar">
+	<img src="/assets/application/plans/plans-logo-e35056b428d6bb0e83ac39ef930b00f2e37e514e6588181d1cf974b874d4c191.png" />
+ 	<h1>
+		Sua assinatura venceu. <br/>Confira nossos planos e escolha a melhor forma <br/>de cuidar do seu dinheiro.
+	</h1>
+</div>
+
+<div class="content-bar" id="plans-content">
+
+	<div class="switch">
+	<switch class="on"></switch>
+	Anual
+</div>
+
+
+<ul class="plans-list" id="plans-list">
+
+	<li class="manual anual">
+
+		<div>
+			<strong>Plano Manual</strong>
+
+			<p>
+	            Para quem gosta de acompanhar cada detalhe e lançar manualmente seus lançamentos.
+			</p>
+
+			<a href="" class="features">
+				<span>Ver recursos</span>
+				<span class="b">Ocultar recursos</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
+					<path d="M15 1.01442L8 8.01442L1 1.01442" stroke="#129E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</a>
+
+			<ul>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M12.388 12.9011C12.2663 13.0227 12.1063 13.0844 11.9463 13.0844C11.7855 13.0844 11.6263 13.0227 11.5038 12.9011L9.99884 11.3952L8.49801 12.8961C8.25384 13.1402 7.85801 13.1402 7.61384 12.8961C7.37051 12.6519 7.37051 12.2569 7.61384 12.0127L9.11467 10.5119L7.61301 9.0094C7.36884 8.76523 7.36884 8.37023 7.61301 8.12607C7.85717 7.8819 8.25217 7.8819 8.49634 8.12607L9.99801 9.62773L11.4997 8.1269C11.7438 7.88273 12.1388 7.88273 12.383 8.1269C12.6272 8.37023 12.6272 8.76607 12.383 9.01023L10.8822 10.5119L12.388 12.0169C12.6322 12.2611 12.6322 12.6569 12.388 12.9011ZM9.99967 2.59773C5.63467 2.59773 2.08301 6.14857 2.08301 10.5144C2.08301 14.8794 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8794 17.9163 10.5144C17.9163 6.14857 14.3647 2.59773 9.99967 2.59773Z" fill="#D72638"/>
+</svg>
+					Sem Conexão Bancária
+				</li>
+				<li style="padding-right: 2px;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					Controle manual de contas e cartões
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					Criação de categorias e subcategorias
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					Limite de gastos ilimitados
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					Alerta de contas a pagar
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					Relatórios completos e fáceis de entender
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<pricing class="mensal">
+				<big>R$ 35<small>/mês</small></big>
+			</pricing>
+
+			<pricing class="anual">
+				<installments>12x de</installments>
+				<big>R$ 19,90 <small>/mês</small></big>
+				<full-price>ou R$199,90 à vista <off>15% OFF</off></full-price>
+			</pricing>
+
+			<span class="trial">
+				7 dias de teste grátis
+			</span>
+
+			<a href="/4377661/planos/manual/pagamentos/novo?p=manual-mensal" class="cta mensal"></a>
+
+			<a href="/4377661/planos/manual/pagamentos/novo?p=manual-anual" class="cta anual"></a>
+		</div>
+	</li>
+
+<li class="conectado most-popular anual">
+        <span class="heading-tag">Mais popular</span>
+
+        <div>
+			<strong>Plano Conectado</strong>
+
+			<p>
+				Ideal para quem quer agilidade ao organizar suas finanças e tem poucas contas e cartões.
+			</p>
+
+			<a href="" class="features">
+				<span>Ver recursos</span>
+				<span class="b">Ocultar recursos</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
+					<path d="M15 1.01442L8 8.01442L1 1.01442" stroke="#129E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</a>
+
+			<ul>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Tudo do <strong>Plano Manual</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Até <strong>3 contas/cartões conectados</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Importe várias transações com <strong>1 clique</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span><strong>1 atualização automática</strong> de transações por dia</span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span><strong>2 atualizações</strong> extras de transações por dia</span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Conexão com contas <strong>Pessoa Física</strong></span>
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<pricing class="mensal">
+				<big>R$ 45<small>/mês</small></big>
+			</pricing>
+
+			<pricing class="anual">
+				<installments>12x de</installments>
+				<big>R$ 39,90<small>/mês</small></big>
+				<full-price>ou R$399,90 à vista <off>15% OFF</off></full-price>
+			</pricing>
+			
+			<span class="trial">
+				sem teste grátis
+			</span>
+			
+			<a href="/4377661/planos/conectado/pagamentos/novo?p=conectado-mensal" class="cta mensal"></a>
+			<a href="/4377661/planos/conectado/pagamentos/novo?p=conectado-anual" class="cta anual"></a>
+		</div>
+	</li>
+
+	<li class="conectado-plus anual">
+		<div>
+			<strong>Plano Conectado Plus</strong>
+
+			<p>
+				Feito para quem precisa gerenciar mais de 3 contas e cartões de forma automática.
+			</p>
+
+			<a href="" class="features">
+				<span>Ver recursos</span>
+				<span class="b">Ocultar recursos</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
+					<path d="M15 1.01442L8 8.01442L1 1.01442" stroke="#129E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</a>
+
+			<ul>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Tudo do <strong>Plano Manual</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Tudo do <strong>Plano Conectado</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Até <strong>10 contas/cartões conectados</strong></span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span><strong>4 atualizações extras</strong> de transações por dia</span>
+				</li>
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3272 9.03275L9.47884 12.8811C9.35634 13.0036 9.19717 13.0644 9.03717 13.0644C8.87634 13.0644 8.71717 13.0036 8.59467 12.8811L6.67051 10.9569C6.42634 10.7127 6.42634 10.3169 6.67051 10.0727C6.91467 9.82858 7.30967 9.82858 7.55384 10.0727L9.03717 11.5552L12.443 8.14858C12.6872 7.90441 13.083 7.90441 13.3272 8.14858C13.5713 8.39275 13.5713 8.78858 13.3272 9.03275ZM9.99967 2.59775C5.63467 2.59775 2.08301 6.14941 2.08301 10.5144C2.08301 14.8802 5.63467 18.4311 9.99967 18.4311C14.3647 18.4311 17.9163 14.8802 17.9163 10.5144C17.9163 6.14941 14.3647 2.59775 9.99967 2.59775Z" fill="#858782"/>
+</svg>
+					<span>Conexão com contas <strong>Pessoa Física</strong> e <strong>Pessoa Jurídica</strong></span>
+				</li>
+			</ul>
+		</div>
+
+		<div>
+			<pricing class="mensal">
+				<big>R$ 69<small>/mês</small></big>
+			</pricing>
+
+			<pricing class="anual">
+				<installments>12x de</installments>
+				<big>R$ 59,90<small>/mês</small></big>
+				<full-price>ou R$599,90 à vista <off>15% OFF</off></full-price>
+			</pricing>
+
+			<span class="trial">
+				sem teste grátis
+			</span>
+
+			<a href="/4377661/planos/conectado-plus/pagamentos/novo?p=conectado-plus-mensal" class="cta mensal"></a>
+			<a href="/4377661/planos/conectado-plus/pagamentos/novo?p=conectado-plus-anual" class="cta anual"></a>
+		</div>
+	</li>
+</ul>
+
+<script>
+	$(function(){
+		const $scope =$('#plans-content');
+
+		$('#plans-list > li a.features', $scope).on('click', function(e) {
+			$(this).toggleClass('open');
+			e.preventDefault();
+			return false;
+		});
+
+		const Switch = function() {
+		    const $switch = $('switch', $scope);
+		    let isOn = $switch.hasClass('on');
+
+			$switch.on('click', function(e) {
+				$switch.toggleClass('on');
+				$('#plans-list > li', $scope).toggleClass('anual');
+				window.setTimeout(function(){
+					$('#plans-list > li pricing:visible', $scope).effect('highlight', 600);
+				}, 100);
+			});
+		}
+
+		Switch();
+	});
+</script>
+
+	<div class="reviews">
+		<h2>
+			Opinião de quem realmente importa
+		</h2>
+
+		<p>
+			Depoimentos reais de pessoas que transformaram sua gestão financeira com o Organizze.
+		</p>
+
+		<ul>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					Muito intuitivo. Achei fácil a importação, dados corretos da conta bancária. Até o momento, é interessante!
+				</p>
+				<strong>Gustavo Francisco</strong>
+			</li>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					Muito fácil, gostei muito dessa integração, espero que adicionem logo essa funcionalidade, e outros bancos que uso
+				</p>
+				<strong>Letícia Oliveira</strong>
+			</li>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					Muito fácil, intuitivo, personalizável e traz bastante informação útil do banco e agrega nos comentários das transações.
+				</p>
+				<strong>Eloi Araújo</strong>
+			</li>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					Agora, consigo controlar minhas finanças para tomar as melhores decisões. O app é super fácil de utilizar e lindo, e está sempre evoluindo.
+				</p>
+				<strong>Taís Rabello</strong>
+			</li>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					O aplicativo é intuitivo, a sincronização entre mobile e web é rápida. O app tem me ajudado imensamente a organizar minha vida financeira.
+				</p>
+				<strong>Leandro costa</strong>
+			</li>
+			<li>
+				<svg width="136" height="24" viewBox="0 0 136 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M19.6985 9.11609L15.7625 8.54873C15.5398 8.52089 15.3459 8.38169 15.2432 8.17625L13.4883 4.66265C13.4854 4.65881 13.4835 4.65497 13.4816 4.65017C13.3203 4.35161 13.0697 4.10105 12.7673 3.94073C11.9542 3.52697 10.9453 3.84569 10.5161 4.66265L8.75937 8.17529C8.65569 8.38073 8.45985 8.52089 8.22849 8.54969L4.30113 9.11609C3.92097 9.17273 3.58785 9.34169 3.34017 9.60279C3.03489 9.91863 2.87169 10.3353 2.88033 10.775C2.88897 11.2146 3.06849 11.6226 3.38337 11.9241L6.23169 14.6658C6.39009 14.8137 6.46401 15.0393 6.42561 15.2591L5.75265 19.1164C5.69505 19.4764 5.75649 19.8479 5.92353 20.1551C6.13281 20.5487 6.48129 20.8358 6.90561 20.9663C7.06593 21.0153 7.23009 21.0393 7.39233 21.0393C7.65921 21.0393 7.92321 20.974 8.16225 20.8463L11.6758 19.03C11.8793 18.9215 12.1241 18.9215 12.3325 19.0319L15.8288 20.8405C16.1427 21.0133 16.5008 21.0758 16.8781 21.0182C17.7795 20.8703 18.3968 20.0159 18.2499 19.1087L17.5779 15.2591C17.5385 15.0325 17.6115 14.8108 17.7776 14.6514L20.6173 11.9241C20.8832 11.6677 21.0579 11.325 21.1059 10.9593C21.224 10.0645 20.5913 9.23705 19.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M47.6985 9.11609L43.7625 8.54873C43.5398 8.52089 43.3459 8.38169 43.2432 8.17625L41.4883 4.66265C41.4854 4.65881 41.4835 4.65497 41.4816 4.65017C41.3203 4.35161 41.0697 4.10105 40.7673 3.94073C39.9542 3.52697 38.9453 3.84569 38.5161 4.66265L36.7594 8.17529C36.6557 8.38073 36.4599 8.52089 36.2285 8.54969L32.3011 9.11609C31.921 9.17273 31.5879 9.34169 31.3402 9.60279C31.0349 9.91863 30.8717 10.3353 30.8803 10.775C30.889 11.2146 31.0685 11.6226 31.3834 11.9241L34.2317 14.6658C34.3901 14.8137 34.464 15.0393 34.4256 15.2591L33.7527 19.1164C33.6951 19.4764 33.7565 19.8479 33.9235 20.1551C34.1328 20.5487 34.4813 20.8358 34.9056 20.9663C35.0659 21.0153 35.2301 21.0393 35.3923 21.0393C35.6592 21.0393 35.9232 20.974 36.1623 20.8463L39.6758 19.03C39.8793 18.9215 40.1241 18.9215 40.3325 19.0319L43.8288 20.8405C44.1427 21.0133 44.5008 21.0758 44.8781 21.0182C45.7795 20.8703 46.3968 20.0159 46.2499 19.1087L45.5779 15.2591C45.5385 15.0325 45.6115 14.8108 45.7776 14.6514L48.6173 11.9241C48.8832 11.6677 49.0579 11.325 49.1059 10.9593C49.224 10.0645 48.5913 9.23705 47.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M75.6985 9.11609L71.7625 8.54873C71.5398 8.52089 71.3459 8.38169 71.2432 8.17625L69.4883 4.66265C69.4854 4.65881 69.4835 4.65497 69.4816 4.65017C69.3203 4.35161 69.0697 4.10105 68.7673 3.94073C67.9542 3.52697 66.9453 3.84569 66.5161 4.66265L64.7594 8.17529C64.6557 8.38073 64.4599 8.52089 64.2285 8.54969L60.3011 9.11609C59.921 9.17273 59.5879 9.34169 59.3402 9.60279C59.0349 9.91863 58.8717 10.3353 58.8803 10.775C58.889 11.2146 59.0685 11.6226 59.3834 11.9241L62.2317 14.6658C62.3901 14.8137 62.464 15.0393 62.4256 15.2591L61.7527 19.1164C61.6951 19.4764 61.7565 19.8479 61.9235 20.1551C62.1328 20.5487 62.4813 20.8358 62.9056 20.9663C63.0659 21.0153 63.2301 21.0393 63.3923 21.0393C63.6592 21.0393 63.9232 20.974 64.1623 20.8463L67.6758 19.03C67.8793 18.9215 68.1241 18.9215 68.3325 19.0319L71.8288 20.8405C72.1427 21.0133 72.5008 21.0758 72.8781 21.0182C73.7795 20.8703 74.3968 20.0159 74.2499 19.1087L73.5779 15.2591C73.5385 15.0325 73.6115 14.8108 73.7776 14.6514L76.6173 11.9241C76.8832 11.6677 77.0579 11.325 77.1059 10.9593C77.224 10.0645 76.5913 9.23705 75.6985 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M103.699 9.11609L99.7625 8.54873C99.5398 8.52089 99.3459 8.38169 99.2432 8.17625L97.4883 4.66265C97.4854 4.65881 97.4835 4.65497 97.4816 4.65017C97.3203 4.35161 97.0697 4.10105 96.7673 3.94073C95.9542 3.52697 94.9453 3.84569 94.5161 4.66265L92.7594 8.17529C92.6557 8.38073 92.4599 8.52089 92.2285 8.54969L88.3011 9.11609C87.921 9.17273 87.5879 9.34169 87.3402 9.60279C87.0349 9.91863 86.8717 10.3353 86.8803 10.775C86.889 11.2146 87.0685 11.6226 87.3834 11.9241L90.2317 14.6658C90.3901 14.8137 90.464 15.0393 90.4256 15.2591L89.7527 19.1164C89.6951 19.4764 89.7565 19.8479 89.9235 20.1551C90.1328 20.5487 90.4813 20.8358 90.9056 20.9663C91.0659 21.0153 91.2301 21.0393 91.3923 21.0393C91.6592 21.0393 91.9232 20.974 92.1623 20.8463L95.6758 19.03C95.8793 18.9215 96.1241 18.9215 96.3325 19.0319L99.8288 20.8405C100.143 21.0133 100.501 21.0758 100.878 21.0182C101.779 20.8703 102.397 20.0159 102.25 19.1087L101.578 15.2591C101.539 15.0325 101.611 14.8108 101.778 14.6514L104.617 11.9241C104.883 11.6677 105.058 11.325 105.106 10.9593C105.224 10.0645 104.591 9.23705 103.699 9.11609Z" fill="#F59638"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M131.699 9.11609L127.763 8.54873C127.54 8.52089 127.346 8.38169 127.243 8.17625L125.488 4.66265C125.485 4.65881 125.483 4.65497 125.482 4.65017C125.32 4.35161 125.07 4.10105 124.767 3.94073C123.954 3.52697 122.945 3.84569 122.516 4.66265L120.759 8.17529C120.656 8.38073 120.46 8.52089 120.228 8.54969L116.301 9.11609C115.921 9.17273 115.588 9.34169 115.34 9.60279C115.035 9.91863 114.872 10.3353 114.88 10.775C114.889 11.2146 115.068 11.6226 115.383 11.9241L118.232 14.6658C118.39 14.8137 118.464 15.0393 118.426 15.2591L117.753 19.1164C117.695 19.4764 117.756 19.8479 117.924 20.1551C118.133 20.5487 118.481 20.8358 118.906 20.9663C119.066 21.0153 119.23 21.0393 119.392 21.0393C119.659 21.0393 119.923 20.974 120.162 20.8463L123.676 19.03C123.879 18.9215 124.124 18.9215 124.332 19.0319L127.829 20.8405C128.143 21.0133 128.501 21.0758 128.878 21.0182C129.779 20.8703 130.397 20.0159 130.25 19.1087L129.578 15.2591C129.539 15.0325 129.611 14.8108 129.778 14.6514L132.617 11.9241C132.883 11.6677 133.058 11.325 133.106 10.9593C133.224 10.0645 132.591 9.23705 131.699 9.11609Z" fill="#F59638"/>
+</svg>
+
+				<p>
+					O Organizze tem me surpreendido pela praticidade e consistência. Além do app, a versão web ajuda bastante.
+				</p>
+				<strong>Carlos Diego</strong>
+			</li>
+		</ul>
+	</div>
+
+	<div class="faq">
+		<h2>
+			Principais dúvidas
+		</h2>
+
+		<ul id="faq-list">
+			<li>
+				<h4>
+					Como funciona a conexão com bancos no Plano Conectado?
+				</h4>
+
+				<p>
+					A conexão com os bancos é feita de forma 100% segura através do <a href="https://openfinancebrasil.org.br/" target="_blank">OpenFinance</a>. Todo processo de autorização é feito no internet banking ou aplicativo do seu Banco. Em nenhum momento você irá nos informar sua senha. A permissão que o Organizze trabalha para conectar no OpenFinance é apenas de leitura, para buscar os seus lançamentos.
+				</p>
+			</li>
+
+				<li>
+					<h4>
+						Por que  os planos conectados não tem Teste Grátis?
+					</h4>
+
+					<p>
+						No momento optamos por não disponibilizar o teste grátis nos planos conectados. Além dos <a href="https://openfinancebrasil.org.br/2022/11/17/custos-do-open-finance/" target="_blank">custos do open finance</a>, também repassamos um valor mensal para a <a href="https://belvo.com/pt-br/" target="_blank">Belvo</a>. A Belvo é a parceira do Organizze que nos permite conectar ao OpenFinance com uma camada extra de segurança.
+					</p>
+				</li>
+
+			<li>
+				<h4>
+					É possível compartilhar o acesso à minha conta Organizze com outra pessoa?
+				</h4>
+
+				<p>
+					Sim. Apesar de não termos um recurso específico para isso, basta você logar em qualquer dispositivo que a sua conta será disponibilizada em quantos dispositivos  desejar. Por exemplo, seu cônjuge pode acessar no celular dele(a), e você no seu, unificando as informações financeiras na mesma conta Organizze.
+				</p>
+			</li>
+
+			<li>
+				<h4>
+					Qual o intervalo das atualizações automáticas no Plano Conectado?
+				</h4>
+
+				<p>
+					As atualizações são feitas a cada 6 horas. Você será notificado se possuir novos lançamentos para importá-los automaticamente.
+				</p>
+			</li>
+
+			<li>
+				<h4>
+					O Organizze é multiplataforma?
+				</h4>
+
+				<p>
+					Sim. Você pode acessar sua conta de qualquer celular, tablet ou computador apenas logando na sua conta.
+				</p>
+			</li>
+
+			<li>
+				<h4>
+					Posso criar uma conta manual tradicional com o Plano Conectado?
+				</h4>
+
+				<p>
+					Sim. Para fazer lançamentos da forma tradicional, adicionados por você diretamente, basta criar uma conta ou cartão manual.
+				</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="contact-box">
+		<a href="https://organizzehelp.zendesk.com/hc/pt-br" target="_blank">Ainda com dúvidas? Acesse nossa Central de Ajuda</a>
+	</div>
+
+		<a href="/4377661/transactions/export" class="export-link">
+			<i class="icon-file-download"></i> Exportar meus dados para arquivo
+		</a>
+</div>
+
+<script>
+	$(function(){
+		const $scope =$('#plans-content');
+
+		$('#faq-list > li > a', $scope).on('click', function(e) {
+			$(this).parent().toggleClass('actived');
+			e.preventDefault();
+			return false;
+		});
+	});
+</script>
+            </div>
+        </section>
+
+        <footer class="zze-layout_footer">
+    <div class="zze-help-widget" id="zze-help-widget">
+
+    <a href="">
+        <svg class="open" viewBox="0 0 24 24" fill="#000"><path d="M6,13.5a9,9,0,0,0,.76,3.63,6.45,6.45,0,0,1-.86-.35l-2.65.69a1.18,1.18,0,0,1-.27,0,1,1,0,0,1-.7-.29,1,1,0,0,1-.25-1l.69-2.66A6.8,6.8,0,0,1,2,10.5a7,7,0,0,1,7-7,7.11,7.11,0,0,1,4,1.23A9,9,0,0,0,6,13.5Z" fill="#000"></path><path d="M22,19.25a1,1,0,0,1-.26,1,1,1,0,0,1-.7.29,1.31,1.31,0,0,1-.27,0l-2.64-.69A7,7,0,0,1,15,20.5a7,7,0,0,1-5.25-2.38c-.18-.2-.35-.42-.52-.65A6.91,6.91,0,0,1,8,13.5a7,7,0,0,1,6.73-7H15a7,7,0,0,1,7,7,6.92,6.92,0,0,1-.73,3.09Z" fill="#000"></path></svg>
+        <svg class="close" viewBox="0 0 192.62 192.62" fill="#000"><defs><style>.cls-1{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:11.00px;}</style></defs><line class="cls-1" x1="41.5" y1="40.83" x2="156.28" y2="155.3"></line><line class="cls-1" x1="41.5" y1="155.3" x2="156.28" y2="40.83"></line></svg>
+    </a>
+
+    <div>
+        <ul>
+            <li class="mail">
+                <a href="" data-url="/4377661/feedback/new" data-popup="true">
+                    <svg viewBox="0 0 192 192" fill="#000"><path d="M177.27,38.77,112.41,92.89a10,10,0,0,1-12.81,0L34.72,38.75" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><path d="M31.42,56.53V46a10,10,0,0,1,10-10H147.85" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><path d="M49.84,156H41.42a10,10,0,0,1-10-10V132.63" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><path d="M147.85,36h22.74a10,10,0,0,1,10,10V146a10,10,0,0,1-10,10H49.84" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><line x1="19.36" y1="94.44" x2="51.59" y2="94.44" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></line><line x1="11.41" y1="76.57" x2="26.81" y2="76.57" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></line><line x1="12.11" y1="112.31" x2="26.75" y2="112.31" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></line></svg>
+                    <span>Deixe uma mensagem</span>
+                </a>
+            </li>
+
+
+            <li class="whatsapp">
+                        <a href="" onClick='window.alert("Nosso horário de atendimento via WhatsApp é das <strong>8h às 12h</strong> e das <strong>13h às 17h</strong>, de segunda a sexta-feira, exceto feriados."); return false;'>
+                            <svg viewBox="0 0 24 24"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><path class="cls-1" d="M18.29,5.67A8.84,8.84,0,0,0,4.38,16.34L3.12,20.92l4.69-1.23A8.74,8.74,0,0,0,12,20.77h0a8.85,8.85,0,0,0,6.25-15.1ZM12,19.27h0a7.35,7.35,0,0,1-3.74-1L8,18.09l-2.79.73L6,16.11l-.18-.28A7.35,7.35,0,1,1,12,19.27Zm4-5.5c-.22-.11-1.31-.64-1.51-.72s-.35-.11-.5.11-.57.72-.7.87-.26.16-.48.05A6,6,0,0,1,11.11,13a6.73,6.73,0,0,1-1.23-1.53A.32.32,0,0,1,10,11c.1-.1.23-.26.34-.39a1.72,1.72,0,0,0,.22-.37.44.44,0,0,0,0-.39c-.06-.11-.5-1.19-.68-1.64s-.36-.37-.5-.37H8.91a.8.8,0,0,0-.59.27A2.52,2.52,0,0,0,7.54,10a4.31,4.31,0,0,0,.91,2.28,9.79,9.79,0,0,0,3.77,3.34,11.76,11.76,0,0,0,1.26.46,3,3,0,0,0,1.39.09,2.23,2.23,0,0,0,1.49-1A1.75,1.75,0,0,0,16.49,14c0-.09-.2-.15-.42-.26Z"></path></svg>
+                            <span>Falar por WhatsApp</span>
+                        </a>
+            </li>
+
+            <li class="zendesk">
+                <a href="https://organizzehelp.zendesk.com/hc/pt-br" target="_blank">
+                    <svg viewBox="0 0 192 192" fill="#000"><path d="M39.83,124v4a32,32,0,0,0,32,32h12" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><rect x="83.83" y="152" width="24" height="16" rx="8" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></rect><path d="M39.83,84V80a55.73,55.73,0,0,1,7.35-27.76l.67-1.07a61.3,61.3,0,0,1,14.46-16h0A55.79,55.79,0,0,1,96.32,24c30.88.27,55.51,26,55.51,56.88V84" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><path d="M33.83,84h14a0,0,0,0,1,0,0v40a0,0,0,0,1,0,0h-14a10,10,0,0,1-10-10V94A10,10,0,0,1,33.83,84Z" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path><path d="M153.83,84h14a0,0,0,0,1,0,0v40a0,0,0,0,1,0,0h-14a10,10,0,0,1-10-10V94a10,10,0,0,1,10-10Z" transform="translate(311.65 208) rotate(-180)" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:7.00px" fill="#000"></path></svg>
+                    <span>Central de ajuda</span>
+                </a>
+            </li>
+
+            <li class="start">
+                <a href="https://ajuda.organizze.com.br/hc/pt-br/articles/7225843037715-Come%C3%A7ando-a-usar-o-Organizze-na-Web" target="_blank">
+                    <svg id="Play" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.26451 7.0464C5.91604 10.1434 5.90741 13.4682 6.26521 16.9484C6.39146 17.9451 6.86171 18.6126 7.47257 18.9563C8.08835 19.3028 8.96281 19.3848 10.0124 18.9718C12.7823 17.8553 15.3039 16.2115 17.3205 14.3855C18.1485 13.6235 18.5038 12.7725 18.4996 11.9792C18.4954 11.1842 18.1295 10.3471 17.3226 9.6164L17.3195 9.61362L17.3195 9.61361C15.1932 7.66641 12.7448 6.14739 10.0058 5.02552L9.99894 5.02273L9.99896 5.02269C9.07736 4.6346 8.20365 4.68335 7.5512 5.02581C6.91115 5.36176 6.4001 6.02337 6.26451 7.0464ZM10.5776 3.63879C9.30124 3.10238 7.95438 3.12012 6.85408 3.69765C5.74171 4.2815 4.96804 5.39285 4.77635 6.8582L4.77623 6.85819L4.77473 6.8715C4.41224 10.0881 4.40489 13.5262 4.77395 17.1104L4.77577 17.1263C4.94997 18.5234 5.64738 19.6504 6.73696 20.2635C7.82268 20.8745 9.18278 20.9111 10.5651 20.3663L10.5651 20.3663L10.5703 20.3642C13.5164 19.1771 16.1891 17.4341 18.3295 15.4954L18.3296 15.4954L18.3336 15.4917C19.4242 14.4891 20.0063 13.2509 19.9996 11.9713C19.9928 10.6935 19.3993 9.47408 18.3311 8.50603C16.0666 6.43266 13.4667 4.82254 10.5776 3.63879Z" fill="#d4cfcf"></path>
+                    </svg>
+                    <span>Começando no Organizze</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        let $scope = $('#zze-help-widget');
+
+        const calloutButton = function() {
+            let $link = $('> a:first', $scope),
+                $div = $('> div:first', $scope);
+
+            const toggle = function() {
+                if ($div.is(':visible')){
+                    $div.removeClass('opened');
+                    $link.removeClass('opened');
+                } else {
+                    $div.addClass('opened');
+                    $link.addClass('opened');
+                }
+            }
+
+            $link.on('click', function(e) {
+                toggle();
+                e.preventDefault();
+                return false;
+            });
+        }
+
+        calloutButton();
+    });
+</script>
+
+    <div class="container"></div>
+</footer>
+
+    
+
+
+
+
+<!-- Tracking code for analytics -->
+<script>
+		Tracking.Clevertap.onUserLogin({"Name":"Limaprata Rep Auto","Email":"limaprata_oseias@hotmail.com","Identity":4377661,"User Created At":"2022-01-14 17:03:47 -0300","Created Platform":"WEB","Signup Provider":"FACEBOOK","MSG-email":true,"MSG-push":true,"MSG-sms":true,"MSG-whatsapp":true});
+
+	Tracking.Clevertap.userProfileUpdate({"Current PlanID":"manual","Current PlanTimeRange":"manual-anual","Current Plan":"MANUAL-ANUAL","Current Plan Status":"EXPIRED","Email Activated":true,"Conexoes Flagged":true});
+</script>
+
+
+            <script>
+                window.ContextSource = {"accounts":[{"id":5594917,"uuid":"d120d7657acfd2cc7e869d7fc0892fe27059f8f0","name":"Limaprata","institution_id":"default","color":"d5d5d5","archived":false,"automatic":false,"hide_balance":false,"isAccount":true,"position":0}],"credit_cards":[],"categories":[{"id":149924697,"uuid":"181351cf8f6302caba5fe7c74152541407ed3ede","name":"Acessorios","group_id":"ear_groceries","kind":"earnings","color":"8CDEC0","available":true,"default":false,"parent_uuid":"0863c6cf96ae6dc9148551d2ccf70a2ad30597e2","parent_id":102406390,"is_root":"false"},{"id":102406383,"uuid":"069970c8256b1410c0fc74f965f3c706b1bfefb1","name":"Alimentação","group_id":"food","kind":"expenses","color":"e274a8","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149977846,"uuid":"834519187034e4884bd5f8c6d66abe34ae7ddd76","name":"Aluguel","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":102406397,"uuid":"0768bcc0c2ee673e8d07cd42e41909b8a388fb47","name":"Assinaturas e serviços","group_id":"subscriptions_and_services","kind":"expenses","color":"c671e4","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406376,"uuid":"5ceb2fc20c745011e661c6d81277aa42cd27e57d","name":"Bares e restaurantes","group_id":"bars_and_restaurants","kind":"expenses","color":"626491","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924813,"uuid":"a09bf8c1642cea71ba330628057653bf64a620f9","name":"Cachê","group_id":"ear_audiotrack","kind":"earnings","color":"AFAFAF","available":true,"default":false,"parent_uuid":"e9cf91fe6c237fd54e422fb2fb37a743bd984d27","parent_id":149924784,"is_root":"false"},{"id":102406387,"uuid":"909bae12dc30daea216af421c94164ed8f92643d","name":"Casa","group_id":"home","kind":"expenses","color":"8193ff","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":150475654,"uuid":"b5e29c37643b07caa62f43379ace7466ae2ce3e7","name":"Chapas","group_id":"exp_landscape","kind":"expenses","color":"BA3709","available":true,"default":false,"parent_uuid":"d65d714eed2f94eb18e1b9b48e25fd40ff3c9ccc","parent_id":150475651,"is_root":"false"},{"id":149926221,"uuid":"c5e51695250acc5cc42dc3c760901cff71190a08","name":"Claro Controle","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":150728399,"uuid":"12cd2eb78c7b34962ad32c918baac30522cdd651","name":"Complementos","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":150728398,"uuid":"9346810a7d670b36fc4566a4282ff4da60661743","name":"Complementos Fun","group_id":"exp_landscape","kind":"expenses","color":"BA3709","available":true,"default":false,"parent_uuid":"d65d714eed2f94eb18e1b9b48e25fd40ff3c9ccc","parent_id":150475651,"is_root":"false"},{"id":102406396,"uuid":"306cf39c0154906df5a403fa1969c0945aea6146","name":"Compras","group_id":"shopping","kind":"expenses","color":"f67cff","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406393,"uuid":"480f4c3d7351412c3eac3d309071efe336029656","name":"Cuidados pessoais","group_id":"personal_care","kind":"expenses","color":"ff676d","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924119,"uuid":"4efd1901f3579418159955e46799cfd82866a367","name":"Cyborg","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":150475653,"uuid":"e3f3a06835aad3a0b44752f77a770ced513876c5","name":"Disco de corte","group_id":"exp_landscape","kind":"expenses","color":"BA3709","available":true,"default":false,"parent_uuid":"d65d714eed2f94eb18e1b9b48e25fd40ff3c9ccc","parent_id":150475651,"is_root":"false"},{"id":102406378,"uuid":"30cb7dde064d60aa14e4784db69d1fd572f8b21c","name":"Dívidas e empréstimos","group_id":"debts_and_loans","kind":"expenses","color":"ff6c6c","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406380,"uuid":"59aa675c6a4e1b4b6e9f79db64823371bdec17b4","name":"Educação","group_id":"education","kind":"expenses","color":"6470ba","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926180,"uuid":"08750e2581fdf8f39726af2cdd977f8e45833e9b","name":"Elektro","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":149924728,"uuid":"82a80aff944bc2009307f5169ee72568d454c791","name":"Emprestimos","group_id":"ear_loans","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":"a6b67c05f7a7473985050991bc8a6affde1a2940","parent_id":102406392,"is_root":"false"},{"id":149924814,"uuid":"7c27e2f355c93cb124d8c1ba8462d6de5d03cee7","name":"Equipamento","group_id":"ear_audiotrack","kind":"earnings","color":"AFAFAF","available":true,"default":false,"parent_uuid":"e9cf91fe6c237fd54e422fb2fb37a743bd984d27","parent_id":149924784,"is_root":"false"},{"id":149925603,"uuid":"07a8ae925b6ee2710d341df7ed36831e4f57518a","name":"Equipamentos e Manutençao","group_id":"exp_toolbox","kind":"expenses","color":"FBA52C","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406382,"uuid":"4198b44dd2ce7d84f96228aed0a87609e59c5223","name":"Família e filhos","group_id":"family_and_children","kind":"expenses","color":"a6e88b","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926475,"uuid":"a195ffdb8cdb646203039db82ae1a4b7a725c477","name":"Farmacia","group_id":"health","kind":"expenses","color":"72b4ff","available":true,"default":false,"parent_uuid":"c5c0bcd11de8675852bfa32816fa984cdfb032ec","parent_id":102406386,"is_root":"false"},{"id":149925633,"uuid":"fd081a4ec17b3c04f0525a945ebe3de3b1dc8385","name":"Ferramentas","group_id":"exp_toolbox","kind":"expenses","color":"FBA52C","available":true,"default":false,"parent_uuid":"07a8ae925b6ee2710d341df7ed36831e4f57518a","parent_id":149925603,"is_root":"false"},{"id":149925490,"uuid":"129e0dc8ce2dd7a17480b579b2f379629c854a96","name":"Fita","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":157872530,"uuid":"4abebf5ee6a7ce4c89472c8bb5e4ff3ba98f5baa","name":"Fusca","group_id":"transportation","kind":"expenses","color":"51bcff","available":true,"default":false,"parent_uuid":"88b406e201190224a47953414c2b139ed2be911e","parent_id":102406400,"is_root":"false"},{"id":149926439,"uuid":"e2cc205ec7bbe8deee132116be14be1a7c39f3a3","name":"Guloseimas","group_id":"food","kind":"expenses","color":"e274a8","available":true,"default":false,"parent_uuid":"069970c8256b1410c0fc74f965f3c706b1bfefb1","parent_id":102406383,"is_root":"false"},{"id":102406398,"uuid":"963ae14ff4647167344cf2a97e4f9249a92a562d","name":"Impostos e Taxas","group_id":"taxes","kind":"expenses","color":"ff977c","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":160982310,"uuid":"2158aecc98848626100790a3a43d88c08e208699","name":"Inadimplentes","group_id":"ear_loans","kind":"earnings","color":"AFAFAF","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406388,"uuid":"e1846d79e1c53ab7d21bf6992d6e284949287e7d","name":"Investimentos","group_id":"investments","kind":"expenses","color":"ff70a1","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926223,"uuid":"4d1e68da7e2fca2552d1a351bd798e23888be37e","name":"IPTU","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":102406381,"uuid":"18224a7671c661fc19880e540ee49490c386c8a6","name":"Lazer e hobbies","group_id":"exp_entertainment","kind":"expenses","color":"FF9696","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149925670,"uuid":"c02263dadf7230508916d87175a114cb1dbd66c4","name":"Limpeza","group_id":"exp_toolbox","kind":"expenses","color":"FBA52C","available":true,"default":false,"parent_uuid":"07a8ae925b6ee2710d341df7ed36831e4f57518a","parent_id":149925603,"is_root":"false"},{"id":149925518,"uuid":"c7d4b20889cf347c1d71ca5ad6f099793aa81373","name":"Lixas","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":149925930,"uuid":"32ad11bb67b9317a42914cb2dc7a30db9528f694","name":"Mão de Obra","group_id":"exp_toolbox","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":150475225,"uuid":"5363d085aedce806c63188bbe85ff7bb3167b2b4","name":"Massas","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":150475651,"uuid":"d65d714eed2f94eb18e1b9b48e25fd40ff3c9ccc","name":"Materiais de Funilaria","group_id":"exp_landscape","kind":"expenses","color":"BA3709","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406402,"uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","name":"Materiais de Pintura ","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926316,"uuid":"20f3a7d710075c842730b6fea4af3e2a183a7456","name":"MEI Simples Nacional","group_id":"taxes","kind":"expenses","color":"ff977c","available":true,"default":false,"parent_uuid":"963ae14ff4647167344cf2a97e4f9249a92a562d","parent_id":102406398,"is_root":"false"},{"id":102406385,"uuid":"e4413256a8bdf8eb679928b6e32093fcd7de0410","name":"Mercado","group_id":"groceries","kind":"expenses","color":"ff8a72","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924784,"uuid":"e9cf91fe6c237fd54e422fb2fb37a743bd984d27","name":"Musica","group_id":"ear_audiotrack","kind":"earnings","color":"AFAFAF","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":152568626,"uuid":"0f611554f091c3d58d0b41e51ee554ca9c9c2cac","name":"Música","group_id":"exp_entertainment","kind":"expenses","color":"FF9696","available":true,"default":false,"parent_uuid":"18224a7671c661fc19880e540ee49490c386c8a6","parent_id":102406381,"is_root":"false"},{"id":149926400,"uuid":"b3fd032761cb4446fe610a30f22f51d06e7b98d4","name":"Notas","group_id":"taxes","kind":"expenses","color":"ff977c","available":true,"default":false,"parent_uuid":"963ae14ff4647167344cf2a97e4f9249a92a562d","parent_id":102406398,"is_root":"false"},{"id":149992473,"uuid":"e39b25eae1b041593df80a22b5641272d6edff06","name":"Orçamentos","group_id":"ear_people","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406392,"uuid":"a6b67c05f7a7473985050991bc8a6affde1a2940","name":"Outras receitas","group_id":"ear_loans","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149925754,"uuid":"8812526f-e5f9-416d-af2c-30a48deb4942","name":"Outras receitas","group_id":"other_earnings","kind":"earnings","color":"2bdca9","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406391,"uuid":"82a67b2789d6f141c511bc91f7e0f5031ece42bc","name":"Outros","group_id":"other","kind":"expenses","color":"b3b3b3","available":true,"default":true,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406389,"uuid":"f6e35238cb5115c7d3fb311a27ddad999051a348","name":"Pagamento de fatura","group_id":"invoice_payment","kind":"none","color":"b3b3b3","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":150342270,"uuid":"39c1adfc1bcd3dbd9c7db248972317eb9a355f13","name":"Peças Clientes","group_id":"exp_basketball","kind":"expenses","color":"37CCA2","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926476,"uuid":"52d21c1f253e8a2aac2c4391df330a68b57e7a1a","name":"Perfumes","group_id":"health","kind":"expenses","color":"72b4ff","available":true,"default":false,"parent_uuid":"c5c0bcd11de8675852bfa32816fa984cdfb032ec","parent_id":102406386,"is_root":"false"},{"id":102406394,"uuid":"87ea550297d2e08697f2632e490e4c344381b6ef","name":"Pets","group_id":"pets","kind":"expenses","color":"ffbe57","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924379,"uuid":"76b0f719deb663c1329e8d8b7dbf84ad50ceeaaa","name":"Pintura Completa","group_id":"ear_palette","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":"dc37611a9518977d63f902c5bda5831fa602cc06","parent_id":102406379,"is_root":"false"},{"id":149924528,"uuid":"d4421812b900cbf153741a138d34d77b3b34f978","name":"Pintura de Peças","group_id":"ear_palette","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":"dc37611a9518977d63f902c5bda5831fa602cc06","parent_id":102406379,"is_root":"false"},{"id":149925663,"uuid":"59473268e5a72f7161c55f9906485b039cc66f2b","name":"Pistolas","group_id":"exp_toolbox","kind":"expenses","color":"FBA52C","available":true,"default":false,"parent_uuid":"07a8ae925b6ee2710d341df7ed36831e4f57518a","parent_id":149925603,"is_root":"false"},{"id":152851354,"uuid":"02aaf70f6e8971862b4e4b9f7b6e1f8081c69aab","name":"Polimento ","group_id":"exp_snowflake","kind":"expenses","color":"EF84B2","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924382,"uuid":"01d0053d592c92fa2dcb60ad51ccd12828c183d6","name":"Polimento","group_id":"ear_palette","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":"dc37611a9518977d63f902c5bda5831fa602cc06","parent_id":102406379,"is_root":"false"},{"id":102406384,"uuid":"85ca6f131b4e550d9af1f39afec8c4c1e95ed6e7","name":"Presentes e doações","group_id":"gifts_and_donations","kind":"expenses","color":"6b6fff","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149925486,"uuid":"19adee5ec6a9adcebc15ffec9c428bab11c4be6f","name":"Primmer","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":149924177,"uuid":"2f6647c27c64230e2c8a7bbcae4a1a75c911f241","name":"Remoçao de amassados","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":149925725,"uuid":"3169087cf496f5875f4372eacac7b21a3a29b21b","name":"Reparo de equipamento","group_id":"exp_toolbox","kind":"expenses","color":"FBA52C","available":true,"default":false,"parent_uuid":"07a8ae925b6ee2710d341df7ed36831e4f57518a","parent_id":149925603,"is_root":"false"},{"id":149924118,"uuid":"30821eff44e89ec566f6b7429b63807f864d2566","name":"Reparos de Carroceria","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":151158109,"uuid":"859eb5f827b1be50682b891030e563aa53092e40","name":"Reparos Rápidos","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":149926408,"uuid":"14c3f9b1c88766e2f93d49ffc300ef10dda014c7","name":"Restaurante","group_id":"food","kind":"expenses","color":"e274a8","available":true,"default":false,"parent_uuid":"069970c8256b1410c0fc74f965f3c706b1bfefb1","parent_id":102406383,"is_root":"false"},{"id":149924380,"uuid":"931f7f313dde290d6dbaafa3327c3f7344a3163f","name":"Retoques de Pintura","group_id":"ear_palette","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":"dc37611a9518977d63f902c5bda5831fa602cc06","parent_id":102406379,"is_root":"false"},{"id":102406377,"uuid":"cb09daee762f8f39ba0cde04f68f32e9671e58f3","name":"Roupas","group_id":"clothing","kind":"expenses","color":"ff8258","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926183,"uuid":"2e4e4b38c5b9c6e5608c47cbd9db782048940b7d","name":"Saecil","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":149925933,"uuid":"2be6106735a3ad63529af435f4257ddb5a80efac","name":"Salarios","group_id":"exp_toolbox","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"32ad11bb67b9317a42914cb2dc7a30db9528f694","parent_id":149925930,"is_root":"false"},{"id":102406386,"uuid":"c5c0bcd11de8675852bfa32816fa984cdfb032ec","name":"Saúde","group_id":"health","kind":"expenses","color":"72b4ff","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406395,"uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","name":"Serviços de Funilaria","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406379,"uuid":"dc37611a9518977d63f902c5bda5831fa602cc06","name":"Serviços de Pintura","group_id":"ear_palette","kind":"earnings","color":"64D877","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149926314,"uuid":"a53af100fe8fb3d2d05fa8b590379ab60a1760fc","name":"Sicoob","group_id":"taxes","kind":"expenses","color":"ff977c","available":true,"default":false,"parent_uuid":"963ae14ff4647167344cf2a97e4f9249a92a562d","parent_id":102406398,"is_root":"false"},{"id":149924206,"uuid":"1d98e0f606301eeb2268505ea2da9f0d3657a62b","name":"Soldas","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":150475682,"uuid":"069b9963b9e5795d378c36e22344fa3ed0fe7061","name":"Soldas e arames","group_id":"exp_landscape","kind":"expenses","color":"BA3709","available":true,"default":false,"parent_uuid":"d65d714eed2f94eb18e1b9b48e25fd40ff3c9ccc","parent_id":150475651,"is_root":"false"},{"id":150870991,"uuid":"5ead0b2c45f93973dd902ee1201db27bdc81abec","name":"SP2 Net aki","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","parent_id":149926175,"is_root":"false"},{"id":105613987,"uuid":"fee647bfba5a9c7f8f373e7b2a35326a5ea008ac","name":"Suzuki","group_id":"transportation","kind":"expenses","color":"51bcff","available":true,"default":false,"parent_uuid":"88b406e201190224a47953414c2b139ed2be911e","parent_id":102406400,"is_root":"false"},{"id":149925963,"uuid":"fb8cb4e33e54e0d6d1a8f590e19f6c7572a0a2d2","name":"Terceiros","group_id":"exp_toolbox","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":"32ad11bb67b9317a42914cb2dc7a30db9528f694","parent_id":149925930,"is_root":"false"},{"id":150251599,"uuid":"1747873860d0bf46943e6ea9d4b9f6868709dac9","name":"Tinners","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":149925485,"uuid":"0bacf26827b0c5d999b139b2522309b798b9f31d","name":"Tintas","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":149926175,"uuid":"badb47c18fc1a17a2ce7da102dbce724b6cad675","name":"Trabalho","group_id":"exp_apartment","kind":"expenses","color":"D72638","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406399,"uuid":"eb9cfdf77ba6fe2ba3f0a3021280db89f85ebdb8","name":"Transferências","group_id":"transference","kind":"none","color":"129E3F","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":102406400,"uuid":"88b406e201190224a47953414c2b139ed2be911e","name":"Transporte","group_id":"transportation","kind":"expenses","color":"51bcff","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149924120,"uuid":"19c80984d16122c36b69c12e6761523b123da4cb","name":"Troca de Peças","group_id":"ear_toolbox","kind":"earnings","color":"42924F","available":true,"default":false,"parent_uuid":"c418ca65ebd1f7c3070a919fc87008afebbc8077","parent_id":102406395,"is_root":"false"},{"id":102406390,"uuid":"0863c6cf96ae6dc9148551d2ccf70a2ad30597e2","name":"Venda de Peças ","group_id":"ear_groceries","kind":"earnings","color":"8CDEC0","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"},{"id":149925488,"uuid":"5ccf9c359f37a4a96295c3cd01789a67cf2c912b","name":"Verniz","group_id":"exp_work","kind":"expenses","color":"EC61A2","available":true,"default":false,"parent_uuid":"d0e0dad024fb2171baf7307bfe37d72938f75ec3","parent_id":102406402,"is_root":"false"},{"id":105195193,"uuid":"c85362fd9f6c3c7ec9c34191d93485d20d51da61","name":"Verona","group_id":"transportation","kind":"expenses","color":"51bcff","available":true,"default":false,"parent_uuid":"88b406e201190224a47953414c2b139ed2be911e","parent_id":102406400,"is_root":"false"},{"id":102406401,"uuid":"d26d78e72d605685e6b2c4e20f957eed16aa500b","name":"Viagem","group_id":"travel","kind":"expenses","color":"ff6b6b","available":true,"default":false,"parent_uuid":null,"parent_id":null,"is_root":"true"}],"tags":[{"id":[4377661,"Colaboradores"],"entity_id":4377661,"name":"Colaboradores","escaped_tag":"Colaboradores","created_at":"2022-02-01T15:50:35.000-03:00","hash_id":"f92022c9a5de6705243071c134fe92c092afa46e"},{"id":[4377661,"Vago"],"entity_id":4377661,"name":"Vago","escaped_tag":"Vago","created_at":"2022-02-01T18:11:16.000-03:00","hash_id":"46b88c4bba8ee22fb93c8541e60b1596e07dfbfa"},{"id":[4377661,"Oseias"],"entity_id":4377661,"name":"Oseias","escaped_tag":"Oseias","created_at":"2022-02-15T09:05:33.000-03:00","hash_id":"61cb88fa87baad47e7f1f09d51a8415265e995b8"}],"app2URL":"https://app2.organizze.com.br","preferences":{"transactions_show_result_details":false,"transactions_order":"asc","transactions_daily_results":false,"hide_conciliated":true,"hide_ghost_candidate":true},"current_entity":{"id":4377661,"name":"Limaprata Rep Auto","license_status":"expired","plan_key":"free","plan_status":"expired","plan_name":"manual"},"current_user":{"id":4331080,"uuid":"f5a9af09382220c404096f889b473930dceb8fa9","name":"Limaprata Rep Auto"},"currency":{"id":"brl","alternate_symbols":null,"decimal_mark":",","disambiguate_symbol":null,"html_entity":"R$","iso_code":"BRL","iso_numeric":"986","name":"Brazilian Real","priority":100,"smallest_denomination":5,"subunit":"Centavo","subunit_to_unit":100,"symbol":"R$","symbol_first":true,"thousands_separator":".","format":null},"urls":{"get_invoice_credit_card":"/4377661/cartao-de-credito/credit_card_id/get_invoice.json","edit_transaction":"/4377661/transactions/transaction_id/edit"}};
+                document.cookie = "reloadContextSource=; expires=Thu, 01 Jan 1970 00:00:00 UTC; sameSite=none; secure; path=/";
+            </script>
+
+        <script>
+            window.Context = {
+                currentEntity: {
+                    id: 4377661
+                }
+            };
+            window.xAuthToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQzMzEwODAsIm5hbWUiOiJMaW1hcHJhdGEgUmVwIEF1dG8ifQ.Vbc7RUR4SF9UhNTad_Wielf7VRExOXH6itzIXVJTwKw";
+            window.genericIconsSVGs = {"carteira":"\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"Wallet\"\u003e\n\u003cg id=\"Vector\"\u003e\n\u003cmask id=\"path-1-inside-1_639_1523\" fill=\"white\"\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\"/\u003e\n\u003c/mask\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\" fill=\"#FEFDF9\"/\u003e\n\u003cpath d=\"M32.9464 14.4453L32.9434 15.4453H32.9434L32.9464 14.4453ZM33.4325 13.9349L34.4294 13.8554L34.4294 13.8553L33.4325 13.9349ZM33.4344 26.0571L34.4315 26.1334L34.4315 26.1332L33.4344 26.0571ZM32.9482 25.5485L32.9511 26.5485H32.9512L32.9482 25.5485ZM25.7417 24.5635C23.7797 24.5635 22.175 22.9636 22.175 20.9801H20.175C20.175 24.0634 22.6704 26.5635 25.7417 26.5635V24.5635ZM22.175 20.9801V19.0135H20.175V20.9801H22.175ZM22.175 19.0135C22.175 17.0301 23.7797 15.4302 25.7417 15.4302V13.4302C22.6704 13.4302 20.175 15.9303 20.175 19.0135H22.175ZM25.7417 15.4302C27.7074 15.4302 31.5574 15.4411 32.9434 15.4453L32.9494 13.4453C31.5644 13.4411 27.711 13.4302 25.7417 13.4302V15.4302ZM32.9434 15.4453C33.7713 15.4477 34.5012 14.7554 34.4294 13.8554L32.4357 14.0144C32.4086 13.6743 32.6834 13.4445 32.9493 13.4453L32.9434 15.4453ZM34.4294 13.8553C34.0326 8.88213 29.8802 4.9635 24.8084 4.9635V6.9635C28.8246 6.9635 32.1208 10.0681 32.4357 14.0144L34.4294 13.8553ZM24.8084 4.9635H13.3916V6.9635H24.8084V4.9635ZM13.3916 4.9635C8.05352 4.9635 3.72498 9.31374 3.72498 14.6468H5.72498C5.72498 10.4133 9.16309 6.9635 13.3916 6.9635V4.9635ZM3.72498 14.6468V25.3635H5.72498V14.6468H3.72498ZM3.72498 25.3635C3.72498 30.6991 8.05602 35.0301 13.3916 35.0301V33.0301C9.16059 33.0301 5.72498 29.5945 5.72498 25.3635H3.72498ZM13.3916 35.0301H24.8084V33.0301H13.3916V35.0301ZM24.8084 35.0301C29.8781 35.0301 34.0504 31.1128 34.4315 26.1334L32.4373 25.9808C32.1357 29.9225 28.828 33.0301 24.8084 33.0301V35.0301ZM34.4315 26.1332C34.5001 25.2346 33.7707 24.546 32.9452 24.5485L32.9512 26.5485C32.6861 26.5492 32.4114 26.3207 32.4373 25.981L34.4315 26.1332ZM32.9453 24.5485C31.5605 24.5525 27.7083 24.5635 25.7417 24.5635V26.5635C27.7118 26.5635 31.5676 26.5525 32.9511 26.5485L32.9453 24.5485Z\" fill=\"#FEFDF9\" mask=\"url(#path-1-inside-1_639_1523)\"/\u003e\n\u003c/g\u003e\n\u003cpath id=\"Vector_2\" d=\"M25.375 19.997C25.375 20.9277 26.1368 21.6803 27.0751 21.6803C28.0012 21.6803 28.7584 20.9231 28.7584 19.997C28.7584 19.0708 28.0012 18.3136 27.0751 18.3136C26.1368 18.3136 25.375 19.0663 25.375 19.997ZM25.7417 17.4303H33.1917C34.0656 17.4303 34.7751 18.1398 34.7751 19.0136V20.9803C34.7751 21.8542 34.0656 22.5636 33.1917 22.5636H25.7417C24.8731 22.5636 24.175 21.8594 24.175 20.9803V19.0136C24.175 18.1345 24.8731 17.4303 25.7417 17.4303Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n","bank":"\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"Bank-build\"\u003e\n\u003cpath id=\"Vector\" d=\"M34.5879 33.0252L34.5879 33.0252L34.5897 33.033C34.6681 33.369 34.5902 33.7104 34.3684 33.9766L34.3683 33.9765L34.3608 33.9859C34.1522 34.2494 33.8456 34.3957 33.4891 34.3957H6.41714C6.07401 34.3957 5.75252 34.2475 5.54548 33.9859L5.5456 33.9858L5.53788 33.9766C5.3161 33.7104 5.23813 33.369 5.31657 33.033L5.31664 33.033L5.31833 33.0252L5.92511 30.2148C6.05389 29.6857 6.52447 29.3095 7.04114 29.3095H7.44114C7.97144 29.3095 8.40114 28.8794 8.40114 28.3495V18.2839C8.40114 17.7538 7.97154 17.3237 7.44114 17.3237H6.83314C6.0102 17.3237 5.34514 16.6587 5.34514 15.8358V14.9078C5.34514 14.4032 5.59459 13.9472 6.03636 13.6638L6.03754 13.663L19.1389 5.2023C19.1393 5.20203 19.1397 5.20176 19.1402 5.2015C19.6383 4.88507 20.2653 4.88616 20.7611 5.21267L20.7611 5.21269L20.7653 5.21536L33.8853 13.6634L33.8852 13.6634L33.8897 13.6662C34.3051 13.9273 34.5611 14.395 34.5611 14.9078V15.8358C34.5611 16.6587 33.8961 17.3237 33.0731 17.3237H32.4651C31.9347 17.3237 31.5051 17.7538 31.5051 18.2839V28.3495C31.5051 28.8794 31.9348 29.3095 32.4651 29.3095H32.8651C33.3818 29.3095 33.8524 29.6856 33.9811 30.2147L34.5879 33.0252ZM24.2891 28.3495C24.2891 28.8794 24.7188 29.3095 25.2491 29.3095H29.1051C29.6355 29.3095 30.0651 28.8794 30.0651 28.3495V18.2855C30.0651 17.7552 29.6353 17.3255 29.1051 17.3255H25.2491C24.7189 17.3255 24.2891 17.7552 24.2891 18.2855V28.3495ZM17.0571 28.3495C17.0571 28.8794 17.4868 29.3095 18.0171 29.3095H21.8891C22.4194 29.3095 22.8491 28.8794 22.8491 28.3495V18.2855C22.8491 17.7552 22.4193 17.3255 21.8891 17.3255H18.0171C17.4869 17.3255 17.0571 17.7552 17.0571 18.2855V28.3495ZM9.84114 28.3495C9.84114 28.8794 10.2709 29.3095 10.8011 29.3095H14.6571C15.1874 29.3095 15.6171 28.8794 15.6171 28.3495V18.2855C15.6171 17.7552 15.1873 17.3255 14.6571 17.3255H10.8011C10.271 17.3255 9.84114 17.7552 9.84114 18.2855V28.3495ZM21.6331 12.0918C21.6331 11.1665 20.886 10.4278 19.9531 10.4278C19.032 10.4278 18.2731 11.1867 18.2731 12.1078C18.2731 13.049 19.0362 13.7878 19.9531 13.7878C20.8902 13.7878 21.6331 13.0449 21.6331 12.1078V12.0918Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\" stroke-width=\"0.96\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n","cofrinho":"\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"savings\"\u003e\n\u003cpath id=\"Vector\" d=\"M33.05 13.3334L29.2667 9.55008C29.3834 8.85008 29.5667 8.20008 29.8 7.63342C29.9834 7.20008 30.05 6.70008 29.95 6.18342C29.7334 4.98342 28.5667 4.15008 27.3334 4.16675C24.6834 4.21675 22.3334 5.51675 20.8334 7.50008H12.5C7.43337 7.50008 3.33337 11.6001 3.33337 16.6667C3.33337 20.4167 5.61671 29.1334 6.80004 33.4001C7.20004 34.8334 8.51671 35.8334 10.0167 35.8334H13.3334C15.1667 35.8334 16.6667 34.3334 16.6667 32.5001H20C20 34.3334 21.5 35.8334 23.3334 35.8334H26.6834C28.15 35.8334 29.45 34.8667 29.8834 33.4501L31.9667 26.5167L35.5334 25.3167C36.2167 25.0834 36.6667 24.4501 36.6667 23.7334V15.0001C36.6667 14.0834 35.9167 13.3334 35 13.3334H33.05ZM20 15.8334H15C14.0834 15.8334 13.3334 15.0834 13.3334 14.1667C13.3334 13.2501 14.0834 12.5001 15 12.5001H20C20.9167 12.5001 21.6667 13.2501 21.6667 14.1667C21.6667 15.0834 20.9167 15.8334 20 15.8334ZM26.6667 19.1667C25.75 19.1667 25 18.4167 25 17.5001C25 16.5834 25.75 15.8334 26.6667 15.8334C27.5834 15.8334 28.3334 16.5834 28.3334 17.5001C28.3334 18.4167 27.5834 19.1667 26.6667 19.1667Z\" fill=\"#FEFDF9\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n","card":"\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"Bank-card\"\u003e\n\u003cpath id=\"Vector\" d=\"M33.1794 9.45371C34.2745 10.5992 34.9529 12.2513 34.9976 14.2985H5.00231C5.04699 12.2512 5.72535 10.5992 6.82028 9.45366C7.95044 8.27131 9.58434 7.56514 11.6066 7.56514H28.3916C30.4148 7.56514 32.0491 8.27137 33.1794 9.45371Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\" stroke-width=\"1.66667\"/\u003e\n\u003cpath id=\"Vector_2\" d=\"M11.9609 27.3652H16.9092C18.0594 27.3652 18.9925 26.4321 18.9925 25.2818C18.9925 24.1316 18.0594 23.1985 16.9092 23.1985H11.9609C10.8107 23.1985 9.87756 24.1316 9.87756 25.2818C9.87756 26.4321 10.8107 27.3652 11.9609 27.3652ZM4.99923 18.4652H34.9992V25.4818C34.9992 27.6293 34.3122 29.3576 33.1787 30.5433C32.0484 31.7256 30.4141 32.4318 28.3909 32.4318H11.6059C9.5836 32.4318 7.9497 31.7257 6.81954 30.5433C5.68625 29.3577 4.99923 27.6293 4.99923 25.4818V18.4652Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\" stroke-width=\"1.66667\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n","default":"\u003csvg viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"Wallet\"\u003e\n\u003cg id=\"Vector\"\u003e\n\u003cmask id=\"path-1-inside-1_639_1523\" fill=\"white\"\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\"/\u003e\n\u003c/mask\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\" fill=\"#FEFDF9\"/\u003e\n\u003cpath d=\"M32.9464 14.4453L32.9434 15.4453H32.9434L32.9464 14.4453ZM33.4325 13.9349L34.4294 13.8554L34.4294 13.8553L33.4325 13.9349ZM33.4344 26.0571L34.4315 26.1334L34.4315 26.1332L33.4344 26.0571ZM32.9482 25.5485L32.9511 26.5485H32.9512L32.9482 25.5485ZM25.7417 24.5635C23.7797 24.5635 22.175 22.9636 22.175 20.9801H20.175C20.175 24.0634 22.6704 26.5635 25.7417 26.5635V24.5635ZM22.175 20.9801V19.0135H20.175V20.9801H22.175ZM22.175 19.0135C22.175 17.0301 23.7797 15.4302 25.7417 15.4302V13.4302C22.6704 13.4302 20.175 15.9303 20.175 19.0135H22.175ZM25.7417 15.4302C27.7074 15.4302 31.5574 15.4411 32.9434 15.4453L32.9494 13.4453C31.5644 13.4411 27.711 13.4302 25.7417 13.4302V15.4302ZM32.9434 15.4453C33.7713 15.4477 34.5012 14.7554 34.4294 13.8554L32.4357 14.0144C32.4086 13.6743 32.6834 13.4445 32.9493 13.4453L32.9434 15.4453ZM34.4294 13.8553C34.0326 8.88213 29.8802 4.9635 24.8084 4.9635V6.9635C28.8246 6.9635 32.1208 10.0681 32.4357 14.0144L34.4294 13.8553ZM24.8084 4.9635H13.3916V6.9635H24.8084V4.9635ZM13.3916 4.9635C8.05352 4.9635 3.72498 9.31374 3.72498 14.6468H5.72498C5.72498 10.4133 9.16309 6.9635 13.3916 6.9635V4.9635ZM3.72498 14.6468V25.3635H5.72498V14.6468H3.72498ZM3.72498 25.3635C3.72498 30.6991 8.05602 35.0301 13.3916 35.0301V33.0301C9.16059 33.0301 5.72498 29.5945 5.72498 25.3635H3.72498ZM13.3916 35.0301H24.8084V33.0301H13.3916V35.0301ZM24.8084 35.0301C29.8781 35.0301 34.0504 31.1128 34.4315 26.1334L32.4373 25.9808C32.1357 29.9225 28.828 33.0301 24.8084 33.0301V35.0301ZM34.4315 26.1332C34.5001 25.2346 33.7707 24.546 32.9452 24.5485L32.9512 26.5485C32.6861 26.5492 32.4114 26.3207 32.4373 25.981L34.4315 26.1332ZM32.9453 24.5485C31.5605 24.5525 27.7083 24.5635 25.7417 24.5635V26.5635C27.7118 26.5635 31.5676 26.5525 32.9511 26.5485L32.9453 24.5485Z\" fill=\"#FEFDF9\" mask=\"url(#path-1-inside-1_639_1523)\"/\u003e\n\u003c/g\u003e\n\u003cpath id=\"Vector_2\" d=\"M25.375 19.997C25.375 20.9277 26.1368 21.6803 27.0751 21.6803C28.0012 21.6803 28.7584 20.9231 28.7584 19.997C28.7584 19.0708 28.0012 18.3136 27.0751 18.3136C26.1368 18.3136 25.375 19.0663 25.375 19.997ZM25.7417 17.4303H33.1917C34.0656 17.4303 34.7751 18.1398 34.7751 19.0136V20.9803C34.7751 21.8542 34.0656 22.5636 33.1917 22.5636H25.7417C24.8731 22.5636 24.175 21.8594 24.175 20.9803V19.0136C24.175 18.1345 24.8731 17.4303 25.7417 17.4303Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n","other":"\u003csvg viewBox=\"0 0 40 40\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"\u003e\n\u003cg id=\"Wallet\"\u003e\n\u003cg id=\"Vector\"\u003e\n\u003cmask id=\"path-1-inside-1_639_1523\" fill=\"white\"\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\"/\u003e\n\u003c/mask\u003e\n\u003cpath fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M25.7417 25.5635C23.225 25.5635 21.175 23.5135 21.175 20.9801V19.0135C21.175 16.4802 23.225 14.4302 25.7417 14.4302C27.7092 14.4302 31.5609 14.4411 32.9464 14.4453C33.2274 14.4461 33.4549 14.2149 33.4325 13.9349C33.0767 9.4751 29.3524 5.9635 24.8084 5.9635H13.3916C8.60831 5.9635 4.72498 9.86352 4.72498 14.6468V25.3635C4.72498 30.1468 8.60831 34.0301 13.3916 34.0301H24.8084C29.353 34.0301 33.093 30.5176 33.4344 26.0571C33.4557 25.7776 33.2284 25.5476 32.9482 25.5485C31.564 25.5525 27.71 25.5635 25.7417 25.5635Z\" fill=\"#FEFDF9\"/\u003e\n\u003cpath d=\"M32.9464 14.4453L32.9434 15.4453H32.9434L32.9464 14.4453ZM33.4325 13.9349L34.4294 13.8554L34.4294 13.8553L33.4325 13.9349ZM33.4344 26.0571L34.4315 26.1334L34.4315 26.1332L33.4344 26.0571ZM32.9482 25.5485L32.9511 26.5485H32.9512L32.9482 25.5485ZM25.7417 24.5635C23.7797 24.5635 22.175 22.9636 22.175 20.9801H20.175C20.175 24.0634 22.6704 26.5635 25.7417 26.5635V24.5635ZM22.175 20.9801V19.0135H20.175V20.9801H22.175ZM22.175 19.0135C22.175 17.0301 23.7797 15.4302 25.7417 15.4302V13.4302C22.6704 13.4302 20.175 15.9303 20.175 19.0135H22.175ZM25.7417 15.4302C27.7074 15.4302 31.5574 15.4411 32.9434 15.4453L32.9494 13.4453C31.5644 13.4411 27.711 13.4302 25.7417 13.4302V15.4302ZM32.9434 15.4453C33.7713 15.4477 34.5012 14.7554 34.4294 13.8554L32.4357 14.0144C32.4086 13.6743 32.6834 13.4445 32.9493 13.4453L32.9434 15.4453ZM34.4294 13.8553C34.0326 8.88213 29.8802 4.9635 24.8084 4.9635V6.9635C28.8246 6.9635 32.1208 10.0681 32.4357 14.0144L34.4294 13.8553ZM24.8084 4.9635H13.3916V6.9635H24.8084V4.9635ZM13.3916 4.9635C8.05352 4.9635 3.72498 9.31374 3.72498 14.6468H5.72498C5.72498 10.4133 9.16309 6.9635 13.3916 6.9635V4.9635ZM3.72498 14.6468V25.3635H5.72498V14.6468H3.72498ZM3.72498 25.3635C3.72498 30.6991 8.05602 35.0301 13.3916 35.0301V33.0301C9.16059 33.0301 5.72498 29.5945 5.72498 25.3635H3.72498ZM13.3916 35.0301H24.8084V33.0301H13.3916V35.0301ZM24.8084 35.0301C29.8781 35.0301 34.0504 31.1128 34.4315 26.1334L32.4373 25.9808C32.1357 29.9225 28.828 33.0301 24.8084 33.0301V35.0301ZM34.4315 26.1332C34.5001 25.2346 33.7707 24.546 32.9452 24.5485L32.9512 26.5485C32.6861 26.5492 32.4114 26.3207 32.4373 25.981L34.4315 26.1332ZM32.9453 24.5485C31.5605 24.5525 27.7083 24.5635 25.7417 24.5635V26.5635C27.7118 26.5635 31.5676 26.5525 32.9511 26.5485L32.9453 24.5485Z\" fill=\"#FEFDF9\" mask=\"url(#path-1-inside-1_639_1523)\"/\u003e\n\u003c/g\u003e\n\u003cpath id=\"Vector_2\" d=\"M25.375 19.997C25.375 20.9277 26.1368 21.6803 27.0751 21.6803C28.0012 21.6803 28.7584 20.9231 28.7584 19.997C28.7584 19.0708 28.0012 18.3136 27.0751 18.3136C26.1368 18.3136 25.375 19.0663 25.375 19.997ZM25.7417 17.4303H33.1917C34.0656 17.4303 34.7751 18.1398 34.7751 19.0136V20.9803C34.7751 21.8542 34.0656 22.5636 33.1917 22.5636H25.7417C24.8731 22.5636 24.175 21.8594 24.175 20.9803V19.0136C24.175 18.1345 24.8731 17.4303 25.7417 17.4303Z\" fill=\"#FEFDF9\" stroke=\"#FEFDF9\"/\u003e\n\u003c/g\u003e\n\u003c/svg\u003e\n"};
+            window.iconsColorMap = {"f2f4ef":"1a1c19","d5d5d5":"1a1c19","ffe000":"1a1c19","ff0000":"fefdf9","006aff":"fefdf9","00e766":"1a1c19","ffd6a7":"1a1c19","ffbe73":"1a1c19","ff9d2b":"fefdf9","e97800":"fefdf9","ff9eaa":"1a1c19","ff697b":"fefdf9","ff324b":"fefdf9","d0021b":"fefdf9","ff8f7c":"1a1c19","ff806a":"fefdf9","ff593c":"fefdf9","ef3a1b":"fefdf9","ffa85d":"1a1c19","e99043":"fefdf9","ba7437":"fefdf9","8b572a":"fefdf9","b8e986":"1a1c19","7ed321":"1a1c19","5fb007":"fefdf9","417505":"fefdf9","8fffe6":"1a1c19","4cf4ce":"1a1c19","10daad":"1a1c19","00b089":"fefdf9","76b5ff":"1a1c19","5ea8ff":"1a1c19","2389ff":"fefdf9","0068e0":"fefdf9","cf9ff9":"1a1c19","be75ff":"fefdf9","9e30ff":"fefdf9","8800ff":"fefdf9","ffa3c4":"1a1c19","ff74a5":"1a1c19","ff4889":"1a1c19","f50057":"fefdf9","c3c3c3":"1a1c19","7e7e7e":"fefdf9","4a4a4a":"fefdf9","000000":"fefdf9"};
+            window.Institutions.fetchInstitutions();
+            angular.bootstrap(angular.element('li#messages-app'), ['zze-messages']);
+        </script>
+
+              <script>
+        Date.today = Date.timezoneNormalizedParse('2026-04-14');
+        Date.tomorrow = Date.timezoneNormalizedParse('2026-04-15');
+        Date.yesterday = Date.timezoneNormalizedParse('2026-04-13');
+      </script>
+
+
+              <script>
+        $(function(){
+          if (false && (window.assets_version != "13.22.15")) {
+            Page.reload();
+          }
+          window.assets_version = "13.22.15";
+        });
+      </script>
+
+    </body>
 </html>
