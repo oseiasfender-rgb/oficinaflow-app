@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#b8621a">
-  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#b8621a" />
+  <link rel="manifest" href="./manifest.webmanifest" />
   <title>OficinaOS</title>
   <style>
     :root{
@@ -15,7 +15,7 @@
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line)}
+    .topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);z-index:10}
     .brand{display:flex;gap:10px;align-items:center}
     .logo{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));display:grid;place-items:center;color:#fff;font-weight:700}
     .nav{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#fff;border-bottom:1px solid var(--line)}
@@ -27,13 +27,14 @@
     .wrap{max-width:1500px;margin:0 auto;padding:16px}
     .grid{display:grid;gap:16px}
     .g2{grid-template-columns:1.15fr .85fr}
+    .g3{grid-template-columns:repeat(3,1fr)}
     .g4{grid-template-columns:repeat(4,1fr)}
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
     .section-title{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-dark);font-weight:700;margin-bottom:10px}
     .row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
     .c12{grid-column:span 12}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}
     label{display:block;margin:0 0 6px;font-size:12px;font-weight:700;color:#433d37}
-    input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(100,60,20,.16);background:#fff}
+    input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(100,60,20,.16);background:#fff;font:inherit}
     textarea{min-height:88px;resize:vertical}
     .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
     .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
@@ -49,12 +50,14 @@
     .scenario-box{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
     .scenario{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;background:#fff}
     .scenario.active{border:2px solid var(--brand);background:rgba(184,98,26,.05)}
+    .price{font-size:20px;font-weight:700;margin-top:4px}
     .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
     .day-head,.day{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px}
     .day.today{border:2px solid var(--brand)}
+    .daynum{font-weight:700;margin-bottom:4px}
     .tiny{font-size:12px;color:#514941}
     @media (max-width:900px){
-      .g2,.g4,.kpis,.scenario-box{grid-template-columns:1fr}
+      .g2,.g3,.g4,.kpis,.scenario-box{grid-template-columns:1fr}
       .row{grid-template-columns:1fr 1fr}
       .c12,.c6,.c4,.c3{grid-column:span 2}
       .calendar{grid-template-columns:repeat(2,1fr)}
@@ -134,6 +137,15 @@
       } catch (e) {}
     }
 
+    function exportarJSON(){
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'oficinaos-backup.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
     function nav(){
       const items = [
         ['painel','📈 Painel de Controle'],
@@ -172,8 +184,12 @@
       const horas = Number(d.horasMO || s.horas);
       const mao = horas * Number(d.valorHora || 0);
       const materiais = d.materiais.reduce((a,b) => a + (Number(b.qty || 0) * Number(b.valor || 0)), 0) || s.material;
-      const pecas = d.itens.filter(i => ['novo','usado','recuperado'].includes(i.tipo)).reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
-      const extras = d.itens.filter(i => ['servico','terceiro','extra'].includes(i.tipo)).reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
+      const pecas = d.itens
+        .filter(i => ['novo','usado','recuperado'].includes(i.tipo))
+        .reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
+      const extras = d.itens
+        .filter(i => ['servico','terceiro','extra'].includes(i.tipo))
+        .reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
 
       const custo = mao + materiais;
       const ajustado = custo * (FX_COMPLEX[d.complexidade] || 1) * (FX_PRIORITY[d.prioridade] || 1);
@@ -518,7 +534,7 @@
         });
       }
 
-           if (state.active === 'agenda') {
+      if (state.active === 'agenda') {
         document.getElementById('newAgenda')?.addEventListener('click', () => {
           const cliente = prompt('Cliente:');
           if (!cliente) return;
@@ -533,19 +549,10 @@
             const data = el.dataset.dia;
             const jobs = state.agenda.filter(a => a.data === data);
             if (!jobs.length) return alert('Sem itens para ' + data);
-            alert(jobs.map(j => j.cliente + ' · ' + j.servico + ' · ' + j.status).join('\\n'));
+            alert(jobs.map(j => j.cliente + ' · ' + j.servico + ' · ' + j.status).join('\n'));
           });
         });
       }
-    }
-
-   function exportarJSON(){
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'oficinaos-backup.json';
-      a.click();
-      URL.revokeObjectURL(a.href);
     }
 
     document.getElementById('backupBtn').addEventListener('click', exportarJSON);
