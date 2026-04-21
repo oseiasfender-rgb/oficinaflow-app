@@ -1,0 +1,1827 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OficinaOS V3.8</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#f6f3ef;--card:#fff;--text:#2a1a08;--muted:#6b5b4d;--p:#8b5a2b;--p2:#b8621a;--g:#18803b;--r:#c62828;--b:#1d6fa4;--a:#b7791f;--line:#e8ddd2}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:#111;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+nav{background:#1d1d1d;padding:8px 10px;display:flex;gap:8px;flex-wrap:wrap}
+nav button,.btn{border:none;border-radius:8px;padding:10px 12px;cursor:pointer}
+nav button{background:#2b2b2b;color:#fff} nav button.active{background:var(--p2)}
+.btn{background:var(--p);color:#fff}.btn.secondary{background:#ede3d8;color:var(--text)}.btn.green{background:var(--g)}.btn.red{background:var(--r)}.btn.blue{background:var(--b)}
+main{padding:14px;max-width:1280px;margin:0 auto}.grid{display:grid;gap:14px}.grid-2{grid-template-columns:1.4fr .95fr}.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}.card h3,.card h4{margin:0 0 10px}.muted{color:var(--muted);font-size:13px}
+label{display:block;font-size:13px;margin:8px 0 4px;font-weight:700} input,select,textarea{width:100%;padding:10px;border:1px solid #d8cabd;border-radius:8px;background:#fff;color:var(--text)} textarea{min-height:86px}
+.row{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.c12{grid-column:span 12}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}
+.item-line{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;margin-bottom:10px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff}.kpi .v{font-size:24px;font-weight:700;margin-top:6px}
+.total-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)} .total-row:last-child{border-bottom:none}
+.grand{font-size:28px;font-weight:800;color:var(--p2)}
+.pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}.pending{background:#fff4cc;color:#7d5a00}.approved,.paid{background:#dff4e5;color:#0f6b2f}.unpaid,.overdue{background:#fbe2e2;color:#8a1d1d}.today{background:#d9ecff;color:#0c4a7d}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px} table{width:100%;border-collapse:collapse} th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;vertical-align:top} th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.right{text-align:right}.print-area{display:none}.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.kanban-col{background:#faf6f1;border:1px solid var(--line);border-radius:14px;padding:12px}.kanban-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px}
+.search-row{display:grid;grid-template-columns:2fr 1fr;gap:10px}.mini-chart{display:flex;align-items:flex-end;gap:8px;height:180px;padding-top:8px}.bar{flex:1;background:linear-gradient(180deg,var(--p2),var(--p));border-radius:8px 8px 0 0;min-height:8px;position:relative}.bar small{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;color:var(--muted)}.bar span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:12px}
+.backup-box{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.notice{padding:10px;border:1px solid var(--line);background:#faf6f1;border-radius:10px;line-height:1.45}
+code{background:#f1e4d8;padding:2px 6px;border-radius:6px}
+@media(max-width:980px){.grid-2,.grid-4,.kpis,.kanban,.search-row{grid-template-columns:1fr}.row{grid-template-columns:repeat(2,1fr)}.c6,.c4,.c3{grid-column:span 2}}
+@media print{body *{visibility:hidden}.print-area,.print-area *{visibility:visible}.print-area{display:block;position:absolute;inset:0;background:#fff;color:#000;padding:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div><b>OficinaOS V3.8</b></div>
+  <div class="backup-box">
+    <button class="btn secondary" onclick="exportarJSON()">Backup JSON</button>
+    <button class="btn secondary" onclick="document.getElementById('importJsonInput').click()">Importar JSON</button>
+    <button class="btn secondary" onclick="document.getElementById('importXlsxInput').click()">Importar XLSX</button>
+    <span id="syncStatus">Dados locais salvos no navegador</span>
+  </div>
+</header>
+<input type="file" id="importJsonInput" accept=".json,application/json" style="display:none">
+<input type="file" id="importXlsxInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" style="display:none">
+
+<nav>
+<button id="tab-dash" onclick="show('dash')">🏠 Dashboard</button>
+<button id="tab-orc" onclick="show('orc')">🧮 Orçamento</button>
+<button id="tab-fin" onclick="show('fin')">📊 Financeiro</button>
+<button id="tab-rec" onclick="show('rec')">🧾 Recibos</button>
+<button id="tab-age" onclick="show('age')">📅 Agenda</button>
+<button id="tab-con" onclick="show('con')">🚨 Contas</button>
+<button id="tab-cli" onclick="show('cli')">👥 Clientes</button>
+<button id="tab-rel" onclick="show('rel')">📈 Relatórios</button>
+</nav>
+
+<div id="loginScreen" style="display:none;min-height:100vh;background:linear-gradient(180deg,#111,#2a1a08);color:#fff;padding:32px">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 0.9fr;gap:24px;align-items:center">
+    <div>
+      <div style="font-size:42px;font-weight:800;margin-bottom:8px">OficinaOS V5.2</div>
+      <div style="font-size:18px;opacity:.9;margin-bottom:20px">Gestão profissional para oficina com foco em operação real, sincronização e uso comercial.</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:700px">
+        <div style="background:rgba(255,255,255,.08);padding:14px;border-radius:14px">☁️ Firebase + sync nuvem</div>
+        <div style="background:rgba(255,255,255,.08);padding:14px;border-radius:14px">👥 Login Google + papéis</div>
+        <div style="background:rgba(255,255,255,.08);padding:14px;border-radius:14px">🏢 Multiempresa</div>
+        <div style="background:rgba(255,255,255,.08);padding:14px;border-radius:14px">🧮 Orçamento + financeiro</div>
+      </div>
+    </div>
+    <div style="background:#fff;color:#2a1a08;border-radius:18px;padding:20px;border:1px solid #e8ddd2">
+      <h2 style="margin:0 0 10px">Entrar no sistema</h2>
+      <p style="color:#6b5b4d;margin:0 0 14px">Use sua conta Google e conecte ao Firebase para publicar em produção.</p>
+      <label style="display:block;font-size:13px;margin:8px 0 4px;font-weight:700">Empresa inicial</label>
+      <input id="bootCompanyId" placeholder="Ex: limaprata" style="width:100%;padding:10px;border:1px solid #d8cabd;border-radius:8px">
+      <label style="display:block;font-size:13px;margin:8px 0 4px;font-weight:700">Nome da empresa</label>
+      <input id="bootCompanyName" placeholder="Ex: Limaprata Reparações Automotivas" style="width:100%;padding:10px;border:1px solid #d8cabd;border-radius:8px">
+      <label style="display:block;font-size:13px;margin:8px 0 4px;font-weight:700">Seu papel inicial</label>
+      <select id="bootRole" style="width:100%;padding:10px;border:1px solid #d8cabd;border-radius:8px">
+        <option value="owner">Owner</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn" onclick="bootstrapEmpresa()">Criar empresa inicial</button>
+        <button class="btn secondary" onclick="toggleFirebasePanel()">Firebase</button>
+        <button class="btn secondary" onclick="signInGoogle()">Login Google</button>
+      </div>
+      <div id="bootStatus" class="notice" style="margin-top:14px">Pronto para configurar e publicar.</div>
+    </div>
+  </div>
+</div>
+
+<main id="app"></main>
+
+
+
+
+<div class="card" id="testPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Checklist de testes reais + revisão final</h3>
+  <p class="muted">Use este painel para validar a versão antes de publicar ou entregar.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>Checklist operacional</h4>
+      <label><input type="checkbox" id="t1" style="width:auto;margin-right:8px">Login Google funcionando</label>
+      <label><input type="checkbox" id="t2" style="width:auto;margin-right:8px">Empresa inicial criada</label>
+      <label><input type="checkbox" id="t3" style="width:auto;margin-right:8px">Sync nuvem funcionando</label>
+      <label><input type="checkbox" id="t4" style="width:auto;margin-right:8px">Novo orçamento criado</label>
+      <label><input type="checkbox" id="t5" style="width:auto;margin-right:8px">Aprovação gera financeiro</label>
+      <label><input type="checkbox" id="t6" style="width:auto;margin-right:8px">Aprovação gera recibo</label>
+      <label><input type="checkbox" id="t7" style="width:auto;margin-right:8px">Agenda recebe serviço</label>
+      <label><input type="checkbox" id="t8" style="width:auto;margin-right:8px">Contas funcionando</label>
+      <label><input type="checkbox" id="t9" style="width:auto;margin-right:8px">Clientes funcionando</label>
+      <label><input type="checkbox" id="t10" style="width:auto;margin-right:8px">Relatórios carregando</label>
+    </div>
+
+    <div class="card">
+      <h4>Checklist de produção</h4>
+      <label><input type="checkbox" id="t11" style="width:auto;margin-right:8px">Rules publicadas</label>
+      <label><input type="checkbox" id="t12" style="width:auto;margin-right:8px">Papel owner testado</label>
+      <label><input type="checkbox" id="t13" style="width:auto;margin-right:8px">Papel editor testado</label>
+      <label><input type="checkbox" id="t14" style="width:auto;margin-right:8px">Papel viewer testado</label>
+      <label><input type="checkbox" id="t15" style="width:auto;margin-right:8px">Importação JSON testada</label>
+      <label><input type="checkbox" id="t16" style="width:auto;margin-right:8px">Importação XLSX testada</label>
+      <label><input type="checkbox" id="t17" style="width:auto;margin-right:8px">Troca de empresa testada</label>
+      <label><input type="checkbox" id="t18" style="width:auto;margin-right:8px">Logout/login testado</label>
+      <label><input type="checkbox" id="t19" style="width:auto;margin-right:8px">Teste em outro navegador</label>
+      <label><input type="checkbox" id="t20" style="width:auto;margin-right:8px">Publicação pronta</label>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4>Observações finais</h4>
+    <textarea id="testNotes" placeholder="Anote aqui erros reais encontrados, ajustes finais e pendências" style="min-height:140px"></textarea>
+    <div class="actions">
+      <button class="btn" onclick="saveTestChecklist()">Salvar checklist</button>
+      <button class="btn secondary" onclick="loadTestChecklist()">Recarregar checklist</button>
+      <button class="btn secondary" onclick="toggleTestPanel()">Fechar</button>
+    </div>
+    <div id="testSummary" class="notice" style="margin-top:12px">Nenhum teste salvo ainda.</div>
+  </div>
+</div>
+
+<div class="card" id="commercialPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Configurações principais</h3>
+  <p class="muted">Painel enxuto para uso comercial. Os painéis técnicos continuam internos, mas ficam ocultos nesta versão.</p>
+  <div class="actions">
+    <button class="btn secondary" onclick="toggleAuthPanel()">Login e empresa</button>
+    <button class="btn secondary" onclick="toggleAdminPanel()">Dados da empresa</button>
+    <button class="btn secondary" onclick="toggleTeamPanel()">Acessos</button>
+    <button class="btn secondary" onclick="toggleProdPanel()">Publicação</button>
+    <button class="btn secondary" onclick="toggleCommercialPanel()">Fechar</button>
+  </div>
+</div>
+
+<div class="card" id="authPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Login Google + dados por usuário + multiempresa</h3>
+  <p class="muted">Entre com Google para separar os dados por usuário no Firestore. Você também pode escolher uma empresa/perfil para isolar os dados.</p>
+  <div class="row">
+    <div class="c4">
+      <label>Status do usuário</label>
+      <input id="authState" value="Não autenticado" readonly>
+    </div>
+    <div class="c4">
+      <label>UID / caminho</label>
+      <input id="authPathState" value="Sem usuário" readonly>
+    </div>
+    <div class="c4">
+      <label>Empresa ativa</label>
+      <input id="companyIdInput" placeholder="Ex: limaprata" value="principal">
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="signInGoogle()">Login Google</button>
+    <button class="btn secondary" onclick="applyCompanyId()">Aplicar empresa</button>
+    <button class="btn secondary" onclick="quickSetCompany('limaprata')">Limaprata</button>
+    <button class="btn secondary" onclick="quickSetCompany('teste')">Teste</button>
+    <button class="btn secondary" onclick="signOutGoogle()">Sair</button>
+    <button class="btn secondary" onclick="toggleAuthPanel()">Fechar</button>
+  </div>
+</div>
+
+
+
+<div class="card" id="adminPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Painel Administrativo da Empresa</h3>
+  <p class="muted">Configurações da empresa ativa</p>
+
+  <div class="row">
+    <div class="c4">
+      <label>Nome da empresa</label>
+      <input id="empresaNome">
+    </div>
+    <div class="c4">
+      <label>CNPJ / PIX</label>
+      <input id="empresaCnpj">
+    </div>
+    <div class="c4">
+      <label>Telefone</label>
+      <input id="empresaTelefone">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="c6">
+      <label>Endereço</label>
+      <input id="empresaEndereco">
+    </div>
+    <div class="c6">
+      <label>Observações</label>
+      <input id="empresaObs">
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="salvarEmpresa()">Salvar</button>
+    <button class="btn secondary" onclick="toggleAdminPanel()">Fechar</button>
+  </div>
+</div>
+
+<div class="card" id="teamPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Permissões por usuário + convite + compartilhamento controlado</h3>
+  <p class="muted">Gestão simples de acessos por empresa. O proprietário pode cadastrar convites e níveis de permissão. Nesta versão, o controle fica salvo na base da empresa e pode ser usado como referência operacional.</p>
+  <div class="row">
+    <div class="c4">
+      <label>E-mail do convidado</label>
+      <input id="inviteEmail" placeholder="exemplo@gmail.com">
+    </div>
+    <div class="c4">
+      <label>Papel</label>
+      <select id="inviteRole">
+        <option value="owner">Owner</option>
+        <option value="manager">Manager</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Viewer</option>
+      </select>
+    </div>
+    <div class="c4">
+      <label>Permissão rápida</label>
+      <select id="invitePreset">
+        <option value="full">Acesso completo</option>
+        <option value="operational">Operacional</option>
+        <option value="readonly">Somente leitura</option>
+      </select>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="addTeamMember()">Adicionar acesso</button>
+    <button class="btn secondary" onclick="toggleTeamPanel()">Fechar</button>
+  </div>
+  <div id="teamListBox" style="margin-top:12px"></div>
+</div>
+
+
+
+<div class="card" id="diagPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Diagnóstico da nuvem + migração validada + teste de permissões</h3>
+  <p class="muted">Use este painel para verificar conexão, caminho ativo, papel do usuário, migração e permissões por módulo.</p>
+  <div class="row">
+    <div class="c4">
+      <label>Firebase</label>
+      <input id="diagFirebase" readonly>
+    </div>
+    <div class="c4">
+      <label>Usuário</label>
+      <input id="diagUser" readonly>
+    </div>
+    <div class="c4">
+      <label>Empresa / caminho</label>
+      <input id="diagPath" readonly>
+    </div>
+  </div>
+  <div class="row">
+    <div class="c4">
+      <label>Papel atual</label>
+      <input id="diagRole" readonly>
+    </div>
+    <div class="c4">
+      <label>Status da migração</label>
+      <input id="diagMigration" readonly>
+    </div>
+    <div class="c4">
+      <label>Hash local</label>
+      <input id="diagHash" readonly>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn secondary" onclick="runDiagnostics()">Atualizar diagnóstico</button>
+    <button class="btn secondary" onclick="validateMigrationNow()">Validar migração</button>
+    <button class="btn secondary" onclick="toggleDiagPanel()">Fechar</button>
+  </div>
+  <div id="diagPermsBox" style="margin-top:12px"></div>
+</div>
+
+
+<div class="card" id="prodPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Publicação final</h3>
+  <p class="muted">Checklist final para colocar a versão comercial no ar.</p>
+  <div class="notice">
+    <b>Checklist</b><br>
+    1. Ativar Firebase Auth Google<br>
+    2. Publicar regras Firestore<br>
+    3. Definir empresa inicial<br>
+    4. Fazer bootstrap do owner<br>
+    5. Validar checklist de testes reais<br>
+    6. Testar login em outro navegador<br>
+    7. Hospedar o HTML final no GitHub Pages
+  </div>
+  <label style="margin-top:12px">Comandos Firebase CLI (referência)</label>
+  <textarea readonly style="min-height:180px">npm install -g firebase-tools
+firebase login
+firebase init
+firebase deploy --only firestore:rules</textarea>
+  <div class="actions">
+    <button class="btn secondary" onclick="copyProdText()">Copiar checklist</button>
+    <button class="btn secondary" onclick="toggleProdPanel()">Fechar</button>
+  </div>
+</div>
+
+<div class="card" id="securityPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>V4.7 · Segurança e backend</h3>
+  <p class="muted">Esta versão inclui centro de segurança com regras prontas e travas locais de escrita por papel. A validação real no backend só entra em vigor depois de publicar as regras no Firestore.</p>
+  <div class="actions">
+    <button class="btn secondary" onclick="copySecurityRules()">Copiar regras V4.7</button>
+    <button class="btn secondary" onclick="toggleSecurityPanel()">Fechar</button>
+  </div>
+  <label>Regras Firestore sugeridas</label>
+  <textarea id="securityRulesText" style="min-height:320px" readonly></textarea>
+</div>
+
+<div class="card" id="rulesPanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Regras Firestore prontas</h3>
+  <p class="muted">Copie estas regras para o Firestore. Elas restringem leitura/escrita ao usuário autenticado e ao caminho da própria conta.</p>
+  <textarea id="rulesTextarea" style="min-height:220px" readonly>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // dados por usuário + multiempresa
+    match /companies/{companyId} {
+      allow read: if request.auth != null;
+
+      match /members/{userId} {
+        allow read: if request.auth != null;
+        allow create, update, delete: if request.auth != null && request.auth.uid == userId;
+      }
+
+      match /data/{docId} {
+        allow read, write: if request.auth != null &&
+          exists(/databases/$(database)/documents/companies/$(companyId)/members/$(request.auth.uid));
+      }
+    }
+  }
+}</textarea>
+  <div class="actions">
+    <button class="btn secondary" onclick="copyRules()">Copiar regras</button>
+    <button class="btn secondary" onclick="toggleRulesPanel()">Fechar</button>
+  </div>
+</div>
+
+
+<div class="card" id="firebasePanel" style="display:none;margin:14px auto;max-width:1280px">
+  <h3>Firebase real + sincronização nuvem</h3>
+  <p class="muted">Cole abaixo o objeto <code>firebaseConfig</code> do seu projeto. O sistema salva localmente e passa a sincronizar a base inteira na nuvem.</p>
+  <div class="row">
+    <div class="c12">
+      <label>firebaseConfig (JSON)</label>
+      <textarea id="firebaseConfigInput" style="min-height:160px" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
+    </div>
+    <div class="c6">
+      <label>ID do documento na nuvem</label>
+      <input id="firebaseDocId" placeholder="principal">
+    </div>
+    <div class="c6">
+      <label>Status Firebase</label>
+      <input id="firebaseState" value="Desconectado" readonly>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="saveFirebaseConfigAndInit()">Salvar e conectar</button>
+    <button class="btn secondary" onclick="toggleFirebasePanel()">Fechar</button>
+  </div>
+</div>
+
+
+<div class="card" id="xlsxMapperCard" style="display:none;margin-bottom:14px">
+  <h3>Importação Excel mapeada</h3>
+  <p class="muted">Depois de carregar um XLSX, escolha a aba, o destino e salve um perfil para reutilizar depois.</p>
+  <div class="row">
+    <div class="c4">
+      <label>Aba da planilha</label>
+      <select id="xlsxSheetSelect"></select>
+    </div>
+    <div class="c4">
+      <label>Destino</label>
+      <select id="xlsxTargetSelect">
+        <option value="clientes">Clientes</option>
+        <option value="contas">Contas</option>
+        <option value="agenda">Agenda</option>
+        <option value="transacoes">Financeiro</option>
+        <option value="orcamentos">Orçamentos</option>
+      </select>
+    </div>
+    <div class="c4">
+      <label>Nome do perfil</label>
+      <input id="xlsxProfileName" placeholder="Ex: Organizze 2026">
+    </div>
+  </div>
+  <div class="row">
+    <div class="c6">
+      <label>Perfis salvos</label>
+      <select id="xlsxSavedProfileSelect"></select>
+    </div>
+    <div class="c6">
+      <label>Ações do perfil</label>
+      <div class="actions">
+        <button class="btn secondary" type="button" onclick="aplicarPerfilSalvo()">Carregar perfil</button>
+        <button class="btn secondary" type="button" onclick="salvarPerfilImportacao()">Salvar perfil</button>
+        <button class="btn red" type="button" onclick="excluirPerfilSalvo()">Excluir perfil</button>
+      </div>
+    </div>
+  </div>
+  <div id="xlsxMapperFields" class="row"></div>
+  <div class="actions">
+    <button class="btn" onclick="aplicarMapeamentoXLSX()">Importar com mapeamento</button>
+    <button class="btn secondary" onclick="fecharMapperXLSX()">Fechar</button>
+  </div>
+</div>
+
+<div class="print-area" id="printArea"></div>
+<script>
+const STORAGE_KEY='oficinaos_v38';
+const STORE_KEYS=['orcamentos','transacoes','recibos','agenda','contas','clientes'];
+const store={orcamentos:[],transacoes:[],recibos:[],agenda:[],contas:[],clientes:[]};
+let editingId=null,editingAgendaId=null,editingContaId=null,editingClienteId=null,agendaView='lista';
+
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const brl=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(store));const el=document.getElementById('syncStatus');if(el)el.textContent='Dados locais salvos no navegador · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); scheduleCloudSync();}
+function load(){const raw=localStorage.getItem(STORAGE_KEY);if(raw){try{Object.assign(store,JSON.parse(raw));}catch(e){}}}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function formatDateBR(iso){if(!iso)return'';const p=iso.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:iso}
+function setActiveTab(n){['dash','orc','fin','rec','age','con','cli','rel'].forEach(x=>{const b=document.getElementById('tab-'+x);if(b)b.classList.toggle('active',x===n);});}
+function show(n){
+  setActiveTab(n);
+  const mapPerm = {dash:'rel',orc:'orc',fin:'fin',rec:'rec',age:'age',con:'con',cli:'cli',rel:'rel'};
+  const permKey = mapPerm[n];
+  if(permKey && n !== 'dash' && !canAccess(permKey)){
+    document.getElementById('app').innerHTML = '<div class="card"><h3>Acesso negado</h3><p class="muted">Seu usuário não tem permissão para este módulo na empresa ativa.</p></div>';
+    return;
+  }
+  ({dash:renderDashboard,orc:renderOrc,fin:renderFin,rec:renderRec,age:renderAgenda,con:renderContas,cli:renderClientes,rel:renderRelatorios}[n]||renderDashboard)();
+}
+
+function ensureStoreShape(obj){const base={orcamentos:[],transacoes:[],recibos:[],agenda:[],contas:[],clientes:[],teamAccess:[],empresa:{}};for(const k of [...STORE_KEYS,'teamAccess']){base[k]=Array.isArray(obj?.[k])?obj[k]:[];}return base;}
+function applyImportedStore(newStore,mode='replace'){
+  const safe=ensureStoreShape(newStore);
+  if(mode==='replace'){
+    for(const k of STORE_KEYS){store[k]=safe[k];}
+  }else{
+    for(const k of STORE_KEYS){store[k]=[...store[k],...safe[k]];}
+  }
+  save();
+  show('orc');
+}
+function exportarJSON(){
+  const payload={...store,exportadoEm:new Date().toISOString(),versao:'V3.8'};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='oficinaos-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+async function importarJSON(file){
+  const text=await file.text();
+  let parsed;
+  try{parsed=JSON.parse(text);}catch(e){alert('JSON inválido.');return;}
+  const safe=ensureStoreShape(parsed);
+  applyImportedStore(safe,'replace');
+  alert('Backup JSON importado.');
+}
+function normalizeKey(s){
+  return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+}
+function firstValue(row, keys){
+  const entries=Object.entries(row||{});
+  for(const [k,v] of entries){
+    const nk=normalizeKey(k);
+    if(keys.includes(nk) && v!==undefined && v!==null && String(v).trim()!=='') return v;
+  }
+  return '';
+}
+function numberFrom(v){
+  if(typeof v==='number') return v;
+  let s=String(v||'').trim();
+  if(!s) return 0;
+  s=s.replace(/\./g,'').replace(',','.');
+  const n=Number(s);
+  return Number.isFinite(n)?n:0;
+}
+function excelDateToISO(value){
+  if(value instanceof Date){
+    const y=value.getFullYear(),m=String(value.getMonth()+1).padStart(2,'0'),d=String(value.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  if(typeof value==='number'){
+    const utc_days=Math.floor(value - 25569);
+    const utc_value=utc_days * 86400;
+    const date=new Date(utc_value * 1000);
+    const y=date.getUTCFullYear(),m=String(date.getUTCMonth()+1).padStart(2,'0'),d=String(date.getUTCDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  const s=String(value||'').trim();
+  if(!s) return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const br=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(br) return `${br[3]}-${String(br[2]).padStart(2,'0')}-${String(br[1]).padStart(2,'0')}`;
+  return '';
+}
+function parseSheetRows(rows, sheetName){
+  const name=normalizeKey(sheetName);
+  const result={orcamentos:[],transacoes:[],recibos:[],agenda:[],contas:[],clientes:[]};
+  rows.forEach(row=>{
+    const cliente=String(firstValue(row,['cliente','nome cliente','cliente nome'])||'').trim();
+    const telefone=String(firstValue(row,['telefone','whatsapp','celular'])||'').trim();
+    const email=String(firstValue(row,['email','e mail'])||'').trim();
+    const veiculo=String(firstValue(row,['veiculo','carro','modelo'])||'').trim();
+    const servico=String(firstValue(row,['servico','descricao','descricao servico','servico principal'])||'').trim();
+    const valor=numberFrom(firstValue(row,['valor','total','valor total','receita']));
+    const data=excelDateToISO(firstValue(row,['data','vencimento','entrada','entrega'])) || todayISO();
+    const status=String(firstValue(row,['status','situacao'])||'').toLowerCase().trim();
+
+    if(name.includes('cliente')){
+      if(cliente || firstValue(row,['nome'])) {
+        result.clientes.push({
+          id:uid(),
+          nome: cliente || String(firstValue(row,['nome'])||'').trim(),
+          telefone,
+          email,
+          veiculos: veiculo ? [veiculo] : [],
+          observacoes:String(firstValue(row,['observacoes','obs'])||'').trim()
+        });
+      }
+      return;
+    }
+    if(name.includes('conta')){
+      const nomeConta=String(firstValue(row,['conta','nome','descricao'])||'').trim();
+      if(nomeConta){
+        result.contas.push({
+          id:uid(),
+          nome:nomeConta,
+          categoria:String(firstValue(row,['categoria'])||'').trim(),
+          vencimento:data,
+          valor,
+          status: status==='pago' ? 'pago' : 'pendente',
+          recorrente:false,
+          observacoes:String(firstValue(row,['observacoes','obs'])||'').trim()
+        });
+      }
+      return;
+    }
+    if(name.includes('agenda')){
+      if(cliente || servico){
+        result.agenda.push({
+          id:uid(),
+          cliente,
+          veiculo,
+          servico,
+          entrada: excelDateToISO(firstValue(row,['entrada','data entrada'])) || todayISO(),
+          entrega: excelDateToISO(firstValue(row,['entrega','data entrega'])) || '',
+          status: status==='pronto' ? 'pronto' : status.includes('serv') ? 'em_servico' : 'aguardando',
+          valor,
+          observacoes:String(firstValue(row,['observacoes','obs'])||'').trim()
+        });
+      }
+      return;
+    }
+    if(name.includes('finance') || name.includes('transa') || name.includes('receita') || name.includes('lancamento')){
+      const descricao=String(firstValue(row,['descricao','servico','historico'])||'').trim();
+      if(descricao || valor){
+        result.transacoes.push({
+          id:uid(),
+          descricao: descricao || servico || cliente || 'Importado XLSX',
+          valor,
+          data: formatDateBR(data),
+          pago: status==='pago'
+        });
+      }
+      return;
+    }
+    if(name.includes('orc')){
+      if(cliente || servico || valor){
+        result.orcamentos.push({
+          id:uid(),
+          cliente,
+          telefoneCliente:telefone,
+          veiculo,
+          servicoPrincipal:servico || 'Importado XLSX',
+          observacoes:String(firstValue(row,['observacoes','obs'])||'').trim(),
+          maoObra:{desmontagem:0,funilaria:0,solda:0,preparacao:0,pintura:0,montagem:0,polimento:0,valorHora:0,total:0},
+          materiais:[],
+          itens:[],
+          lucroPerc:0,
+          lucroValor:0,
+          desconto:0,
+          custoBase:valor,
+          total:valor,
+          status: status==='aprovado' ? 'aprovado' : 'pendente',
+          criadoEm:new Date().toISOString()
+        });
+      }
+      return;
+    }
+    // fallback: tenta identificar pela estrutura
+    if(cliente || telefone || email){
+      result.clientes.push({id:uid(),nome:cliente||String(firstValue(row,['nome'])||'').trim(),telefone,email,veiculos:veiculo?[veiculo]:[],observacoes:''});
+    }
+    if((servico || valor) && cliente){
+      result.orcamentos.push({
+        id:uid(),cliente,telefoneCliente:telefone,veiculo,servicoPrincipal:servico||'Importado XLSX',observacoes:'',
+        maoObra:{desmontagem:0,funilaria:0,solda:0,preparacao:0,pintura:0,montagem:0,polimento:0,valorHora:0,total:0},
+        materiais:[],itens:[],lucroPerc:0,lucroValor:0,desconto:0,custoBase:valor,total:valor,status:'pendente',criadoEm:new Date().toISOString()
+      });
+    }
+  });
+  return result;
+}
+async function importarXLSX(file){
+  if(typeof XLSX==='undefined'){ alert('Biblioteca XLSX não carregou. Abra com internet para usar importação Excel.'); return; }
+  const data=await file.arrayBuffer();
+  const wb=XLSX.read(data,{type:'array',cellDates:true});
+  const merged={orcamentos:[],transacoes:[],recibos:[],agenda:[],contas:[],clientes:[]};
+  wb.SheetNames.forEach(sheetName=>{
+    const ws=wb.Sheets[sheetName];
+    const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+    const part=parseSheetRows(rows,sheetName);
+    for(const k of STORE_KEYS){ merged[k].push(...part[k]); }
+  });
+  // dedup clientes por nome
+  const seen=new Set();
+  merged.clientes=merged.clientes.filter(c=>{
+    const key=normalizeKey(c.nome);
+    if(!key || seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  // vincula clientes de outros módulos
+  [...merged.orcamentos,...merged.agenda].forEach(x=>{
+    if(x.cliente) {
+      let c=merged.clientes.find(v=>normalizeKey(v.nome)===normalizeKey(x.cliente));
+      if(!c){ c={id:uid(),nome:x.cliente,telefone:x.telefoneCliente||'',email:'',veiculos:[],observacoes:''}; merged.clientes.push(c); }
+      if(x.veiculo && !c.veiculos.includes(x.veiculo)) c.veiculos.push(x.veiculo);
+    }
+  });
+  applyImportedStore(merged,'merge');
+  alert('XLSX importado. Confira os módulos para revisar os dados.');
+}
+document.getElementById('importJsonInput').addEventListener('change', async e=>{
+  const file=e.target.files[0];
+  if(file) await importarJSON(file);
+  e.target.value='';
+});
+document.getElementById('importXlsxInput').addEventListener('change', async e=>{
+  const file=e.target.files[0];
+  if(file){
+    if(typeof XLSX==='undefined'){ alert('Biblioteca XLSX não carregou. Abra com internet para usar importação Excel.'); e.target.value=''; return; }
+    const data=await file.arrayBuffer();
+    const wb=XLSX.read(data,{type:'array',cellDates:true});
+    abrirMapperXLSX(wb);
+  }
+  e.target.value='';
+});
+
+function monthKeyFromTransacaoData(data){
+  const p=String(data||'').split('/');
+  return p.length===3?`${p[2]}-${p[1]}`:todayISO().slice(0,7);
+}
+function clienteMetrics(nome){
+  const orcs=store.orcamentos.filter(x=>x.cliente===nome), ags=store.agenda.filter(x=>x.cliente===nome), txs=store.transacoes.filter(x=>{const o=store.orcamentos.find(or=>or.id===x.orcamentoId);return o&&o.cliente===nome;});
+  return{orcamentos:orcs.length,agenda:ags.length,faturado:txs.reduce((a,b)=>a+Number(b.valor||0),0),veiculos:[...new Set(orcs.map(x=>x.veiculo).concat(ags.map(x=>x.veiculo)).filter(Boolean))]};
+}
+
+// orçamento
+function processFields(){return['desmontagem','funilaria','solda','preparacao','pintura','montagem','polimento'];}
+function calcMo(){const horas=processFields().reduce((a,k)=>a+Number(document.getElementById('mo_'+k)?.value||0),0), valorHora=Number(document.getElementById('valorHora')?.value||0), total=horas*valorHora;document.getElementById('horasTotais').textContent=horas.toFixed(1).replace('.',',')+' h';document.getElementById('moTotal').textContent=brl(total);document.getElementById('moBase').value=total.toFixed(2);recalc();}
+function sumRows(rows){return rows.reduce((a,b)=>a+Number(b.total||0),0);}
+function parseRows(cls){return [...document.querySelectorAll('.'+cls+'-row')].map(row=>{const nome=row.querySelector('[data-field="nome"]').value.trim();const tipo=row.querySelector('[data-field="tipo"]')?row.querySelector('[data-field="tipo"]').value:cls;const qtd=Number(row.querySelector('[data-field="qtd"]').value||0);const valor=Number(row.querySelector('[data-field="valor"]').value||0);return{nome,tipo,qtd,valor,total:qtd*valor};}).filter(x=>x.nome||x.qtd||x.valor);}
+function addItemRow(data={}){const box=document.getElementById('itensBox');const div=document.createElement('div');div.className='item-line item-row';div.innerHTML=`<div class="row"><div class="c4"><label>Tipo</label><select data-field="tipo" onchange="recalc()"><option value="servico" ${data.tipo==='servico'?'selected':''}>Serviço</option><option value="peca" ${data.tipo==='peca'?'selected':''}>Peça</option><option value="terceiro" ${data.tipo==='terceiro'?'selected':''}>Terceiro</option></select></div><div class="c4"><label>Descrição</label><input data-field="nome" value="${esc(data.nome||'')}" oninput="recalc()"></div><div class="c2"><label>Qtd</label><input data-field="qtd" type="number" min="0" step="1" value="${Number(data.qtd||1)}" oninput="recalc()"></div><div class="c2"><label>Valor unit.</label><input data-field="valor" type="number" min="0" step="0.01" value="${Number(data.valor||0)}" oninput="recalc()"></div></div><div class="actions"><button class="btn secondary" type="button" onclick="removeRow(this)">Remover item</button></div>`;box.appendChild(div);recalc();}
+function addMaterialRow(data={}){const box=document.getElementById('materiaisBox');const div=document.createElement('div');div.className='item-line material-row';div.innerHTML=`<div class="row"><div class="c6"><label>Material</label><input data-field="nome" value="${esc(data.nome||'')}" oninput="recalc()"></div><div class="c3"><label>Qtd</label><input data-field="qtd" type="number" min="0" step="0.01" value="${Number(data.qtd||1)}" oninput="recalc()"></div><div class="c3"><label>Custo unit.</label><input data-field="valor" type="number" min="0" step="0.01" value="${Number(data.valor||0)}" oninput="recalc()"></div></div><div class="actions"><button class="btn secondary" type="button" onclick="removeRow(this)">Remover material</button></div>`;box.appendChild(div);recalc();}
+function removeRow(btn){btn.closest('.item-line').remove();recalc();}
+function recalc(){const mo=Number(document.getElementById('moBase')?.value||0), materiais=parseRows('material'), itens=parseRows('item');const totalMateriais=sumRows(materiais), totalItens=sumRows(itens), custoBase=mo+totalMateriais+totalItens, lucroPerc=Number(document.getElementById('lucroPerc')?.value||0), desconto=Number(document.getElementById('desconto')?.value||0), lucroValor=custoBase*(lucroPerc/100), totalFinal=Math.max(0,custoBase+lucroValor-desconto);document.getElementById('outMo').textContent=brl(mo);document.getElementById('outMateriais').textContent=brl(totalMateriais);document.getElementById('outItens').textContent=brl(totalItens);document.getElementById('outCusto').textContent=brl(custoBase);document.getElementById('outLucro').textContent=brl(lucroValor);document.getElementById('outDesconto').textContent=brl(desconto);document.getElementById('outTotal').textContent=brl(totalFinal);}
+function clearForm(){editingId=null;document.getElementById('orcForm').reset();document.getElementById('itensBox').innerHTML='';document.getElementById('materiaisBox').innerHTML='';processFields().forEach(k=>document.getElementById('mo_'+k).value=0);document.getElementById('moBase').value='0';addItemRow({tipo:'servico',qtd:1,valor:0});addMaterialRow({qtd:1,valor:0});calcMo();document.getElementById('saveBtnLabel').textContent='Criar orçamento';}
+function collectOrcamento(){const cliente=document.getElementById('cliente').value.trim(), telefone=document.getElementById('telefoneCliente').value.trim(), veiculo=document.getElementById('veiculo').value.trim(), servicoPrincipal=document.getElementById('servicoPrincipal').value.trim(), observacoes=document.getElementById('observacoes').value.trim();if(!cliente||!veiculo||!servicoPrincipal){alert('Preencha cliente, veículo e serviço principal.');return null;}const maoObra={desmontagem:+document.getElementById('mo_desmontagem').value||0,funilaria:+document.getElementById('mo_funilaria').value||0,solda:+document.getElementById('mo_solda').value||0,preparacao:+document.getElementById('mo_preparacao').value||0,pintura:+document.getElementById('mo_pintura').value||0,montagem:+document.getElementById('mo_montagem').value||0,polimento:+document.getElementById('mo_polimento').value||0,valorHora:+document.getElementById('valorHora').value||0,total:+document.getElementById('moBase').value||0};const materiais=parseRows('material'), itens=parseRows('item'), totalMateriais=sumRows(materiais), totalItens=sumRows(itens), custoBase=maoObra.total+totalMateriais+totalItens, lucroPerc=+document.getElementById('lucroPerc').value||0, desconto=+document.getElementById('desconto').value||0, lucroValor=custoBase*(lucroPerc/100), total=Math.max(0,custoBase+lucroValor-desconto);return{id:editingId||uid(),cliente,telefoneCliente:telefone,veiculo,servicoPrincipal,observacoes,maoObra,materiais,itens,lucroPerc,lucroValor,desconto,custoBase,total,status:editingId?(store.orcamentos.find(x=>x.id===editingId)?.status||'pendente'):'pendente',criadoEm:editingId?(store.orcamentos.find(x=>x.id===editingId)?.criadoEm||new Date().toISOString()):new Date().toISOString()};}
+function salvarOrcamento(){ if(!assertWrite('orc')) return; const data=collectOrcamento();if(!data)return;ensureCliente(data.cliente,data.telefoneCliente,data.veiculo);const idx=store.orcamentos.findIndex(x=>x.id===data.id);if(idx>=0){const prev=store.orcamentos[idx];store.orcamentos[idx]=data;const tx=store.transacoes.find(t=>t.orcamentoId===data.id);if(tx){tx.descricao=data.servicoPrincipal+' · '+data.cliente;tx.valor=data.total;}const rec=store.recibos.find(r=>r.orcamentoId===data.id);if(rec){rec.cliente=data.cliente;rec.veiculo=data.veiculo;rec.valor=data.total;rec.servico=data.servicoPrincipal;}const ag=store.agenda.find(a=>a.orcamentoId===data.id);if(ag){ag.cliente=data.cliente;ag.veiculo=data.veiculo;ag.servico=data.servicoPrincipal;ag.valor=data.total;}if(prev.status==='aprovado'&&data.status!=='aprovado')store.orcamentos[idx].status='aprovado';}else store.orcamentos.unshift(data);save();clearForm();renderOrc();}
+function editarOrcamento(id){const o=store.orcamentos.find(x=>x.id===id);if(!o)return;editingId=id;document.getElementById('cliente').value=o.cliente||'';document.getElementById('telefoneCliente').value=o.telefoneCliente||'';document.getElementById('veiculo').value=o.veiculo||'';document.getElementById('servicoPrincipal').value=o.servicoPrincipal||'';document.getElementById('observacoes').value=o.observacoes||'';document.getElementById('valorHora').value=o.maoObra?.valorHora||0;processFields().forEach(k=>document.getElementById('mo_'+k).value=o.maoObra?.[k]||0);document.getElementById('lucroPerc').value=o.lucroPerc||0;document.getElementById('desconto').value=o.desconto||0;document.getElementById('itensBox').innerHTML='';document.getElementById('materiaisBox').innerHTML='';(o.itens||[]).forEach(addItemRow);(o.materiais||[]).forEach(addMaterialRow);if(!(o.itens||[]).length)addItemRow({tipo:'servico',qtd:1,valor:0});if(!(o.materiais||[]).length)addMaterialRow({qtd:1,valor:0});calcMo();document.getElementById('saveBtnLabel').textContent='Salvar edição';window.scrollTo({top:0,behavior:'smooth'});}
+function aprovarOrcamento(id){ if(!assertWrite('orc')) return; const o=store.orcamentos.find(x=>x.id===id);if(!o)return;o.status='aprovado';ensureCliente(o.cliente,o.telefoneCliente||'',o.veiculo);let tx=store.transacoes.find(t=>t.orcamentoId===id);if(!tx)store.transacoes.unshift({id:uid(),orcamentoId:id,descricao:o.servicoPrincipal+' · '+o.cliente,valor:o.total,data:new Date().toLocaleDateString('pt-BR'),pago:false});else{tx.descricao=o.servicoPrincipal+' · '+o.cliente;tx.valor=o.total;}let rec=store.recibos.find(r=>r.orcamentoId===id);if(!rec)store.recibos.unshift({id:uid(),orcamentoId:id,cliente:o.cliente,veiculo:o.veiculo,servico:o.servicoPrincipal,valor:o.total,data:new Date().toLocaleDateString('pt-BR')});else{rec.cliente=o.cliente;rec.veiculo=o.veiculo;rec.servico=o.servicoPrincipal;rec.valor=o.total;}let ag=store.agenda.find(a=>a.orcamentoId===id);if(!ag)store.agenda.unshift({id:uid(),orcamentoId:id,cliente:o.cliente,veiculo:o.veiculo,servico:o.servicoPrincipal,entrada:todayISO(),entrega:'',status:'aguardando',valor:o.total,observacoes:''});save();renderOrc();}
+function removerOrcamento(id){ if(!assertWrite('orc')) return; if(!confirm('Excluir este orçamento?'))return;store.orcamentos=store.orcamentos.filter(x=>x.id!==id);store.transacoes=store.transacoes.filter(x=>x.orcamentoId!==id);store.recibos=store.recibos.filter(x=>x.orcamentoId!==id);store.agenda=store.agenda.filter(x=>x.orcamentoId!==id);save();renderOrc();}
+function imprimirOrcamentoCliente(id){const o=store.orcamentos.find(x=>x.id===id);if(!o)return;const itensCliente=(o.itens||[]).filter(i=>i.tipo!=='interno');document.getElementById('printArea').innerHTML=`<h1>Orçamento para Cliente</h1><p><strong>Cliente:</strong> ${esc(o.cliente)}</p><p><strong>Veículo:</strong> ${esc(o.veiculo)}</p><p><strong>Serviço principal:</strong> ${esc(o.servicoPrincipal)}</p><table><thead><tr><th>Tipo</th><th>Descrição</th><th>Qtd</th><th>Valor</th><th>Total</th></tr></thead><tbody>${itensCliente.map(i=>`<tr><td>${esc(i.tipo)}</td><td>${esc(i.nome)}</td><td>${Number(i.qtd||0)}</td><td>${brl(i.valor)}</td><td>${brl(i.total)}</td></tr>`).join('')}</tbody></table><hr><p><strong>Mão de obra:</strong> ${brl(o.maoObra?.total||0)}</p><p><strong>Lucro aplicado:</strong> ${brl(o.lucroValor||0)} (${Number(o.lucroPerc||0)}%)</p><p><strong>Desconto:</strong> ${brl(o.desconto||0)}</p><h2>Total: ${brl(o.total)}</h2>`;window.print();}
+function renderOrc(){document.getElementById('app').innerHTML=`<div class="grid grid-2"><div class="card"><h3>V3.8 · Cálculo completo</h3><div class="notice">Backup JSON e Importação XLSX ficam no topo do sistema.</div><form id="orcForm" onsubmit="event.preventDefault();salvarOrcamento();"><div class="row"><div class="c4"><label>Cliente</label><input id="cliente"></div><div class="c4"><label>Telefone</label><input id="telefoneCliente"></div><div class="c4"><label>Veículo</label><input id="veiculo"></div><div class="c12"><label>Serviço principal</label><input id="servicoPrincipal"></div></div><label>Observações</label><textarea id="observacoes"></textarea><div class="card" style="padding:12px;margin-top:12px;background:#fcfaf8"><div class="row"><div class="c3"><label>Desmontagem</label><input id="mo_desmontagem" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Funilaria</label><input id="mo_funilaria" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Solda</label><input id="mo_solda" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Preparação</label><input id="mo_preparacao" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Pintura</label><input id="mo_pintura" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Montagem</label><input id="mo_montagem" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Polimento</label><input id="mo_polimento" type="number" min="0" step="0.1" value="0" oninput="calcMo()"></div><div class="c3"><label>Valor/hora</label><input id="valorHora" type="number" min="0" step="0.01" value="100" oninput="calcMo()"></div></div><div class="actions"><span class="pill pending">Horas totais: <strong id="horasTotais">0,0 h</strong></span><span class="pill approved">MO: <strong id="moTotal">R$ 0,00</strong></span></div><input id="moBase" type="hidden" value="0"></div><div class="card" style="padding:12px;margin-top:12px;background:#fcfaf8"><h4>Itens do orçamento</h4><div id="itensBox"></div><div class="actions"><button class="btn secondary" type="button" onclick="addItemRow({tipo:'servico',qtd:1,valor:0})">+ Adicionar item</button></div></div><div class="card" style="padding:12px;margin-top:12px;background:#fcfaf8"><h4>Materiais internos</h4><div id="materiaisBox"></div><div class="actions"><button class="btn secondary" type="button" onclick="addMaterialRow({qtd:1,valor:0})">+ Adicionar material</button></div></div><div class="row"><div class="c6"><label>Lucro (%)</label><input id="lucroPerc" type="number" min="0" step="0.1" value="30" oninput="recalc()"></div><div class="c6"><label>Desconto (R$)</label><input id="desconto" type="number" min="0" step="0.01" value="0" oninput="recalc()"></div></div><div class="actions"><button class="btn" id="saveBtnLabel" type="submit">Criar orçamento</button><button class="btn secondary" type="button" onclick="clearForm()">Limpar</button></div></form></div><div><div class="card"><h4>Resumo do cálculo</h4><div class="total-row"><span>Mão de obra</span><strong id="outMo">${brl(0)}</strong></div><div class="total-row"><span>Materiais internos</span><strong id="outMateriais">${brl(0)}</strong></div><div class="total-row"><span>Itens do orçamento</span><strong id="outItens">${brl(0)}</strong></div><div class="total-row"><span>Custo base</span><strong id="outCusto">${brl(0)}</strong></div><div class="total-row"><span>Lucro</span><strong id="outLucro">${brl(0)}</strong></div><div class="total-row"><span>Desconto</span><strong id="outDesconto">${brl(0)}</strong></div><div class="total-row"><span>Total final</span><strong class="grand" id="outTotal">${brl(0)}</strong></div></div><div class="card"><h4>Orçamentos salvos</h4>${store.orcamentos.length?`<table><thead><tr><th>Cliente</th><th>Status</th><th>Total</th><th></th></tr></thead><tbody>${store.orcamentos.map(o=>`<tr><td><strong>${esc(o.cliente)}</strong><br><span class="muted">${esc(o.veiculo)} · ${esc(o.servicoPrincipal)}</span></td><td><span class="pill ${o.status==='aprovado'?'approved':'pending'}">${o.status}</span></td><td><strong>${brl(o.total)}</strong></td><td class="right"><div class="actions" style="justify-content:flex-end"><button class="btn secondary" onclick="editarOrcamento('${o.id}')">Editar</button><button class="btn secondary" onclick="imprimirOrcamentoCliente('${o.id}')">Cliente / PDF</button>${o.status==='pendente'?`<button class="btn green" onclick="aprovarOrcamento('${o.id}')">Aprovar</button>`:''}<button class="btn red" onclick="removerOrcamento('${o.id}')">Excluir</button></div></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhum orçamento ainda.</p>`}</div></div></div>`;if(!document.getElementById('itensBox').children.length)addItemRow({tipo:'servico',qtd:1,valor:0});if(!document.getElementById('materiaisBox').children.length)addMaterialRow({qtd:1,valor:0});calcMo();}
+
+// financeiro
+function togglePago(id){const t=store.transacoes.find(x=>x.id===id);if(!t)return;t.pago=!t.pago;save();renderFin();}
+function renderFin(){const totalReceitas=store.transacoes.reduce((a,b)=>a+Number(b.valor||0),0), totalAReceber=store.transacoes.filter(x=>!x.pago).reduce((a,b)=>a+Number(b.valor||0),0), totalPago=store.transacoes.filter(x=>x.pago).reduce((a,b)=>a+Number(b.valor||0),0);document.getElementById('app').innerHTML=`<div class="kpis"><div class="kpi"><div class="muted">Receitas</div><div class="v">${brl(totalReceitas)}</div></div><div class="kpi"><div class="muted">Pago</div><div class="v" style="color:var(--g)">${brl(totalPago)}</div></div><div class="kpi"><div class="muted">A receber</div><div class="v" style="color:var(--r)">${brl(totalAReceber)}</div></div><div class="kpi"><div class="muted">Lançamentos</div><div class="v">${store.transacoes.length}</div></div></div><div class="card" style="margin-top:14px"><h3>Financeiro</h3>${store.transacoes.length?`<table><thead><tr><th>Descrição</th><th>Data</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>${store.transacoes.map(t=>`<tr><td>${esc(t.descricao)}</td><td>${esc(t.data)}</td><td><strong>${brl(t.valor)}</strong></td><td><span class="pill ${t.pago?'paid':'unpaid'}">${t.pago?'Pago':'Pendente'}</span></td><td class="right"><button class="btn secondary" onclick="togglePago('${t.id}')">${t.pago?'Desfazer':'Marcar pago'}</button></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhuma receita lançada.</p>`}</div>`;}
+
+// recibos
+function printRecibo(id){const r=store.recibos.find(x=>x.id===id);if(!r)return;document.getElementById('printArea').innerHTML=`<h1>Recibo</h1><p><strong>Cliente:</strong> ${esc(r.cliente)}</p><p><strong>Veículo:</strong> ${esc(r.veiculo||'')}</p><p><strong>Serviço:</strong> ${esc(r.servico||'')}</p><p><strong>Valor:</strong> ${brl(r.valor)}</p><p><strong>Data:</strong> ${esc(r.data)}</p>`;window.print();}
+function renderRec(){document.getElementById('app').innerHTML=`<div class="card"><h3>Recibos</h3>${store.recibos.length?`<table><thead><tr><th>Cliente</th><th>Serviço</th><th>Data</th><th>Valor</th><th></th></tr></thead><tbody>${store.recibos.map(r=>`<tr><td>${esc(r.cliente)}</td><td>${esc(r.servico||'')}</td><td>${esc(r.data)}</td><td><strong>${brl(r.valor)}</strong></td><td class="right"><button class="btn secondary" onclick="printRecibo('${r.id}')">Imprimir</button></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhum recibo gerado.</p>`}</div>`;}
+
+// agenda
+function clearAgendaForm(){editingAgendaId=null;if(document.getElementById('agendaForm'))document.getElementById('agendaForm').reset();const btn=document.getElementById('agendaSaveLabel');if(btn)btn.textContent='Salvar na agenda';}
+function collectAgenda(){const cliente=document.getElementById('ag_cliente').value.trim(),veiculo=document.getElementById('ag_veiculo').value.trim(),servico=document.getElementById('ag_servico').value.trim(),entrada=document.getElementById('ag_entrada').value,entrega=document.getElementById('ag_entrega').value,status=document.getElementById('ag_status').value,valor=+document.getElementById('ag_valor').value||0,observacoes=document.getElementById('ag_obs').value.trim();if(!cliente||!veiculo||!servico){alert('Preencha cliente, veículo e serviço da agenda.');return null;}return{id:editingAgendaId||uid(),cliente,veiculo,servico,entrada,entrega,status,valor,observacoes};}
+function salvarAgenda(){ if(!assertWrite('age')) return; const data=collectAgenda();if(!data)return;ensureCliente(data.cliente,'',data.veiculo);const idx=store.agenda.findIndex(x=>x.id===data.id);if(idx>=0)store.agenda[idx]={...store.agenda[idx],...data};else store.agenda.unshift(data);save();clearAgendaForm();renderAgenda();}
+function editarAgenda(id){const a=store.agenda.find(x=>x.id===id);if(!a)return;editingAgendaId=id;document.getElementById('ag_cliente').value=a.cliente||'';document.getElementById('ag_veiculo').value=a.veiculo||'';document.getElementById('ag_servico').value=a.servico||'';document.getElementById('ag_entrada').value=a.entrada||'';document.getElementById('ag_entrega').value=a.entrega||'';document.getElementById('ag_status').value=a.status||'aguardando';document.getElementById('ag_valor').value=a.valor||0;document.getElementById('ag_obs').value=a.observacoes||'';document.getElementById('agendaSaveLabel').textContent='Salvar edição';window.scrollTo({top:0,behavior:'smooth'});}
+function removerAgenda(id){ if(!assertWrite('age')) return; if(!confirm('Excluir este serviço da agenda?'))return;store.agenda=store.agenda.filter(x=>x.id!==id);save();renderAgenda();}
+function moveAgendaStatus(id,status){ if(!assertWrite('age')) return; const a=store.agenda.find(x=>x.id===id);if(!a)return;a.status=status;save();renderAgenda();}
+function agendaStatusClass(status){return status==='aguardando'?'pending':status==='em_servico'?'today':'approved';}
+function renderAgendaList(){return `<div class="card"><h3>Lista da agenda</h3>${store.agenda.length?`<table><thead><tr><th>Cliente</th><th>Entrada</th><th>Entrega</th><th>Status</th><th>Valor</th><th></th></tr></thead><tbody>${store.agenda.map(a=>`<tr><td><strong>${esc(a.cliente)}</strong><br><span class="muted">${esc(a.veiculo)} · ${esc(a.servico)}</span></td><td>${formatDateBR(a.entrada)}</td><td>${formatDateBR(a.entrega)}</td><td><span class="pill ${agendaStatusClass(a.status)}">${a.status.replace('_',' ')}</span></td><td>${brl(a.valor)}</td><td class="right"><div class="actions" style="justify-content:flex-end"><button class="btn secondary" onclick="editarAgenda('${a.id}')">Editar</button><button class="btn blue" onclick="moveAgendaStatus('${a.id}','em_servico')">Em serviço</button><button class="btn green" onclick="moveAgendaStatus('${a.id}','pronto')">Pronto</button><button class="btn red" onclick="removerAgenda('${a.id}')">Excluir</button></div></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhum serviço na agenda.</p>`}</div>`;}
+function renderAgendaKanban(){const cols=[{key:'aguardando',title:'Aguardando'},{key:'em_servico',title:'Em serviço'},{key:'pronto',title:'Pronto'}];return `<div class="card"><h3>Kanban</h3><div class="kanban">${cols.map(col=>`<div class="kanban-col"><strong>${col.title}</strong>${store.agenda.filter(a=>a.status===col.key).map(a=>`<div class="kanban-card"><strong>${esc(a.cliente)}</strong><br><span class="muted">${esc(a.veiculo)} · ${esc(a.servico)}</span><br><span class="muted">Entrega: ${formatDateBR(a.entrega)}</span><div class="actions">${col.key!=='aguardando'?`<button class="btn secondary" onclick="moveAgendaStatus('${a.id}','aguardando')">←</button>`:''}${col.key==='aguardando'?`<button class="btn blue" onclick="moveAgendaStatus('${a.id}','em_servico')">→ Em serviço</button>`:''}${col.key==='em_servico'?`<button class="btn green" onclick="moveAgendaStatus('${a.id}','pronto')">→ Pronto</button>`:''}</div></div>`).join('')||`<p class="muted">Sem itens</p>`}</div>`).join('')}</div></div>`;}
+function renderAgenda(){const total=store.agenda.length, aguardando=store.agenda.filter(x=>x.status==='aguardando').length, emServico=store.agenda.filter(x=>x.status==='em_servico').length, prontos=store.agenda.filter(x=>x.status==='pronto').length;document.getElementById('app').innerHTML=`<div class="kpis"><div class="kpi"><div class="muted">Total na agenda</div><div class="v">${total}</div></div><div class="kpi"><div class="muted">Aguardando</div><div class="v" style="color:var(--a)">${aguardando}</div></div><div class="kpi"><div class="muted">Em serviço</div><div class="v" style="color:var(--b)">${emServico}</div></div><div class="kpi"><div class="muted">Pronto</div><div class="v" style="color:var(--g)">${prontos}</div></div></div><div class="grid grid-2" style="margin-top:14px"><div class="card"><h3>Cadastro na agenda</h3><form id="agendaForm" onsubmit="event.preventDefault();salvarAgenda();"><div class="row"><div class="c4"><label>Cliente</label><input id="ag_cliente"></div><div class="c4"><label>Veículo</label><input id="ag_veiculo"></div><div class="c4"><label>Serviço</label><input id="ag_servico"></div><div class="c3"><label>Entrada</label><input id="ag_entrada" type="date" value="${todayISO()}"></div><div class="c3"><label>Entrega</label><input id="ag_entrega" type="date"></div><div class="c3"><label>Status</label><select id="ag_status"><option value="aguardando">Aguardando</option><option value="em_servico">Em serviço</option><option value="pronto">Pronto</option></select></div><div class="c3"><label>Valor</label><input id="ag_valor" type="number" min="0" step="0.01" value="0"></div></div><label>Observações</label><textarea id="ag_obs"></textarea><div class="actions"><button class="btn" id="agendaSaveLabel" type="submit">Salvar na agenda</button><button class="btn secondary" type="button" onclick="clearAgendaForm()">Limpar</button><button class="btn secondary" type="button" onclick="agendaView='lista';renderAgenda()">Lista</button><button class="btn secondary" type="button" onclick="agendaView='kanban';renderAgenda()">Kanban</button></div></form></div>${agendaView==='kanban'?renderAgendaKanban():renderAgendaList()}</div>`;}
+
+// contas
+function clearContaForm(){editingContaId=null;if(document.getElementById('contaForm'))document.getElementById('contaForm').reset();const btn=document.getElementById('contaSaveLabel');if(btn)btn.textContent='Salvar conta';}
+function collectConta(){const nome=document.getElementById('co_nome').value.trim(),categoria=document.getElementById('co_categoria').value.trim(),vencimento=document.getElementById('co_vencimento').value,valor=+document.getElementById('co_valor').value||0,status=document.getElementById('co_status').value,recorrente=document.getElementById('co_recorrente').checked,observacoes=document.getElementById('co_obs').value.trim();if(!nome||!vencimento){alert('Preencha nome e vencimento da conta.');return null;}return{id:editingContaId||uid(),nome,categoria,vencimento,valor,status,recorrente,observacoes};}
+function salvarConta(){ if(!assertWrite('con')) return; const data=collectConta();if(!data)return;const idx=store.contas.findIndex(x=>x.id===data.id);if(idx>=0)store.contas[idx]={...store.contas[idx],...data};else store.contas.unshift(data);save();clearContaForm();renderContas();}
+function editarConta(id){const c=store.contas.find(x=>x.id===id);if(!c)return;editingContaId=id;document.getElementById('co_nome').value=c.nome||'';document.getElementById('co_categoria').value=c.categoria||'';document.getElementById('co_vencimento').value=c.vencimento||'';document.getElementById('co_valor').value=c.valor||0;document.getElementById('co_status').value=c.status||'pendente';document.getElementById('co_recorrente').checked=!!c.recorrente;document.getElementById('co_obs').value=c.observacoes||'';document.getElementById('contaSaveLabel').textContent='Salvar edição';window.scrollTo({top:0,behavior:'smooth'});}
+function removerConta(id){ if(!assertWrite('con')) return; if(!confirm('Excluir esta conta?'))return;store.contas=store.contas.filter(x=>x.id!==id);save();renderContas();}
+function marcarContaPaga(id){ if(!assertWrite('con')) return; const c=store.contas.find(x=>x.id===id);if(!c)return;c.status=c.status==='pago'?'pendente':'pago';save();renderContas();}
+function contaStatusReal(c){if(c.status==='pago')return'pago';return c.vencimento&&c.vencimento<todayISO()?'atrasado':'pendente';}
+function contaPillClass(status){return status==='pago'?'paid':status==='atrasado'?'overdue':'pending';}
+function renderContas(){const avaliadas=store.contas.map(c=>({...c,statusReal:contaStatusReal(c)})), pendenteValor=avaliadas.filter(c=>c.statusReal==='pendente').reduce((a,b)=>a+Number(b.valor||0),0), atrasadoValor=avaliadas.filter(c=>c.statusReal==='atrasado').reduce((a,b)=>a+Number(b.valor||0),0), pagoValor=avaliadas.filter(c=>c.statusReal==='pago').reduce((a,b)=>a+Number(b.valor||0),0);document.getElementById('app').innerHTML=`<div class="kpis"><div class="kpi"><div class="muted">Pendentes</div><div class="v" style="color:var(--a)">${brl(pendenteValor)}</div></div><div class="kpi"><div class="muted">Atrasadas</div><div class="v" style="color:var(--r)">${brl(atrasadoValor)}</div></div><div class="kpi"><div class="muted">Pagas</div><div class="v" style="color:var(--g)">${brl(pagoValor)}</div></div><div class="kpi"><div class="muted">Total contas</div><div class="v">${store.contas.length}</div></div></div><div class="grid grid-2" style="margin-top:14px"><div class="card"><h3>Cadastro de contas</h3><form id="contaForm" onsubmit="event.preventDefault();salvarConta();"><div class="row"><div class="c6"><label>Nome</label><input id="co_nome"></div><div class="c6"><label>Categoria</label><input id="co_categoria"></div><div class="c4"><label>Vencimento</label><input id="co_vencimento" type="date" value="${todayISO()}"></div><div class="c4"><label>Valor</label><input id="co_valor" type="number" min="0" step="0.01" value="0"></div><div class="c4"><label>Status</label><select id="co_status"><option value="pendente">Pendente</option><option value="pago">Pago</option></select></div></div><label><input id="co_recorrente" type="checkbox" style="width:auto;margin-right:8px">Conta recorrente</label><label>Observações</label><textarea id="co_obs"></textarea><div class="actions"><button class="btn" id="contaSaveLabel" type="submit">Salvar conta</button><button class="btn secondary" type="button" onclick="clearContaForm()">Limpar</button></div></form></div><div class="card"><h3>Lista de contas</h3>${avaliadas.length?`<table><thead><tr><th>Conta</th><th>Vencimento</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>${avaliadas.map(c=>`<tr><td><strong>${esc(c.nome)}</strong><br><span class="muted">${esc(c.categoria||'')}${c.recorrente?' · Recorrente':''}</span></td><td>${formatDateBR(c.vencimento)}</td><td><strong>${brl(c.valor)}</strong></td><td><span class="pill ${contaPillClass(c.statusReal)}">${c.statusReal}</span></td><td class="right"><div class="actions" style="justify-content:flex-end"><button class="btn secondary" onclick="editarConta('${c.id}')">Editar</button><button class="btn green" onclick="marcarContaPaga('${c.id}')">${c.statusReal==='pago'?'Desfazer':'Marcar paga'}</button><button class="btn red" onclick="removerConta('${c.id}')">Excluir</button></div></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhuma conta cadastrada.</p>`}</div></div>`;}
+
+// clientes
+function clearClienteForm(){editingClienteId=null;if(document.getElementById('clienteForm'))document.getElementById('clienteForm').reset();const btn=document.getElementById('clienteSaveLabel');if(btn)btn.textContent='Salvar cliente';}
+function collectCliente(){const nome=document.getElementById('cl_nome').value.trim(),telefone=document.getElementById('cl_telefone').value.trim(),email=document.getElementById('cl_email').value.trim(),veiculo=document.getElementById('cl_veiculo').value.trim(),observacoes=document.getElementById('cl_obs').value.trim();if(!nome){alert('Preencha o nome do cliente.');return null;}const current=editingClienteId?(store.clientes.find(x=>x.id===editingClienteId)?.veiculos||[]):[];const veiculos=[...new Set([...current,...(veiculo?[veiculo]:[])])];return{id:editingClienteId||uid(),nome,telefone,email,veiculos,observacoes};}
+function salvarCliente(){ if(!assertWrite('cli')) return; const data=collectCliente();if(!data)return;const idx=store.clientes.findIndex(x=>x.id===data.id);if(idx>=0)store.clientes[idx]=data;else store.clientes.unshift(data);save();clearClienteForm();renderClientes();}
+function editarCliente(id){const c=store.clientes.find(x=>x.id===id);if(!c)return;editingClienteId=id;document.getElementById('cl_nome').value=c.nome||'';document.getElementById('cl_telefone').value=c.telefone||'';document.getElementById('cl_email').value=c.email||'';document.getElementById('cl_veiculo').value=(c.veiculos||[]).join(' | ');document.getElementById('cl_obs').value=c.observacoes||'';document.getElementById('clienteSaveLabel').textContent='Salvar edição';window.scrollTo({top:0,behavior:'smooth'});}
+function removerCliente(id){ if(!assertWrite('cli')) return; if(!confirm('Excluir este cliente?'))return;store.clientes=store.clientes.filter(x=>x.id!==id);save();renderClientes();}
+function renderClientes(){const q=(document.getElementById('clienteBuscaTmp')?.value||'').toLowerCase();const clientes=store.clientes.map(c=>({...c,metrics:clienteMetrics(c.nome)})).filter(c=>!q||c.nome.toLowerCase().includes(q)||(c.telefone||'').toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q));document.getElementById('app').innerHTML=`<div class="grid grid-2"><div class="card"><h3>Cadastro de clientes</h3><form id="clienteForm" onsubmit="event.preventDefault();salvarCliente();"><div class="row"><div class="c6"><label>Nome</label><input id="cl_nome"></div><div class="c6"><label>Telefone</label><input id="cl_telefone"></div><div class="c6"><label>E-mail</label><input id="cl_email"></div><div class="c6"><label>Veículo</label><input id="cl_veiculo"></div></div><label>Observações</label><textarea id="cl_obs"></textarea><div class="actions"><button class="btn" id="clienteSaveLabel" type="submit">Salvar cliente</button><button class="btn secondary" type="button" onclick="clearClienteForm()">Limpar</button></div></form></div><div class="card"><h3>Clientes</h3><div class="search-row"><input id="clienteBuscaTmp" placeholder="Buscar cliente" value="${esc(q)}" oninput="renderClientes()"><div class="muted" style="display:flex;align-items:center">${clientes.length} cliente(s)</div></div>${clientes.length?`<table><thead><tr><th>Cliente</th><th>Veículos</th><th>Histórico</th><th></th></tr></thead><tbody>${clientes.map(c=>`<tr><td><strong>${esc(c.nome)}</strong><br><span class="muted">${esc(c.telefone||'')}${c.email?' · '+esc(c.email):''}</span></td><td>${esc((c.metrics.veiculos.length?c.metrics.veiculos:c.veiculos||[]).join(', '))||'-'}</td><td><span class="muted">Orçamentos: ${c.metrics.orcamentos}</span><br><span class="muted">Agenda: ${c.metrics.agenda}</span><br><strong>${brl(c.metrics.faturado)}</strong></td><td class="right"><div class="actions" style="justify-content:flex-end"><button class="btn secondary" onclick="editarCliente('${c.id}')">Editar</button><button class="btn red" onclick="removerCliente('${c.id}')">Excluir</button></div></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Nenhum cliente cadastrado.</p>`}</div></div>`;}
+
+// relatórios
+function renderBars(months){const max=Math.max(...months.map(m=>m.valor),1);return `<div class="mini-chart">${months.map(m=>{const h=Math.max(8,(m.valor/max)*150);return `<div class="bar" style="height:${h}px"><span>${brl(m.valor).replace('R$','')}</span><small>${m.label}</small></div>`;}).join('')}</div>`;}
+function renderRelatorios(){const receitaTotal=store.transacoes.reduce((a,b)=>a+Number(b.valor||0),0), contasPagas=store.contas.filter(c=>c.status==='pago').reduce((a,b)=>a+Number(b.valor||0),0), contasPend=store.contas.filter(c=>c.status!=='pago').reduce((a,b)=>a+Number(b.valor||0),0);const monthMap={};store.transacoes.forEach(t=>{const key=monthKeyFromTransacaoData(t.data);monthMap[key]=(monthMap[key]||0)+Number(t.valor||0);});let monthEntries=Object.keys(monthMap).sort().slice(-6).map(k=>({label:k.slice(5,7)+'/'+k.slice(2,4),valor:monthMap[k]}));if(!monthEntries.length){const k=todayISO().slice(0,7);monthEntries=[{label:k.slice(5,7)+'/'+k.slice(2,4),valor:0}];}const topClientes=store.clientes.map(c=>{const m=clienteMetrics(c.nome);return{nome:c.nome,faturado:m.faturado,orcamentos:m.orcamentos};}).sort((a,b)=>b.faturado-a.faturado).slice(0,5);const servMap={};store.orcamentos.forEach(o=>servMap[o.servicoPrincipal]=(servMap[o.servicoPrincipal]||0)+Number(o.total||0));const topServ=Object.keys(servMap).map(k=>({nome:k,valor:servMap[k]})).sort((a,b)=>b.valor-a.valor).slice(0,5);document.getElementById('app').innerHTML=`<div class="kpis"><div class="kpi"><div class="muted">Receita total</div><div class="v">${brl(receitaTotal)}</div></div><div class="kpi"><div class="muted">Contas pagas</div><div class="v" style="color:var(--g)">${brl(contasPagas)}</div></div><div class="kpi"><div class="muted">Contas pendentes</div><div class="v" style="color:var(--r)">${brl(contasPend)}</div></div><div class="kpi"><div class="muted">Clientes</div><div class="v">${store.clientes.length}</div></div></div><div class="grid grid-2" style="margin-top:14px"><div class="card"><h3>Receitas por mês</h3>${renderBars(monthEntries)}</div><div class="card"><h3>Resumo operacional</h3><div class="total-row"><span>Orçamentos</span><strong>${store.orcamentos.length}</strong></div><div class="total-row"><span>Aprovados</span><strong>${store.orcamentos.filter(x=>x.status==='aprovado').length}</strong></div><div class="total-row"><span>Agenda</span><strong>${store.agenda.length}</strong></div><div class="total-row"><span>Recibos</span><strong>${store.recibos.length}</strong></div><div class="total-row"><span>Contas</span><strong>${store.contas.length}</strong></div></div></div><div class="grid grid-2" style="margin-top:14px"><div class="card"><h3>Top clientes</h3>${topClientes.length?`<table><thead><tr><th>Cliente</th><th>Orçamentos</th><th>Faturado</th></tr></thead><tbody>${topClientes.map(c=>`<tr><td>${esc(c.nome)}</td><td>${c.orcamentos}</td><td><strong>${brl(c.faturado)}</strong></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Sem dados ainda.</p>`}</div><div class="card"><h3>Top serviços</h3>${topServ.length?`<table><thead><tr><th>Serviço</th><th>Valor</th></tr></thead><tbody>${topServ.map(s=>`<tr><td>${esc(s.nome)}</td><td><strong>${brl(s.valor)}</strong></td></tr>`).join('')}</tbody></table>`:`<p class="muted">Sem dados ainda.</p>`}</div></div>`;}
+
+
+let pendingWorkbook = null;
+
+const IMPORT_PROFILE_KEY = 'oficinaos_import_profiles_v40';
+
+function loadImportProfiles(){
+  try{
+    return JSON.parse(localStorage.getItem(IMPORT_PROFILE_KEY) || '{}');
+  }catch(e){
+    return {};
+  }
+}
+function saveImportProfiles(profiles){
+  localStorage.setItem(IMPORT_PROFILE_KEY, JSON.stringify(profiles));
+}
+function renderSavedProfiles(){
+  const profiles = loadImportProfiles();
+  const sel = document.getElementById('xlsxSavedProfileSelect');
+  if(!sel) return;
+  const keys = Object.keys(profiles);
+  sel.innerHTML = '<option value="">-- perfil salvo --</option>' + keys.map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('');
+}
+function salvarPerfilImportacao(){
+  const name = (document.getElementById('xlsxProfileName')?.value || '').trim();
+  if(!name){
+    alert('Digite um nome para o perfil.');
+    return;
+  }
+  const sheet = document.getElementById('xlsxSheetSelect')?.value || '';
+  const target = document.getElementById('xlsxTargetSelect')?.value || '';
+  if(!sheet || !target){
+    alert('Selecione a aba e o destino.');
+    return;
+  }
+  const map = {};
+  document.querySelectorAll('#xlsxMapperFields select').forEach(sel => {
+    map[sel.getAttribute('data-map-key')] = sel.value;
+  });
+  const profiles = loadImportProfiles();
+  const key = `${name}__${sheet}__${target}`;
+  profiles[key] = { profileName:name, sheet, target, map };
+  saveImportProfiles(profiles);
+  renderSavedProfiles();
+  alert('Perfil de importação salvo.');
+}
+function aplicarPerfilSalvo(){
+  const key = document.getElementById('xlsxSavedProfileSelect')?.value || '';
+  if(!key){
+    alert('Selecione um perfil salvo.');
+    return;
+  }
+  const profiles = loadImportProfiles();
+  const profile = profiles[key];
+  if(!profile){
+    alert('Perfil não encontrado.');
+    return;
+  }
+  document.getElementById('xlsxProfileName').value = profile.profileName || '';
+  document.getElementById('xlsxSheetSelect').value = profile.sheet || '';
+  document.getElementById('xlsxTargetSelect').value = profile.target || 'clientes';
+  renderMapperFields();
+  Object.entries(profile.map || {}).forEach(([mapKey, col]) => {
+    const field = document.querySelector(`#xlsxMapperFields select[data-map-key="${mapKey}"]`);
+    if(field) field.value = col || '';
+  });
+}
+function excluirPerfilSalvo(){
+  const key = document.getElementById('xlsxSavedProfileSelect')?.value || '';
+  if(!key){
+    alert('Selecione um perfil salvo.');
+    return;
+  }
+  const profiles = loadImportProfiles();
+  delete profiles[key];
+  saveImportProfiles(profiles);
+  renderSavedProfiles();
+  alert('Perfil removido.');
+}
+
+const mapperSchemas = {
+  clientes: [
+    ['nome', 'Nome'],
+    ['telefone', 'Telefone'],
+    ['email', 'E-mail'],
+    ['veiculo', 'Veículo'],
+    ['observacoes', 'Observações']
+  ],
+  contas: [
+    ['nome', 'Nome da conta'],
+    ['categoria', 'Categoria'],
+    ['vencimento', 'Vencimento'],
+    ['valor', 'Valor'],
+    ['status', 'Status'],
+    ['observacoes', 'Observações']
+  ],
+  agenda: [
+    ['cliente', 'Cliente'],
+    ['veiculo', 'Veículo'],
+    ['servico', 'Serviço'],
+    ['entrada', 'Entrada'],
+    ['entrega', 'Entrega'],
+    ['status', 'Status'],
+    ['valor', 'Valor'],
+    ['observacoes', 'Observações']
+  ],
+  transacoes: [
+    ['descricao', 'Descrição'],
+    ['data', 'Data'],
+    ['valor', 'Valor'],
+    ['status', 'Status pago/pendente']
+  ],
+  orcamentos: [
+    ['cliente', 'Cliente'],
+    ['telefoneCliente', 'Telefone'],
+    ['veiculo', 'Veículo'],
+    ['servicoPrincipal', 'Serviço'],
+    ['total', 'Valor total'],
+    ['status', 'Status'],
+    ['observacoes', 'Observações']
+  ]
+};
+
+function getSheetHeaders(rows){
+  const set = new Set();
+  rows.forEach(r => Object.keys(r || {}).forEach(k => set.add(String(k))));
+  return Array.from(set);
+}
+
+function autoSuggestHeader(headers, wanted){
+  const wantedNorm = normalizeKey(wanted);
+  let exact = headers.find(h => normalizeKey(h) === wantedNorm);
+  if(exact) return exact;
+  const aliases = {
+    nome: ['cliente','nome cliente','nome'],
+    telefone: ['telefone','whatsapp','celular','fone'],
+    email: ['email','e mail'],
+    veiculo: ['veiculo','carro','modelo'],
+    observacoes: ['observacoes','obs'],
+    categoria: ['categoria'],
+    vencimento: ['vencimento','data vencimento'],
+    valor: ['valor','total','valor total','receita'],
+    status: ['status','situacao'],
+    cliente: ['cliente','nome cliente'],
+    servico: ['servico','descricao','historico'],
+    entrada: ['entrada','data entrada'],
+    entrega: ['entrega','data entrega'],
+    descricao: ['descricao','historico','servico'],
+    data: ['data'],
+    telefonecliente: ['telefone','whatsapp','celular'],
+    servicoprincipal: ['servico','descricao','servico principal'],
+    total: ['valor','total','valor total']
+  };
+  const list = aliases[wantedNorm] || [wanted];
+  for (const alias of list) {
+    const found = headers.find(h => normalizeKey(h) === normalizeKey(alias));
+    if (found) return found;
+  }
+  for (const alias of list) {
+    const found = headers.find(h => normalizeKey(h).includes(normalizeKey(alias)));
+    if (found) return found;
+  }
+  return '';
+}
+
+function abrirMapperXLSX(workbook){
+  pendingWorkbook = workbook;
+  const card = document.getElementById('xlsxMapperCard');
+  const sel = document.getElementById('xlsxSheetSelect');
+  sel.innerHTML = workbook.SheetNames.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  card.style.display = 'block';
+  renderSavedProfiles();
+  renderMapperFields();
+}
+
+function fecharMapperXLSX(){
+  document.getElementById('xlsxMapperCard').style.display = 'none';
+  pendingWorkbook = null;
+}
+
+function renderMapperFields(){
+  if (!pendingWorkbook) return;
+  const sheetName = document.getElementById('xlsxSheetSelect').value || pendingWorkbook.SheetNames[0];
+  const target = document.getElementById('xlsxTargetSelect').value;
+  const ws = pendingWorkbook.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json(ws, {defval:''});
+  const headers = getSheetHeaders(rows);
+  const schema = mapperSchemas[target] || [];
+  const box = document.getElementById('xlsxMapperFields');
+  box.innerHTML = schema.map(([key,label]) => {
+    const suggested = autoSuggestHeader(headers, key);
+    return `
+      <div class="c6">
+        <label>${label}</label>
+        <select data-map-key="${esc(key)}">
+          <option value="">-- ignorar --</option>
+          ${headers.map(h => `<option value="${esc(h)}" ${h===suggested?'selected':''}>${esc(h)}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }).join('');
+}
+
+function rowValueMapped(row, map, key){
+  const col = map[key];
+  return col ? row[col] : '';
+}
+
+function importarLinhasMapeadas(rows, target, map){
+  const merged = {orcamentos:[],transacoes:[],recibos:[],agenda:[],contas:[],clientes:[]};
+  rows.forEach(row => {
+    if (target === 'clientes') {
+      const nome = String(rowValueMapped(row,map,'nome') || '').trim();
+      if (!nome) return;
+      merged.clientes.push({
+        id: uid(),
+        nome,
+        telefone: String(rowValueMapped(row,map,'telefone') || '').trim(),
+        email: String(rowValueMapped(row,map,'email') || '').trim(),
+        veiculos: String(rowValueMapped(row,map,'veiculo') || '').trim() ? [String(rowValueMapped(row,map,'veiculo')).trim()] : [],
+        observacoes: String(rowValueMapped(row,map,'observacoes') || '').trim()
+      });
+    }
+    if (target === 'contas') {
+      const nome = String(rowValueMapped(row,map,'nome') || '').trim();
+      if (!nome) return;
+      merged.contas.push({
+        id: uid(),
+        nome,
+        categoria: String(rowValueMapped(row,map,'categoria') || '').trim(),
+        vencimento: excelDateToISO(rowValueMapped(row,map,'vencimento')) || todayISO(),
+        valor: numberFrom(rowValueMapped(row,map,'valor')),
+        status: String(rowValueMapped(row,map,'status') || '').toLowerCase().includes('pag') ? 'pago' : 'pendente',
+        recorrente: false,
+        observacoes: String(rowValueMapped(row,map,'observacoes') || '').trim()
+      });
+    }
+    if (target === 'agenda') {
+      const cliente = String(rowValueMapped(row,map,'cliente') || '').trim();
+      const servico = String(rowValueMapped(row,map,'servico') || '').trim();
+      if (!cliente && !servico) return;
+      merged.agenda.push({
+        id: uid(),
+        cliente,
+        veiculo: String(rowValueMapped(row,map,'veiculo') || '').trim(),
+        servico,
+        entrada: excelDateToISO(rowValueMapped(row,map,'entrada')) || todayISO(),
+        entrega: excelDateToISO(rowValueMapped(row,map,'entrega')) || '',
+        status: String(rowValueMapped(row,map,'status') || '').toLowerCase().includes('pronto') ? 'pronto' : (String(rowValueMapped(row,map,'status') || '').toLowerCase().includes('serv') ? 'em_servico' : 'aguardando'),
+        valor: numberFrom(rowValueMapped(row,map,'valor')),
+        observacoes: String(rowValueMapped(row,map,'observacoes') || '').trim()
+      });
+    }
+    if (target === 'transacoes') {
+      const descricao = String(rowValueMapped(row,map,'descricao') || '').trim();
+      const valor = numberFrom(rowValueMapped(row,map,'valor'));
+      if (!descricao && !valor) return;
+      merged.transacoes.push({
+        id: uid(),
+        descricao: descricao || 'Importado XLSX',
+        valor,
+        data: formatDateBR(excelDateToISO(rowValueMapped(row,map,'data')) || todayISO()),
+        pago: String(rowValueMapped(row,map,'status') || '').toLowerCase().includes('pag')
+      });
+    }
+    if (target === 'orcamentos') {
+      const cliente = String(rowValueMapped(row,map,'cliente') || '').trim();
+      const servico = String(rowValueMapped(row,map,'servicoPrincipal') || '').trim();
+      const total = numberFrom(rowValueMapped(row,map,'total'));
+      if (!cliente && !servico && !total) return;
+      merged.orcamentos.push({
+        id: uid(),
+        cliente,
+        telefoneCliente: String(rowValueMapped(row,map,'telefoneCliente') || '').trim(),
+        veiculo: String(rowValueMapped(row,map,'veiculo') || '').trim(),
+        servicoPrincipal: servico || 'Importado XLSX',
+        observacoes: String(rowValueMapped(row,map,'observacoes') || '').trim(),
+        maoObra:{desmontagem:0,funilaria:0,solda:0,preparacao:0,pintura:0,montagem:0,polimento:0,valorHora:0,total:0},
+        materiais:[],
+        itens:[],
+        lucroPerc:0,
+        lucroValor:0,
+        desconto:0,
+        custoBase:total,
+        total,
+        status: String(rowValueMapped(row,map,'status') || '').toLowerCase().includes('aprov') ? 'aprovado' : 'pendente',
+        criadoEm:new Date().toISOString()
+      });
+    }
+  });
+  [...merged.orcamentos, ...merged.agenda].forEach(x => {
+    if (x.cliente) {
+      let c = merged.clientes.find(v => normalizeKey(v.nome) === normalizeKey(x.cliente));
+      if (!c) {
+        c = {id:uid(), nome:x.cliente, telefone:x.telefoneCliente||'', email:'', veiculos:[], observacoes:''};
+        merged.clientes.push(c);
+      }
+      if (x.veiculo && !c.veiculos.includes(x.veiculo)) c.veiculos.push(x.veiculo);
+    }
+  });
+  applyImportedStore(merged, 'merge');
+}
+
+function aplicarMapeamentoXLSX(){
+  if (!pendingWorkbook) return;
+  const sheetName = document.getElementById('xlsxSheetSelect').value;
+  const target = document.getElementById('xlsxTargetSelect').value;
+  const ws = pendingWorkbook.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json(ws, {defval:''});
+  const map = {};
+  document.querySelectorAll('#xlsxMapperFields select').forEach(sel => {
+    map[sel.getAttribute('data-map-key')] = sel.value;
+  });
+  importarLinhasMapeadas(rows, target, map);
+  fecharMapperXLSX();
+  alert('Importação mapeada concluída.');
+}
+
+document.addEventListener('change', e => {
+  if (e.target && (e.target.id === 'xlsxSheetSelect' || e.target.id === 'xlsxTargetSelect')) {
+    renderMapperFields();
+  }
+});
+
+
+const FIREBASE_CFG_KEY = 'oficinaos_firebase_config_v48';
+
+
+const COMPANY_ID_KEY = 'oficinaos_company_id_v48';
+
+
+
+if(!store.teamAccess) store.teamAccess = [];
+
+
+if(!store.empresa) store.empresa = {};
+
+function toggleAdminPanel(){
+  const p = document.getElementById('adminPanel');
+  if(!p) return;
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  if(p.style.display === 'block') carregarEmpresa();
+}
+
+function carregarEmpresa(){
+  document.getElementById('empresaNome').value = store.empresa.nome || '';
+  document.getElementById('empresaCnpj').value = store.empresa.cnpj || '';
+  document.getElementById('empresaTelefone').value = store.empresa.telefone || '';
+  document.getElementById('empresaEndereco').value = store.empresa.endereco || '';
+  document.getElementById('empresaObs').value = store.empresa.obs || '';
+}
+
+function salvarEmpresa(){ if(getCurrentRole() !== 'owner'){ alert('Somente owner pode editar dados da empresa.'); return; } 
+  store.empresa = {
+    nome: document.getElementById('empresaNome').value,
+    cnpj: document.getElementById('empresaCnpj').value,
+    telefone: document.getElementById('empresaTelefone').value,
+    endereco: document.getElementById('empresaEndereco').value,
+    obs: document.getElementById('empresaObs').value
+  };
+  save();
+  alert('Empresa salva');
+  renderDashboard();
+}
+
+function renderDashboard(){
+  const receitaTotal = store.transacoes.reduce((a,b)=>a+Number(b.valor||0),0);
+  const receber = store.transacoes.filter(x=>!x.pago).reduce((a,b)=>a+Number(b.valor||0),0);
+  const contasPend = store.contas.filter(c=>c.status!=='pago').reduce((a,b)=>a+Number(b.valor||0),0);
+  const empresa = store.empresa?.nome || loadCompanyId();
+  const papel = getCurrentRole();
+
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>${esc(empresa)}</h3>
+      <p class="muted">Painel principal · Papel atual: ${esc(papel)}</p>
+    </div>
+
+    <div class="kpis" style="margin-top:14px">
+      <div class="kpi"><div class="muted">Receita total</div><div class="v">${brl(receitaTotal)}</div></div>
+      <div class="kpi"><div class="muted">A receber</div><div class="v" style="color:var(--r)">${brl(receber)}</div></div>
+      <div class="kpi"><div class="muted">Contas pendentes</div><div class="v" style="color:var(--a)">${brl(contasPend)}</div></div>
+      <div class="kpi"><div class="muted">Clientes</div><div class="v">${store.clientes.length}</div></div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:14px">
+      <div class="card">
+        <h3>Atalhos rápidos</h3>
+        <div class="actions">
+          <button class="btn" onclick="show('orc')">Novo orçamento</button>
+          <button class="btn secondary" onclick="show('age')">Agenda</button>
+          <button class="btn secondary" onclick="show('fin')">Financeiro</button>
+          <button class="btn secondary" onclick="show('con')">Contas</button>
+          <button class="btn secondary" onclick="show('cli')">Clientes</button>
+          <button class="btn secondary" onclick="show('rel')">Relatórios</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Painel comercial</h3>
+        <div class="actions">
+          <button class="btn secondary" onclick="toggleCommercialPanel()">Configurações</button>
+          <button class="btn secondary" onclick="toggleAdminPanel()">Empresa</button>
+          <button class="btn secondary" onclick="toggleTeamPanel()">Acessos</button>
+          <button class="btn secondary" onclick="toggleProdPanel()">Publicação</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleTeamPanel(){
+  const panel = document.getElementById('teamPanel');
+  if(!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if(panel.style.display === 'block') renderTeamList();
+}
+function getCurrentUserEmail(){
+  return currentUser?.email || '';
+}
+function getCurrentCompany(){
+  return loadCompanyId();
+}
+function getPermissionPreset(preset){
+  const presets = {
+    full: {orc:true,fin:true,rec:true,age:true,con:true,cli:true,rel:true,admin:true},
+    operational: {orc:true,fin:false,rec:true,age:true,con:false,cli:true,rel:false,admin:false},
+    readonly: {orc:false,fin:false,rec:false,age:false,con:false,cli:false,rel:true,admin:false}
+  };
+  return presets[preset] || presets.readonly;
+}
+function addTeamMember(){ if(getCurrentRole() !== 'owner'){ alert('Somente owner pode gerenciar acessos.'); return; } 
+  const email = (document.getElementById('inviteEmail')?.value || '').trim().toLowerCase();
+  const role = document.getElementById('inviteRole')?.value || 'viewer';
+  const preset = document.getElementById('invitePreset')?.value || 'readonly';
+  const companyId = getCurrentCompany();
+  if(!email){
+    alert('Informe o e-mail do convidado.');
+    return;
+  }
+  const permissions = getPermissionPreset(preset);
+  const existing = store.teamAccess.find(x => x.email === email && x.companyId === companyId);
+  if(existing){
+    existing.role = role;
+    existing.preset = preset;
+    existing.permissions = permissions;
+  }else{
+    store.teamAccess.push({
+      id: uid(),
+      companyId,
+      email,
+      role,
+      preset,
+      permissions,
+      invitedBy: getCurrentUserEmail(),
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    });
+  }
+  save();
+  renderTeamList();
+  document.getElementById('inviteEmail').value = '';
+}
+function removeTeamMember(id){ if(getCurrentRole() !== 'owner'){ alert('Somente owner pode remover acessos.'); return; } 
+  if(!confirm('Remover este acesso?')) return;
+  store.teamAccess = (store.teamAccess || []).filter(x => x.id !== id);
+  save();
+  renderTeamList();
+}
+function renderTeamList(){
+  const box = document.getElementById('teamListBox');
+  if(!box) return;
+  const companyId = getCurrentCompany();
+  const list = (store.teamAccess || []).filter(x => x.companyId === companyId);
+  const me = getCurrentUserEmail();
+  const currentRole = getCurrentRole();
+  box.innerHTML = `
+    <div class="notice">Empresa ativa: <b>${esc(companyId)}</b> · Usuário atual: <b>${esc(me || 'sem login')}</b> · Papel atual: <b>${esc(currentRole)}</b></div>
+    ${list.length ? `
+      <table style="margin-top:10px">
+        <thead>
+          <tr><th>E-mail</th><th>Papel</th><th>Preset</th><th>Status</th><th>Convidado por</th><th></th></tr>
+        </thead>
+        <tbody>
+          ${list.map(x => `
+            <tr>
+              <td>${esc(x.email)}</td>
+              <td>${esc(x.role)}</td>
+              <td>${esc(x.preset)}</td>
+              <td>${esc(x.status)}</td>
+              <td>${esc(x.invitedBy || '')}</td>
+              <td class="right"><button class="btn red" onclick="removeTeamMember('${x.id}')">Remover</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    ` : `<p class="muted" style="margin-top:10px">Nenhum acesso cadastrado para esta empresa.</p>`}
+  `;
+}
+function getCurrentAccess(){
+  const email = getCurrentUserEmail().toLowerCase();
+  const companyId = getCurrentCompany();
+  if(!email) return null;
+  let access = (store.teamAccess || []).find(x => x.email === email && x.companyId === companyId && x.status === 'active');
+  if(!access && currentUser){
+    access = {
+      id: 'implicit-owner',
+      companyId,
+      email,
+      role: 'owner',
+      preset: 'full',
+      permissions: getPermissionPreset('full'),
+      status: 'active'
+    };
+  }
+  return access;
+}
+function getCurrentPermissions(){
+  return getCurrentAccess()?.permissions || getPermissionPreset('readonly');
+}
+function getCurrentRole(){
+  return getCurrentAccess()?.role || 'viewer';
+}
+function canAccess(moduleKey){
+  const p = getCurrentPermissions();
+  return !!p[moduleKey];
+}
+
+
+
+let migrationValidatedStatus = 'Não validada';
+
+function toggleDiagPanel(){
+  const p = document.getElementById('diagPanel');
+  if(!p) return;
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  if(p.style.display === 'block') runDiagnostics();
+}
+function permissionLabel(v){
+  return v ? 'Permitido' : 'Bloqueado';
+}
+async function validateMigrationNow(){
+  if(!firebaseReady || !firebaseDb || !firebaseFns || !currentUser){
+    migrationValidatedStatus = 'Sem conexão/login';
+    runDiagnostics();
+    return;
+  }
+  try{
+    const companyRef = getCloudDocRef();
+    const snap = await firebaseFns.getDoc(companyRef);
+    if(!snap.exists()){
+      migrationValidatedStatus = 'Base nova não encontrada';
+      runDiagnostics();
+      return;
+    }
+    const data = snap.data();
+    const remoteStore = ensureStoreShape((data && data.store) ? data.store : {});
+    const localHash = stableStringify(ensureStoreShape(store));
+    const remoteHash = stableStringify(remoteStore);
+    migrationValidatedStatus = localHash === remoteHash ? 'Migração validada' : 'Diferença local/remoto';
+    runDiagnostics();
+  } catch (e) {
+    console.error(e);
+    migrationValidatedStatus = 'Erro na validação';
+    runDiagnostics();
+  }
+}
+function runDiagnostics(){
+  const firebaseEl = document.getElementById('diagFirebase');
+  const userEl = document.getElementById('diagUser');
+  const pathEl = document.getElementById('diagPath');
+  const roleEl = document.getElementById('diagRole');
+  const migrationEl = document.getElementById('diagMigration');
+  const hashEl = document.getElementById('diagHash');
+  const permsBox = document.getElementById('diagPermsBox');
+
+  const companyId = loadCompanyId() || 'principal';
+  const localHash = stableStringify(ensureStoreShape(store)).slice(0, 32);
+
+  if(firebaseEl) firebaseEl.value = firebaseReady ? 'Conectado' : 'Desconectado';
+  if(userEl) userEl.value = currentUser ? (currentUser.email || currentUser.displayName || 'Logado') : 'Sem login';
+  if(pathEl) pathEl.value = currentUser ? `companies/${companyId}/data/principal` : 'Sem caminho';
+  if(roleEl) roleEl.value = getCurrentRole();
+  if(migrationEl) migrationEl.value = migrationValidatedStatus;
+  if(hashEl) hashEl.value = localHash;
+
+  if(permsBox){
+    const modules = [
+      ['orc', 'Orçamento'],
+      ['fin', 'Financeiro'],
+      ['rec', 'Recibos'],
+      ['age', 'Agenda'],
+      ['con', 'Contas'],
+      ['cli', 'Clientes'],
+      ['rel', 'Relatórios']
+    ];
+    permsBox.innerHTML = `
+      <table>
+        <thead>
+          <tr><th>Módulo</th><th>Ler</th><th>Escrever</th></tr>
+        </thead>
+        <tbody>
+          ${modules.map(([k, label]) => `
+            <tr>
+              <td>${label}</td>
+              <td>${permissionLabel(k === 'dash' ? true : canAccess(k))}</td>
+              <td>${permissionLabel(canWriteModule(k))}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+}
+
+function canWriteModule(moduleKey){
+  const p = getCurrentPermissions();
+  if(getCurrentRole() === 'owner') return true;
+  if(moduleKey === 'orc') return !!p.orc;
+  if(moduleKey === 'age') return !!p.age;
+  if(moduleKey === 'con') return !!p.con;
+  if(moduleKey === 'cli') return !!p.cli;
+  if(moduleKey === 'fin') return !!p.fin;
+  return false;
+}
+function assertWrite(moduleKey){
+  if(!canWriteModule(moduleKey)){
+    alert('Seu usuário não tem permissão de escrita para este módulo.');
+    return false;
+  }
+  return true;
+}
+function toggleSecurityPanel(){
+  const p = document.getElementById('securityPanel');
+  if(!p) return;
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  if(p.style.display === 'block') fillSecurityRules();
+}
+function fillSecurityRules(){
+  const ta = document.getElementById('securityRulesText');
+  if(!ta) return;
+  ta.value = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function memberDoc(companyId) {
+      return get(/databases/$(database)/documents/companies/$(companyId)/members/$(request.auth.uid));
+    }
+
+    function isMember(companyId) {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/companies/$(companyId)/members/$(request.auth.uid));
+    }
+
+    function role(companyId) {
+      return isMember(companyId) ? memberDoc(companyId).data.role : null;
+    }
+
+    function canRead(companyId) {
+      return role(companyId) in ['owner', 'editor', 'viewer'];
+    }
+
+    function canWrite(companyId) {
+      return role(companyId) in ['owner', 'editor'];
+    }
+
+    function isOwner(companyId) {
+      return role(companyId) == 'owner';
+    }
+
+    match /companies/{companyId} {
+      allow read: if canRead(companyId);
+      allow write: if isOwner(companyId);
+
+      match /members/{userId} {
+        allow read: if canRead(companyId);
+        allow create, update, delete: if isOwner(companyId);
+      }
+
+      match /data/{docId} {
+        allow read: if canRead(companyId);
+        allow create, update, delete: if canWrite(companyId);
+      }
+
+      match /data/{docId}/{sub=**} {
+        allow read: if canRead(companyId);
+        allow create, update, delete: if canWrite(companyId);
+      }
+    }
+  }
+}`;
+}
+function copySecurityRules(){
+  fillSecurityRules();
+  const ta = document.getElementById('securityRulesText');
+  ta.select();
+  ta.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  alert('Regras V4.7 copiadas.');
+}
+
+function quickSetCompany(name){
+  const input = document.getElementById('companyIdInput');
+  if(input) input.value = name;
+  applyCompanyId();
+}
+function updateTopUserState(){
+  const el = document.getElementById('topUserState');
+  if(!el) return;
+  const companyId = loadCompanyId();
+  const role = getCurrentRole();
+  if(currentUser){
+    el.textContent = `${currentUser.displayName || currentUser.email || 'Usuário'} · empresa: ${companyId} · papel: ${role}`;
+  }else{
+    el.textContent = `Sem login · empresa: ${companyId}`;
+  }
+}
+function renderDashboard(){
+  const receitaTotal = store.transacoes.reduce((a,b)=>a+Number(b.valor||0),0);
+  const receber = store.transacoes.filter(x=>!x.pago).reduce((a,b)=>a+Number(b.valor||0),0);
+  const contasPend = store.contas.filter(c=>c.status!=='pago').reduce((a,b)=>a+Number(b.valor||0),0);
+  const agendaHoje = store.agenda.filter(a => a.entrada===todayISO() || a.entrega===todayISO()).length;
+  const empresa = loadCompanyId();
+  document.getElementById('app').innerHTML = `
+    <div class="kpis">
+      <div class="kpi"><div class="muted">Empresa ativa</div><div class="v">${esc(empresa)}</div></div>
+      <div class="kpi"><div class="muted">Seu papel</div><div class="v">${esc(getCurrentRole())}</div></div>
+      <div class="kpi"><div class="muted">Receita total</div><div class="v">${brl(receitaTotal)}</div></div>
+      <div class="kpi"><div class="muted">A receber</div><div class="v" style="color:var(--r)">${brl(receber)}</div></div>
+      <div class="kpi"><div class="muted">Contas pendentes</div><div class="v" style="color:var(--a)">${brl(contasPend)}</div></div>
+    </div>
+    <div class="grid grid-2" style="margin-top:14px">
+      <div class="card">
+        <h3>Acesso rápido</h3>
+        <div class="actions">
+          <button class="btn" onclick="show('orc')">Novo orçamento</button>
+          <button class="btn secondary" onclick="show('age')">Agenda</button>
+          <button class="btn secondary" onclick="show('con')">Contas</button>
+          <button class="btn secondary" onclick="show('cli')">Clientes</button>
+          <button class="btn secondary" onclick="show('rel')">Relatórios</button>
+        </div>
+        <div class="notice" style="margin-top:12px">Hoje há <b>${agendaHoje}</b> item(ns) na agenda com entrada ou entrega.</div>
+      </div>
+      <div class="card">
+        <h3>Troca rápida de empresa</h3>
+        <div class="row">
+          <div class="c6">
+            <label>Empresa ativa</label>
+            <input id="dashCompanyInput" value="${esc(empresa)}">
+          </div>
+          <div class="c6">
+            <label>Ações</label>
+            <div class="actions">
+              <button class="btn secondary" onclick="setDashboardCompany()">Aplicar</button>
+              <button class="btn secondary" onclick="quickSetCompany('limaprata')">Limaprata</button>
+              <button class="btn secondary" onclick="quickSetCompany('teste')">Teste</button>
+            </div>
+          </div>
+        </div>
+        <div class="notice">Ao trocar a empresa, o caminho da nuvem muda para a nova base isolada.</div>
+      </div>
+    </div>
+  `;
+}
+function setDashboardCompany(){
+  const input = document.getElementById('dashCompanyInput');
+  const val = (input?.value || '').trim() || 'principal';
+  saveCompanyId(val);
+  const authInput = document.getElementById('companyIdInput');
+  if(authInput) authInput.value = val;
+  updateAuthUi();
+  updateTopUserState();
+  if(firebaseReady && currentUser){
+    ensureCompanyMembership().then(() => migrateLegacyCloudToCompanyPath()).then(() => {
+      startCloudListener();
+      syncNow();
+    });
+  }
+  renderDashboard();
+}
+
+function toggleRulesPanel(){
+  const panel = document.getElementById('rulesPanel');
+  if(!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+function copyRules(){
+  const ta = document.getElementById('rulesTextarea');
+  ta.select();
+  ta.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  alert('Regras copiadas.');
+}
+function loadCompanyId(){
+  return localStorage.getItem(COMPANY_ID_KEY) || 'principal';
+}
+function saveCompanyId(v){
+  localStorage.setItem(COMPANY_ID_KEY, v || 'principal');
+}
+function applyCompanyId(){
+  const input = document.getElementById('companyIdInput');
+  const val = (input?.value || '').trim() || 'principal';
+  saveCompanyId(val);
+  updateAuthUi();
+  if(firebaseReady && currentUser){
+    ensureCompanyMembership().then(() => migrateLegacyCloudToCompanyPath()).then(() => {
+      startCloudListener();
+      syncNow();
+    });
+  }
+  alert('Empresa ativa aplicada.');
+}
+
+let firebaseAuth = null;
+let firebaseAuthFns = null;
+let currentUser = null;
+let unsubAuth = null;
+
+function toggleAuthPanel(){
+  const panel = document.getElementById('authPanel');
+  if(!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+function updateAuthUi(){
+  const state = document.getElementById('authState');
+  const path = document.getElementById('authPathState');
+  const company = document.getElementById('companyIdInput');
+  const companyId = loadCompanyId();
+  if(company) company.value = companyId;
+  if(state) state.value = currentUser ? `${currentUser.displayName || currentUser.email || 'Usuário'} conectado` : 'Não autenticado';
+  if(path) path.value = currentUser ? `companies/${companyId}/data/principal` : 'Sem usuário';
+  updateTopUserState();
+  updateLoginScreenVisibility();
+}
+async function initAuth(config){
+  const authMod = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js');
+  firebaseAuthFns = authMod;
+  firebaseAuth = authMod.getAuth(firebaseApp);
+  unsubAuth = authMod.onAuthStateChanged(firebaseAuth, async user => {
+    currentUser = user || null;
+    updateAuthUi();
+    updateLoginScreenVisibility();
+    if(currentUser){
+      updateSyncStatus('☁️ Login Google OK');
+      await ensureCompanyMembership();
+      await migrateLegacyCloudToCompanyPath();
+      startCloudListener();
+      await syncNow();
+    }else{
+      updateSyncStatus(firebaseReady ? 'Firebase conectado (sem login)' : 'Dados locais salvos no navegador');
+    }
+  });
+}
+async function signInGoogle(){
+  if(!firebaseReady || !firebaseAuth || !firebaseAuthFns){
+    alert('Conecte o Firebase primeiro.');
+    return;
+  }
+  try{
+    const provider = new firebaseAuthFns.GoogleAuthProvider();
+    await firebaseAuthFns.signInWithPopup(firebaseAuth, provider);
+  }catch(e){
+    console.error(e);
+    alert('Falha no login Google. Veja se o provedor Google está ativado no Firebase Auth.');
+  }
+}
+async function signOutGoogle(){
+  try{
+    if(firebaseAuth && firebaseAuthFns){
+      await firebaseAuthFns.signOut(firebaseAuth);
+    }
+  }catch(e){
+    console.error(e);
+    alert('Erro ao sair da conta.');
+  }
+}
+
+let firebaseReady = false;
+let firebaseApp = null;
+let firebaseDb = null;
+let firebaseFns = null;
+let unsubCloud = null;
+let isApplyingRemote = false;
+let cloudPushTimer = null;
+let lastCloudHash = '';
+
+function stableStringify(obj){
+  return JSON.stringify(obj);
+}
+function updateSyncStatus(msg){
+  const el = document.getElementById('syncStatus');
+  if(el) el.textContent = msg;
+}
+function toggleFirebasePanel(){
+  const panel = document.getElementById('firebasePanel');
+  if(!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+function loadFirebaseSavedConfig(){
+  try{
+    return JSON.parse(localStorage.getItem(FIREBASE_CFG_KEY) || '{}');
+  }catch(e){
+    return {};
+  }
+}
+function fillFirebasePanel(){
+  const saved = loadFirebaseSavedConfig();
+  const cfg = document.getElementById('firebaseConfigInput');
+  const doc = document.getElementById('firebaseDocId');
+  if(cfg && saved.config) cfg.value = JSON.stringify(saved.config, null, 2);
+  if(doc) doc.value = saved.docId || 'principal';
+}
+async function initFirebaseFromSaved(){
+  const saved = loadFirebaseSavedConfig();
+  if(saved && saved.config && saved.config.projectId){
+    await initFirebase(saved.config, saved.docId || 'principal');
+  }else{
+    fillFirebasePanel();
+  }
+}
+async function saveFirebaseConfigAndInit(){
+  const raw = document.getElementById('firebaseConfigInput')?.value?.trim() || '';
+  const docId = (document.getElementById('firebaseDocId')?.value?.trim() || 'principal');
+  if(!raw){
+    alert('Cole o firebaseConfig.');
+    return;
+  }
+  let config;
+  try{
+    config = JSON.parse(raw);
+  }catch(e){
+    alert('firebaseConfig inválido.');
+    return;
+  }
+  localStorage.setItem(FIREBASE_CFG_KEY, JSON.stringify({config, docId}));
+  await initFirebase(config, docId);
+}
+async function initFirebase(config, docId){
+  try{
+    updateSyncStatus('Conectando Firebase...');
+    document.getElementById('firebaseState').value = 'Conectando...';
+
+    const appMod = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js');
+    const fsMod = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
+
+    firebaseFns = fsMod;
+    firebaseApp = appMod.initializeApp(config);
+    firebaseDb = fsMod.getFirestore(firebaseApp);
+    firebaseReady = true;
+
+    document.getElementById('firebaseState').value = 'Conectado';
+    updateSyncStatus('☁️ Firebase conectado');
+
+    await initAuth(config);
+    startCloudListener(docId);
+    await syncNow();
+  } catch (e) {
+    firebaseReady = false;
+    document.getElementById('firebaseState').value = 'Erro';
+    updateSyncStatus('Erro no Firebase');
+    console.error(e);
+    alert('Falha ao conectar no Firebase. Revise o firebaseConfig.');
+  }
+}
+
+function getMembersDocRef(){
+  const companyId = loadCompanyId() || 'principal';
+  if(!firebaseReady || !firebaseDb || !firebaseFns || !currentUser) return null;
+  return firebaseFns.doc(firebaseDb, 'companies', companyId, 'members', currentUser.uid);
+}
+async function ensureCompanyMembership(){
+  if(!firebaseReady || !firebaseDb || !firebaseFns || !currentUser) return;
+  const companyId = loadCompanyId() || 'principal';
+  const memberRef = getMembersDocRef();
+  const memberSnap = await firebaseFns.getDoc(memberRef);
+  if(!memberSnap.exists()){
+    await firebaseFns.setDoc(memberRef, {
+      email: currentUser.email || '',
+      displayName: currentUser.displayName || '',
+      role: 'owner',
+      createdAt: firebaseFns.serverTimestamp()
+    }, { merge: true });
+  }
+}
+async function migrateLegacyCloudToCompanyPath(){
+  if(!firebaseReady || !firebaseDb || !firebaseFns || !currentUser) return;
+  const saved = loadFirebaseSavedConfig();
+  const legacyDocId = saved.docId || 'principal';
+  const legacyRef = firebaseFns.doc(firebaseDb, 'users', currentUser.uid, 'appdata', legacyDocId);
+  const companyId = loadCompanyId() || 'principal';
+  const newRef = firebaseFns.doc(firebaseDb, 'companies', companyId, 'data', 'principal');
+
+  const newSnap = await firebaseFns.getDoc(newRef);
+  if(newSnap.exists()) return;
+
+  const legacySnap = await firebaseFns.getDoc(legacyRef);
+  if(legacySnap.exists()){
+    const data = legacySnap.data();
+    if(data && data.store){
+      await firebaseFns.setDoc(newRef, {
+        store: data.store,
+        migratedFrom: `users/${currentUser.uid}/appdata/${legacyDocId}`,
+        migrationValidated: false,
+        updatedAt: firebaseFns.serverTimestamp()
+      }, { merge: true });
+      lastCloudHash = stableStringify(ensureStoreShape(data.store));
+      migrationValidatedStatus = 'Migrada, aguardando validação';
+      updateSyncStatus('☁️ Base migrada para companies/.../data');
+    }
+  }
+}
+
+function getCloudDocRef(){
+  const saved = loadFirebaseSavedConfig();
+  const docId = saved.docId || 'principal';
+  if(currentUser){
+    const companyId = loadCompanyId() || docId || 'principal';
+    return firebaseFns.doc(firebaseDb, 'companies', companyId, 'data', 'principal');
+  }
+  return firebaseFns.doc(firebaseDb, 'oficinaos_sync', docId);
+}
+function scheduleCloudSync(){
+  if(!firebaseReady || isApplyingRemote) return;
+  clearTimeout(cloudPushTimer);
+  cloudPushTimer = setTimeout(() => {
+    syncNow();
+  }, 1200);
+}
+async function syncNow(){
+  if(!firebaseReady || !firebaseDb || !firebaseFns) return;
+  try{
+    const payload = ensureStoreShape(store);
+    const hash = stableStringify(payload);
+    if(hash === lastCloudHash) {
+      updateSyncStatus('☁️ Nuvem OK');
+      return;
+    }
+    updateSyncStatus('☁️ Enviando...');
+    await firebaseFns.setDoc(getCloudDocRef(), {
+      store: payload,
+      updatedAt: firebaseFns.serverTimestamp()
+    }, { merge: true });
+    lastCloudHash = hash;
+    updateSyncStatus('☁️ Nuvem OK');
+  } catch (e) {
+    console.error(e);
+    updateSyncStatus('Erro ao sincronizar');
+  }
+}
+function startCloudListener(){
+  if(unsubCloud) unsubCloud();
+  unsubCloud = firebaseFns.onSnapshot(getCloudDocRef(), snap => {
+    if(!snap.exists()) return;
+    const data = snap.data();
+    if(!data || !data.store) return;
+    const incoming = ensureStoreShape(data.store);
+    const incomingHash = stableStringify(incoming);
+    if(incomingHash === stableStringify(ensureStoreShape(store))) {
+      lastCloudHash = incomingHash;
+      return;
+    }
+    isApplyingRemote = true;
+    for(const k of STORE_KEYS){
+      store[k] = incoming[k];
+    }
+    lastCloudHash = incomingHash;
+    save();
+    isApplyingRemote = false;
+    const active = document.querySelector('nav button.active')?.id?.replace('tab-','') || 'orc';
+    show(active || 'dash');
+    updateSyncStatus('☁️ Dados recebidos da nuvem');
+  });
+}
+
+function seedMinimal(){if(!store.contas.length){const hoje=todayISO(),d=new Date(),v2=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-10`,v3=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-20`;store.contas.push({id:uid(),nome:'Aluguel',categoria:'Fixo',vencimento:hoje,valor:1200,status:'pendente',recorrente:true,observacoes:''},{id:uid(),nome:'Energia',categoria:'Utilidades',vencimento:v2,valor:380,status:'pendente',recorrente:true,observacoes:''},{id:uid(),nome:'Internet',categoria:'Utilidades',vencimento:v3,valor:120,status:'pendente',recorrente:true,observacoes:''});}}
+
+load();seedMinimal();show('dash'); fillFirebasePanel(); updateAuthUi(); updateLoginScreenVisibility(); setTimeout(()=>{ try{ runDiagnostics(); }catch(e){} }, 300); fillFirebasePanel(); updateAuthUi(); initFirebaseFromSaved();
+</script>
+</body>
+</html>
