@@ -1,4 +1,4 @@
-const CACHE_NAME = "oficinaos-cache-v1";
+const CACHE_NAME = "oficinaos-cache-v2";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
@@ -28,21 +28,37 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  // Ignora tudo que não for http/https
+  if (!url.protocol.startsWith("http")) return;
+
+  // Ignora extensões do Chrome
+  if (url.protocol === "chrome-extension:") return;
+
+  // Só trata GET
   if (event.request.method !== "GET") return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
 
-      return fetch(event.request)
-        .then((networkResponse) => {
+      return fetch(event.request).then((networkResponse) => {
+        // Não cacheia resposta inválida
+        if (!networkResponse || networkResponse.status !== 200) {
+          return networkResponse;
+        }
+
+        // Só cacheia http/https do próprio site
+        if (url.origin === self.location.origin) {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseClone);
           });
-          return networkResponse;
-        })
-        .catch(() => caches.match("./index.html"));
+        }
+
+        return networkResponse;
+      });
     })
   );
 });
