@@ -518,7 +518,7 @@
         });
       }
 
-      if (state.active === 'agenda') {
+           if (state.active === 'agenda') {
         document.getElementById('newAgenda')?.addEventListener('click', () => {
           const cliente = prompt('Cliente:');
           if (!cliente) return;
@@ -538,6 +538,39 @@
         });
       }
     }
+
+    function exportarJSON(){
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'oficinaos-backup.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    document.getElementById('backupBtn').addEventListener('click', exportarJSON);
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+      document.getElementById('importFile').click();
+    });
+
+    document.getElementById('importFile').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const obj = JSON.parse(reader.result);
+          state = { ...state, ...obj };
+          render();
+          alert('Backup importado com sucesso.');
+        } catch (err) {
+          alert('Arquivo JSON inválido.');
+        }
+      };
+      reader.readAsText(file);
+    });
 
     load();
     render();
