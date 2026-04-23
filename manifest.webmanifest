@@ -1,13 +1,8 @@
 {
   "name": "OficinaOS",
   "short_name": "OficinaOS",
-  "description": "Sistema de gestão para oficina de funilaria e pintura",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#f8f6f3",
-  "theme_color": "#b8621a",
-  "lang": "pt-BR",
-  "orientation": "portrait-primary",
-  "icons": []
+  "background_color": "#f8f4ee",
+  "theme_color": "#b8621a"
 }
