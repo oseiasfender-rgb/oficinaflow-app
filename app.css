@@ -1,9 +1,33 @@
-body{font-family:Arial;background:#f8f4ee;color:#1a0e04}
-.topbar{background:#fff;padding:10px;display:flex;justify-content:space-between}
-.tab{display:none;padding:15px}
-.tab.active{display:block}
-.card{background:#fff;padding:10px;margin:10px 0;border-radius:8px}
-.green{color:#16a34a}
-.red{color:#dc2626}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:768px){.grid{grid-template-columns:1fr}}
+let orcamentos = JSON.parse(localStorage.getItem("orcamentos") || "[]");
+
+function showTab(tab){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById(tab).classList.add("active");
+}
+
+function salvarOrcamento(){
+  const data={
+    cliente:cliente.value,
+    veiculo:veiculo.value,
+    data:new Date().toISOString()
+  };
+  orcamentos.push(data);
+  salvarStorage();
+}
+
+function lancarReceita(){
+  salvarOrcamento();
+  alert("Receita lançada");
+}
+
+function limparOrcamento(){
+  document.querySelectorAll("#orcamento input").forEach(i=>i.value="");
+}
+
+function salvarStorage(){
+  localStorage.setItem("orcamentos",JSON.stringify(orcamentos));
+}
+
+function enviarIA(){
+  iaOutput.innerText="Sugestão técnica: "+iaInput.value;
+}
