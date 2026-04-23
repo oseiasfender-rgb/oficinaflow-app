@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OficinaOS</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#b8621a">
+
+<!-- CSS -->
+<link rel="stylesheet" href="app.css">
+
+</head>
+
+<body>
+
+<header class="topbar">
+  <h1>OficinaOS</h1>
+  <nav>
+    <button onclick="showTab('financeiro')">Financeiro</button>
+    <button onclick="showTab('orcamento')">Orçamento</button>
+    <button onclick="showTab('agenda')">Agenda</button>
+    <button onclick="showTab('clientes')">Clientes</button>
+    <button onclick="showTab('ia')">IA</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- FINANCEIRO -->
+<section id="financeiro" class="tab active">
+  <h2>Financeiro</h2>
+
+  <div class="grid">
+    <div class="card green">
+      <h3>Receitas</h3>
+      <p id="receitas">R$ 0</p>
+    </div>
+
+    <div class="card red">
+      <h3>Despesas</h3>
+      <p id="despesas">R$ 0</p>
+    </div>
+
+    <div class="card">
+      <h3>Resultado</h3>
+      <p id="resultado">R$ 0</p>
+    </div>
+
+    <div class="card">
+      <h3>Ponto de Equilíbrio</h3>
+      <p id="equilibrio">R$ 0</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ORÇAMENTO -->
+<section id="orcamento" class="tab">
+  <h2>Orçamento</h2>
+
+  <input id="cliente" placeholder="Cliente">
+  <input id="veiculo" placeholder="Veículo">
+
+  <button onclick="salvarOrcamento()">Salvar Orçamento</button>
+  <button onclick="lancarReceita()">Lançar Receita</button>
+  <button onclick="limparOrcamento()">Limpar</button>
+
+</section>
+
+<!-- AGENDA -->
+<section id="agenda" class="tab">
+  <h2>Agenda</h2>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes" class="tab">
+  <h2>Clientes</h2>
+</section>
+
+<!-- IA -->
+<section id="ia" class="tab">
+  <h2>IA - Restauração</h2>
+
+  <textarea id="iaInput" placeholder="Pergunte algo..."></textarea>
+  <button onclick="enviarIA()">Enviar</button>
+
+  <div id="iaOutput"></div>
+</section>
+
+</main>
+
+<!-- JS -->
+<script src="app.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
+
+</body>
+</html>
