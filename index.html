@@ -1,596 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#b8621a" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <title>OficinaOS</title>
-  <style>
-    :root{
-      --bg:#f8f6f3;--card:#fff;--line:rgba(100,60,20,.12);
-      --text:#15110d;--muted:#4e4a45;--brand:#b8621a;--brand-dark:#8d4b14;
-      --ok:#17803e;--warn:#d97706;--bad:#cf2e2e;--info:#1d6fa4;
-      --radius:12px;--shadow:0 8px 24px rgba(100,60,20,.08);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);z-index:10}
-    .brand{display:flex;gap:10px;align-items:center}
-    .logo{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));display:grid;place-items:center;color:#fff;font-weight:700}
-    .nav{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;background:#fff;border-bottom:1px solid var(--line)}
-    .nav button,.btn{border:none;border-radius:10px;padding:10px 14px;cursor:pointer}
-    .nav button{background:transparent}
-    .nav button.active{background:rgba(184,98,26,.10);border:1px solid rgba(184,98,26,.25)}
-    .btn{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff}
-    .btn.sec{background:#fff;color:var(--text);border:1px solid var(--line)}
-    .wrap{max-width:1500px;margin:0 auto;padding:16px}
-    .grid{display:grid;gap:16px}
-    .g2{grid-template-columns:1.15fr .85fr}
-    .g3{grid-template-columns:repeat(3,1fr)}
-    .g4{grid-template-columns:repeat(4,1fr)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
-    .section-title{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-dark);font-weight:700;margin-bottom:10px}
-    .row{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-    .c12{grid-column:span 12}.c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}
-    label{display:block;margin:0 0 6px;font-size:12px;font-weight:700;color:#433d37}
-    input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(100,60,20,.16);background:#fff;font:inherit}
-    textarea{min-height:88px;resize:vertical}
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-    .kpi .k{font-size:12px;color:var(--muted);text-transform:uppercase}
-    .kpi .v{font-size:30px;font-weight:800;margin-top:8px}
-    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .info{color:var(--info)}
-    .notice{padding:12px;border-radius:12px;background:#faf5ee;border:1px solid var(--line)}
-    .list{display:flex;flex-direction:column;gap:10px}
-    .list-item{padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
-    .footer-actions{display:flex;gap:10px;flex-wrap:wrap}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
-    .scenario-box{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .scenario{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;background:#fff}
-    .scenario.active{border:2px solid var(--brand);background:rgba(184,98,26,.05)}
-    .price{font-size:20px;font-weight:700;margin-top:4px}
-    .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-    .day-head,.day{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px}
-    .day.today{border:2px solid var(--brand)}
-    .daynum{font-weight:700;margin-bottom:4px}
-    .tiny{font-size:12px;color:#514941}
-    @media (max-width:900px){
-      .g2,.g3,.g4,.kpis,.scenario-box{grid-template-columns:1fr}
-      .row{grid-template-columns:1fr 1fr}
-      .c12,.c6,.c4,.c3{grid-column:span 2}
-      .calendar{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:560px){
-      .row{grid-template-columns:1fr}
-      .c12,.c6,.c4,.c3{grid-column:span 1}
-      .calendar{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OficinaOS</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="app.css">
 </head>
+
 <body>
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo">OS</div>
-      <div>
-        <div><strong>OficinaOS</strong></div>
-        <div class="tiny">Painel profissional da oficina</div>
-      </div>
-    </div>
-    <div class="footer-actions">
-      <button class="btn sec" id="backupBtn">Backup JSON</button>
-      <button class="btn sec" id="importBtn">Importar</button>
-    </div>
+
+<header class="topbar">
+  <h1>OficinaOS</h1>
+  <nav>
+    <button onclick="showTab('financeiro')">Financeiro</button>
+    <button onclick="showTab('orcamento')">Orçamento</button>
+    <button onclick="showTab('agenda')">Agenda</button>
+    <button onclick="showTab('clientes')">Clientes</button>
+    <button onclick="showTab('ia')">IA</button>
+  </nav>
+</header>
+
+<main>
+<section id="financeiro" class="tab active">
+  <h2>Financeiro</h2>
+  <div class="grid">
+    <div class="card green"><h3>Receitas</h3><p id="receitas">0</p></div>
+    <div class="card red"><h3>Despesas</h3><p id="despesas">0</p></div>
+    <div class="card"><h3>Resultado</h3><p id="resultado">0</p></div>
+    <div class="card"><h3>Ponto de Equilíbrio</h3><p id="equilibrio">0</p></div>
   </div>
+</section>
 
-  <div class="nav" id="nav"></div>
-  <div class="wrap" id="app"></div>
-  <input type="file" id="importFile" accept=".json" hidden>
+<section id="orcamento" class="tab">
+  <h2>Orçamento</h2>
+  <input id="cliente" placeholder="Cliente">
+  <input id="veiculo" placeholder="Veículo">
+  <button onclick="salvarOrcamento()">Salvar</button>
+  <button onclick="lancarReceita()">Lançar Receita</button>
+  <button onclick="limparOrcamento()">Limpar</button>
+</section>
 
-  <script>
-    const STORE_KEY = 'oficinaos_v66_fix';
+<section id="agenda" class="tab"><h2>Agenda</h2></section>
+<section id="clientes" class="tab"><h2>Clientes</h2></section>
 
-    const SERVICOS = [
-      {codigo:'FUN_LEVE', nome:'Funilaria leve', refMin:300, refMax:700, horas:2, material:60},
-      {codigo:'FUN_PINT', nome:'Amassado com pintura', refMin:800, refMax:1800, horas:4.5, material:260},
-      {codigo:'PORTA', nome:'Porta', refMin:1200, refMax:2500, horas:6, material:320},
-      {codigo:'PARA', nome:'Para-choque', refMin:900, refMax:2000, horas:4, material:220},
-      {codigo:'LATERAL', nome:'Lateral', refMin:1800, refMax:3500, horas:9, material:480}
-    ];
+<section id="ia" class="tab">
+  <h2>IA Restauração</h2>
+  <textarea id="iaInput"></textarea>
+  <button onclick="enviarIA()">Enviar</button>
+  <div id="iaOutput"></div>
+</section>
 
-    const FX_COMPLEX = {basico:1, medio:1.18, alto:1.35, estrutural:1.7};
-    const FX_PRIORITY = {programado:0.97, normal:1, urgente:1.15};
-    const MARGINS = {minimo:0.20, ideal:0.30, premium:0.50};
+</main>
 
-    let state = {
-      active: 'painel',
-      quotes: [],
-      finance: [],
-      contas: [],
-      agenda: [],
-      clientes: [],
-      metas: { receita: 12000, lucro: 6000, ticket: 1200 },
-      draft: {
-        cliente:'', telefone:'', veiculo:'', placa:'',
-        problema:'', area:'', lado:'esquerdo', dano:'leve', obsTecnica:'',
-        servicoCodigo:'', complexidade:'medio', prioridade:'normal',
-        valorHora:220, horasMO:0, desconto:0, pagamento:'PIX', garantia:'90 dias', docObs:'',
-        materiais:[{nome:'', qty:1, valor:0}],
-        itens:[{tipo:'servico', desc:'', qtd:1, custo:0, venda:0, origem:'', garantia:''}],
-        scenario:'ideal'
-      }
-    };
+<script src="app.js"></script>
 
-    function money(v){
-      return Number(v || 0).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-    }
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
 
-    function save(){
-      localStorage.setItem(STORE_KEY, JSON.stringify(state));
-    }
-
-    function load(){
-      try {
-        const raw = localStorage.getItem(STORE_KEY);
-        if (raw) state = { ...state, ...JSON.parse(raw) };
-      } catch (e) {}
-    }
-
-    function exportarJSON(){
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'oficinaos-backup.json';
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function nav(){
-      const items = [
-        ['painel','📈 Painel de Controle'],
-        ['orcamento','🧮 Orçamento'],
-        ['financeiro','📊 Financeiro'],
-        ['contas','🚨 Contas'],
-        ['agenda','📅 Agenda'],
-        ['metas','🎯 Metas'],
-        ['relatorios','📑 Relatórios'],
-        ['clientes','👥 Clientes'],
-        ['ia','🤖 IA']
-      ];
-
-      const navEl = document.getElementById('nav');
-      navEl.innerHTML = '';
-      items.forEach(([id, label]) => {
-        const b = document.createElement('button');
-        b.textContent = label;
-        if (state.active === id) b.className = 'active';
-        b.addEventListener('click', () => {
-          state.active = id;
-          render();
-          save();
-        });
-        navEl.appendChild(b);
-      });
-    }
-
-    function calcDraft(){
-      const d = state.draft;
-      const s = SERVICOS.find(x => x.codigo === d.servicoCodigo);
-      if (!s) {
-        return {total:0,min:0,ideal:0,premium:0,custo:0,mao:0,materiais:0,pecas:0,extras:0,alertas:['Selecione o serviço.']};
-      }
-
-      const horas = Number(d.horasMO || s.horas);
-      const mao = horas * Number(d.valorHora || 0);
-      const materiais = d.materiais.reduce((a,b) => a + (Number(b.qty || 0) * Number(b.valor || 0)), 0) || s.material;
-      const pecas = d.itens
-        .filter(i => ['novo','usado','recuperado'].includes(i.tipo))
-        .reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
-      const extras = d.itens
-        .filter(i => ['servico','terceiro','extra'].includes(i.tipo))
-        .reduce((a,b) => a + (Number(b.qtd || 0) * Number(b.venda || 0)), 0);
-
-      const custo = mao + materiais;
-      const ajustado = custo * (FX_COMPLEX[d.complexidade] || 1) * (FX_PRIORITY[d.prioridade] || 1);
-      const min = ajustado / (1 - MARGINS.minimo) + pecas + extras;
-      const ideal = ajustado / (1 - MARGINS.ideal) + pecas + extras;
-      const premium = ajustado / (1 - MARGINS.premium) + pecas + extras;
-      const total = ({ minimo:min, ideal, premium }[d.scenario] || ideal) - Number(d.desconto || 0);
-
-      const alertas = [];
-      if (mao <= 0) alertas.push('Mão de obra zerada não é permitida.');
-      if (horas <= 0) alertas.push('Horas zeradas.');
-
-      return {serv:s,total,min,ideal,premium,custo,mao,materiais,pecas,extras,alertas};
-    }
-
-    function renderPainel(){
-      const receitaPrev = state.finance.filter(f => f.tipo === 'prevista').reduce((a,b) => a + b.valor, 0);
-      const receitaReal = state.finance.filter(f => f.tipo === 'realizada').reduce((a,b) => a + b.valor, 0);
-      const contas = state.contas.reduce((a,b) => a + (b.pago ? b.valor : 0), 0);
-      const lucro = receitaReal - contas;
-      const pe = 3000;
-
-      return `
-        <div class="kpis">
-          <div class="kpi"><div class="k">Receita</div><div class="v ${receitaReal >= pe ? 'ok' : 'bad'}">${money(receitaReal)}</div></div>
-          <div class="kpi"><div class="k">Ponto de equilíbrio</div><div class="v">${money(pe)}</div></div>
-          <div class="kpi"><div class="k">Lucro</div><div class="v ${lucro >= 0 ? 'ok' : 'bad'}">${money(lucro)}</div></div>
-          <div class="kpi"><div class="k">Orçamentos</div><div class="v info">${state.quotes.length}</div></div>
-        </div>
-        <div class="grid g2" style="margin-top:16px">
-          <div class="card">
-            <div class="section-title">Leitura do mês</div>
-            <div class="notice">Abril = ajuste e limpeza. Maio = início oficial do modelo novo.</div>
-            <table>
-              <tr><th>Indicador</th><th>Valor</th></tr>
-              <tr><td>Receita prevista</td><td><strong>${money(receitaPrev)}</strong></td></tr>
-              <tr><td>Receita realizada</td><td><strong>${money(receitaReal)}</strong></td></tr>
-              <tr><td>Contas pagas</td><td><strong>${money(contas)}</strong></td></tr>
-              <tr><td>Lucro real</td><td><strong>${money(lucro)}</strong></td></tr>
-            </table>
-          </div>
-          <div class="card">
-            <div class="section-title">Ação rápida</div>
-            <div class="footer-actions">
-              <button class="btn" id="goOrc">Novo orçamento</button>
-              <button class="btn sec" id="goAgenda">Agenda clicável</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderOrcamento(){
-      const d = state.draft;
-      const c = calcDraft();
-
-      return `
-        <div class="grid g2">
-          <div class="card">
-            <div class="section-title">Orçamento</div>
-            <div class="row">
-              <div class="c6"><label>Cliente</label><input id="cliente" value="${d.cliente}"></div>
-              <div class="c6"><label>Telefone</label><input id="telefone" value="${d.telefone}"></div>
-              <div class="c6"><label>Veículo</label><input id="veiculo" value="${d.veiculo}"></div>
-              <div class="c6"><label>Placa</label><input id="placa" value="${d.placa}"></div>
-
-              <div class="c12"><label>Problema</label><textarea id="problema">${d.problema}</textarea></div>
-
-              <div class="c4"><label>Área</label><input id="area" value="${d.area}"></div>
-              <div class="c4"><label>Lado</label>
-                <select id="lado">
-                  ${['esquerdo','direito','frontal','traseiro','interno'].map(x => `<option ${d.lado===x?'selected':''}>${x}</option>`).join('')}
-                </select>
-              </div>
-              <div class="c4"><label>Dano</label>
-                <select id="dano">
-                  ${['leve','moderado','alto','estrutural'].map(x => `<option ${d.dano===x?'selected':''}>${x}</option>`).join('')}
-                </select>
-              </div>
-
-              <div class="c12"><label>Observações técnicas</label><textarea id="obsTecnica">${d.obsTecnica}</textarea></div>
-
-              <div class="c6"><label>Serviço</label>
-                <select id="servicoCodigo">
-                  <option value="">Selecione</option>
-                  ${SERVICOS.map(s => `<option value="${s.codigo}" ${d.servicoCodigo===s.codigo?'selected':''}>${s.nome} · ref ${money(s.refMin)}–${money(s.refMax)}</option>`).join('')}
-                </select>
-              </div>
-              <div class="c3"><label>Complexidade</label>
-                <select id="complexidade">${Object.keys(FX_COMPLEX).map(x => `<option value="${x}" ${d.complexidade===x?'selected':''}>${x}</option>`).join('')}</select>
-              </div>
-              <div class="c3"><label>Prioridade</label>
-                <select id="prioridade">${Object.keys(FX_PRIORITY).map(x => `<option value="${x}" ${d.prioridade===x?'selected':''}>${x}</option>`).join('')}</select>
-              </div>
-
-              <div class="c4"><label>Valor/hora</label><input id="valorHora" type="number" value="${d.valorHora}"></div>
-              <div class="c4"><label>Horas</label><input id="horasMO" type="number" step="0.1" value="${d.horasMO}"></div>
-              <div class="c4"><label>Desconto</label><input id="desconto" type="number" step="0.01" value="${d.desconto}"></div>
-            </div>
-
-            <div class="footer-actions" style="margin-top:16px">
-              <button class="btn sec" id="saveQuote">Salvar orçamento</button>
-              <button class="btn" id="approveQuote">Aprovar e seguir fluxo</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="section-title">Resumo</div>
-            <div class="notice">${c.alertas.length ? c.alertas.join(' | ') : 'Composição válida'}</div>
-            <table>
-              <tr><td>Mão de obra</td><td><strong>${money(c.mao)}</strong></td></tr>
-              <tr><td>Materiais</td><td><strong>${money(c.materiais)}</strong></td></tr>
-              <tr><td>Peças</td><td><strong>${money(c.pecas)}</strong></td></tr>
-              <tr><td>Extras</td><td><strong>${money(c.extras)}</strong></td></tr>
-              <tr><td>Custo base</td><td><strong>${money(c.custo)}</strong></td></tr>
-            </table>
-            <div class="scenario-box" style="margin-top:12px">
-              <div class="scenario ${d.scenario==='minimo'?'active':''}" data-scn="minimo"><div class="name">Mínimo</div><div class="price">${money(c.min)}</div></div>
-              <div class="scenario ${d.scenario==='ideal'?'active':''}" data-scn="ideal"><div class="name">Ideal</div><div class="price">${money(c.ideal)}</div></div>
-              <div class="scenario ${d.scenario==='premium'?'active':''}" data-scn="premium"><div class="name">Premium</div><div class="price">${money(c.premium)}</div></div>
-            </div>
-            <div class="notice" style="margin-top:12px"><strong>Total final:</strong> ${money(c.total)}</div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderFinanceiro(){
-      const prev = state.finance.filter(f => f.tipo === 'prevista').reduce((a,b) => a + b.valor, 0);
-      const real = state.finance.filter(f => f.tipo === 'realizada').reduce((a,b) => a + b.valor, 0);
-      const contas = state.contas.filter(c => c.pago).reduce((a,b) => a + b.valor, 0);
-      const lucro = real - contas;
-
-      return `
-        <div class="kpis">
-          <div class="kpi"><div class="k">Receita prevista</div><div class="v info">${money(prev)}</div></div>
-          <div class="kpi"><div class="k">Receita realizada</div><div class="v ${real>=3000?'ok':'warn'}">${money(real)}</div></div>
-          <div class="kpi"><div class="k">Contas pagas</div><div class="v bad">${money(contas)}</div></div>
-          <div class="kpi"><div class="k">Lucro real</div><div class="v ${lucro>=0?'ok':'bad'}">${money(lucro)}</div></div>
-        </div>
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Lançamentos</div>
-          <table>
-            <tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr>
-            ${state.finance.map((f,i) => `<tr><td>${f.data}</td><td>${f.desc}</td><td>${f.tipo}</td><td><strong>${money(f.valor)}</strong></td><td>${f.tipo==='prevista'?`<button class="btn sec" data-recebido="${i}">Recebido</button>`:''}</td></tr>`).join('') || '<tr><td colspan="5">Sem lançamentos.</td></tr>'}
-          </table>
-        </div>
-      `;
-    }
-
-    function renderContas(){
-      return `
-        <div class="grid g2">
-          <div class="card">
-            <div class="section-title">Contas</div>
-            <div class="footer-actions">
-              <button class="btn" id="newConta">Nova conta</button>
-              <button class="btn sec" id="addDas">Botão DAS</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="section-title">Lista</div>
-            <div class="list">
-              ${state.contas.map((c,i) => `<div class="list-item"><strong>${c.desc}</strong><div class="tiny">Vencimento ${c.venc}</div><div class="footer-actions"><strong>${money(c.valor)}</strong><button class="btn sec" data-pagar="${i}">${c.pago?'Pago':'Marcar pago'}</button></div></div>`).join('') || '<div class="tiny">Sem contas.</div>'}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderAgenda(){
-      const today = new Date().toISOString().slice(0,10);
-      const base = new Date();
-      const days = [];
-      for(let i=0;i<14;i++){
-        const d = new Date(base);
-        d.setDate(base.getDate()+i);
-        const iso = d.toISOString().slice(0,10);
-        days.push({iso, num:d.getDate(), jobs:state.agenda.filter(a => a.data===iso)});
-      }
-
-      return `
-        <div class="grid g2">
-          <div class="card">
-            <div class="section-title">Agenda clicável</div>
-            <div class="footer-actions"><button class="btn" id="newAgenda">Novo agendamento</button></div>
-            <div class="calendar" style="margin-top:12px">
-              ${days.map(d => `<div class="day ${d.iso===today?'today':''}" data-dia="${d.iso}"><div class="daynum">${String(d.num).padStart(2,'0')}</div>${d.jobs.slice(0,3).map(j => `<div class="tiny">• ${j.cliente}</div>`).join('') || '<div class="tiny">Sem itens</div>'}</div>`).join('')}
-            </div>
-          </div>
-          <div class="card">
-            <div class="section-title">Itens da agenda</div>
-            <div class="list">
-              ${state.agenda.map(a => `<div class="job-card"><strong>${a.cliente}</strong><div class="tiny">${a.data} · ${a.servico}</div><div class="tiny">${a.status}</div></div>`).join('') || '<div class="tiny">Sem itens.</div>'}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMetas(){
-      return `
-        <div class="grid g3">
-          <div class="card"><div class="section-title">Meta receita</div><div class="notice">${money(state.metas.receita)}</div></div>
-          <div class="card"><div class="section-title">Meta lucro</div><div class="notice">${money(state.metas.lucro)}</div></div>
-          <div class="card"><div class="section-title">Meta ticket</div><div class="notice">${money(state.metas.ticket)}</div></div>
-        </div>
-      `;
-    }
-
-    function renderRelatorios(){
-      return `<div class="card"><div class="section-title">Relatórios</div><div class="notice">Relatórios básicos ativos. Depois dá para aprofundar com histórico mensal e margem por serviço.</div></div>`;
-    }
-
-    function renderClientes(){
-      return `
-        <div class="card">
-          <div class="section-title">Clientes</div>
-          <table>
-            <tr><th>Nome</th><th>Telefone</th><th>Veículos</th></tr>
-            ${state.clientes.map(c => `<tr><td><strong>${c.nome}</strong></td><td>${c.telefone||''}</td><td>${(c.veiculos||[]).join(', ')}</td></tr>`).join('') || '<tr><td colspan="3">Sem clientes.</td></tr>'}
-          </table>
-        </div>
-      `;
-    }
-
-    function renderIA(){
-      return `<div class="card"><div class="section-title">IA</div><div class="notice">Use o cenário ideal como padrão. Não feche serviço interno com mão de obra zerada.</div></div>`;
-    }
-
-    function render(){
-      const app = document.getElementById('app');
-      const views = {
-        painel: renderPainel,
-        orcamento: renderOrcamento,
-        financeiro: renderFinanceiro,
-        contas: renderContas,
-        agenda: renderAgenda,
-        metas: renderMetas,
-        relatorios: renderRelatorios,
-        clientes: renderClientes,
-        ia: renderIA
-      };
-      app.innerHTML = views[state.active]();
-      nav();
-      bindView();
-      save();
-    }
-
-    function syncDraftFields(){
-      const ids = ['cliente','telefone','veiculo','placa','problema','area','obsTecnica','valorHora','horasMO','desconto'];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) state.draft[id] = el.value;
-      });
-      ['lado','dano','servicoCodigo','complexidade','prioridade'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) state.draft[id] = el.value;
-      });
-    }
-
-    function bindView(){
-      if (state.active === 'painel') {
-        document.getElementById('goOrc')?.addEventListener('click', () => { state.active='orcamento'; render(); });
-        document.getElementById('goAgenda')?.addEventListener('click', () => { state.active='agenda'; render(); });
-      }
-
-      if (state.active === 'orcamento') {
-        document.querySelectorAll('input, textarea, select').forEach(el => {
-          el.addEventListener('input', () => { syncDraftFields(); render(); });
-          el.addEventListener('change', () => { syncDraftFields(); render(); });
-        });
-
-        document.querySelectorAll('[data-scn]').forEach(el => {
-          el.addEventListener('click', () => { state.draft.scenario = el.dataset.scn; render(); });
-        });
-
-        document.getElementById('saveQuote')?.addEventListener('click', () => {
-          syncDraftFields();
-          const c = calcDraft();
-          if (!state.draft.cliente || !state.draft.veiculo || !state.draft.servicoCodigo) return alert('Preencha cliente, veículo e serviço.');
-          state.quotes.unshift({ id: Date.now(), draft: JSON.parse(JSON.stringify(state.draft)), calc: c, status:'orçamento' });
-          render();
-        });
-
-        document.getElementById('approveQuote')?.addEventListener('click', () => {
-          syncDraftFields();
-          const c = calcDraft();
-          if (!state.draft.cliente || !state.draft.veiculo || !state.draft.servicoCodigo) return alert('Preencha cliente, veículo e serviço.');
-          if (c.alertas.length) return alert(c.alertas.join(' | '));
-          state.quotes.unshift({ id: Date.now(), draft: JSON.parse(JSON.stringify(state.draft)), calc: c, status:'aprovado' });
-          state.finance.unshift({ id: Date.now()+1, data:new Date().toISOString().slice(0,10), desc:c.serv.nome+' · '+state.draft.cliente, tipo:'prevista', valor:c.total });
-          state.agenda.unshift({ id: Date.now()+2, data:new Date().toISOString().slice(0,10), cliente:state.draft.cliente, servico:c.serv.nome, status:'aprovado' });
-
-          let cli = state.clientes.find(x => x.nome === state.draft.cliente);
-          if (!cli) state.clientes.unshift({ nome: state.draft.cliente, telefone: state.draft.telefone, veiculos:[state.draft.veiculo] });
-
-          state.draft = {
-            cliente:'', telefone:'', veiculo:'', placa:'',
-            problema:'', area:'', lado:'esquerdo', dano:'leve', obsTecnica:'',
-            servicoCodigo:'', complexidade:'medio', prioridade:'normal',
-            valorHora:220, horasMO:0, desconto:0, pagamento:'PIX', garantia:'90 dias', docObs:'',
-            materiais:[{nome:'', qty:1, valor:0}],
-            itens:[{tipo:'servico', desc:'', qtd:1, custo:0, venda:0, origem:'', garantia:''}],
-            scenario:'ideal'
-          };
-          render();
-        });
-      }
-
-      if (state.active === 'financeiro') {
-        document.querySelectorAll('[data-recebido]').forEach(el => {
-          el.addEventListener('click', () => {
-            const i = Number(el.dataset.recebido);
-            if (state.finance[i]) state.finance[i].tipo = 'realizada';
-            render();
-          });
-        });
-      }
-
-      if (state.active === 'contas') {
-        document.getElementById('newConta')?.addEventListener('click', () => {
-          const desc = prompt('Descrição da conta:');
-          if (!desc) return;
-          const valor = Number(prompt('Valor da conta:') || 0);
-          if (!valor) return;
-          state.contas.unshift({ desc, valor, venc:new Date().toISOString().slice(0,10), pago:false });
-          render();
-        });
-
-        document.getElementById('addDas')?.addEventListener('click', () => {
-          state.contas.unshift({ desc:'DAS MEI', valor:75, venc:new Date().toISOString().slice(0,10), pago:false });
-          render();
-        });
-
-        document.querySelectorAll('[data-pagar]').forEach(el => {
-          el.addEventListener('click', () => {
-            const i = Number(el.dataset.pagar);
-            state.contas[i].pago = !state.contas[i].pago;
-            render();
-          });
-        });
-      }
-
-      if (state.active === 'agenda') {
-        document.getElementById('newAgenda')?.addEventListener('click', () => {
-          const cliente = prompt('Cliente:');
-          if (!cliente) return;
-          const servico = prompt('Serviço:') || 'Serviço';
-          const data = prompt('Data YYYY-MM-DD:') || new Date().toISOString().slice(0,10);
-          state.agenda.unshift({ cliente, servico, data, status:'agendado' });
-          render();
-        });
-
-        document.querySelectorAll('[data-dia]').forEach(el => {
-          el.addEventListener('click', () => {
-            const data = el.dataset.dia;
-            const jobs = state.agenda.filter(a => a.data === data);
-            if (!jobs.length) return alert('Sem itens para ' + data);
-            alert(jobs.map(j => j.cliente + ' · ' + j.servico + ' · ' + j.status).join('\n'));
-          });
-        });
-      }
-    }
-
-    document.getElementById('backupBtn').addEventListener('click', exportarJSON);
-
-    document.getElementById('importBtn').addEventListener('click', () => {
-      document.getElementById('importFile').click();
-    });
-
-    document.getElementById('importFile').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const obj = JSON.parse(reader.result);
-          state = { ...state, ...obj };
-          render();
-          alert('Backup importado com sucesso.');
-        } catch (err) {
-          alert('Arquivo JSON inválido.');
-        }
-      };
-      reader.readAsText(file);
-    });
-
-    load();
-    render();
-  </script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-          .then(() => console.log("Service Worker registrado com sucesso."))
-          .catch((err) => console.error("Erro ao registrar Service Worker:", err));
-      });
-    }
-  </script>
 </body>
 </html>
