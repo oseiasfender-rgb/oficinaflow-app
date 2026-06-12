@@ -1,8 +1,0 @@
-{
-  "name": "OficinaOS",
-  "short_name": "OficinaOS",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#f8f4ee",
-  "theme_color": "#b8621a"
-}
