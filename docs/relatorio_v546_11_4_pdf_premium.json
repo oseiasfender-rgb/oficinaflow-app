@@ -1,0 +1,10 @@
+{
+  "versao": "V546.11.4 PDF Premium",
+  "alteracoes": [
+    "Inserido serviço de PDF Premium Limaprata baseado no modelo PDF_Premium_Final.pdf.",
+    "Adicionado botão PDF Premium na aba Orçamento.",
+    "Adicionado campo de descrição técnica do serviço no orçamento.",
+    "Geração do PDF isolada em service, sem misturar regra de negócio com render da aba."
+  ],
+  "observacao": "Mantém o motor modular/STATE e reaproveita o layout premium do orçamento como camada de saída documental."
+}
