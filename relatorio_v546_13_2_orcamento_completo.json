@@ -1,0 +1,17 @@
+{
+  "versao": "V546.13.2",
+  "escopo": "Aba Orçamento completa do layout antigo",
+  "inclui": [
+    "todas as etapas do orçamento",
+    "resumo lateral antigo",
+    "PDF premium",
+    "teste integrado real",
+    "sem NaN esperado",
+    "sem funções fantasmas declaradas",
+    "histórico profissional",
+    "trava de orçamento pago/OS",
+    "barras preço hora/margem/desconto"
+  ],
+  "storage": "oficinaos_state_v546_13_2",
+  "arquivo": "index.html"
+}
