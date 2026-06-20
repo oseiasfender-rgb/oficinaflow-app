@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V546.20.7 RC3 Corrigida</title>
+<style>
+:root{--line:#ead7c4;--brown:#a95510;--muted:#7b6049;--green:#0aa34f;--red:#d93232;--orange:#e28a1a}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,#fbf7f1,#f2eadf);font:13px Arial;color:#24160d}
+.top{height:58px;background:#fffaf4;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 14px;box-shadow:0 2px 10px #0001;position:sticky;top:0;z-index:10}
+.logo{background:var(--brown);color:#fff;padding:8px;border-radius:5px;font-weight:900}
+.brand b{letter-spacing:4px;font-size:16px}.brand small{display:block;color:#9b5a22;letter-spacing:2px;font-size:8px}
+.tools{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.main{padding:18px}
+.hero{background:#fffaf4;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 2px 8px #00000008;min-height:160px}
+.card b{display:block;font-size:16px;margin-bottom:8px}.card p{color:var(--muted);min-height:42px}
+.btn{border:1px solid #dcb990;background:#fffaf4;border-radius:5px;padding:8px 10px;cursor:pointer;font-weight:700;text-decoration:none;color:#24160d;display:inline-block}
+.btn.primary{background:var(--brown);color:#fff}.btn.green{background:#e8fff1;color:#087e3d}.btn.blue{background:#eaf4ff;color:#075c9b}.btn.red{background:#ffecec;color:#b50f17}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.kpi small{display:block;color:#80634b;letter-spacing:2px;font-size:10px}.kpi strong{display:block;font-size:20px;margin-top:6px}
+.ok{color:var(--green)}.bad{color:var(--red)}.orange{color:var(--orange)}
+.status{position:fixed;right:12px;bottom:10px;background:#fffaf4;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
+@media(max-width:800px){.top{height:auto;flex-wrap:wrap;padding:8px}.tools{margin-left:0}.grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">OS</div>
+  <div class="brand"><b>OFICINAOS</b><small>RC3 CORRIGIDA</small></div>
+  <div class="tools">
+    <button class="btn green" onclick="fileImport.click()">📤 Importar JSON</button>
+    <button class="btn blue" onclick="exportarBackup()">💾 Backup JSON</button>
+    <button class="btn red" onclick="resetarImportacao()">Reset</button>
+  </div>
+</header>
+<main class="main">
+<section class="hero">
+<h2>OficinaOS V546.20.7 RC3 — Correção de discrepâncias</h2>
+<p>Correções: removida troca global perigosa que quebrava JavaScript, preservado código interno dos módulos, importação compacta mantida e arquivos na raiz.</p>
+<div class="kpis" id="kpis"></div>
+</section>
+<section class="grid">
+<div class="card"><b>🧾 Orçamento</b><p>Arquivo: orcamento.html</p><a class="btn primary" href="orcamento.html">Abrir</a></div>
+<div class="card"><b>💰 Financeiro</b><p>Arquivo: financeiro.html</p><a class="btn primary" href="financeiro.html">Abrir</a></div>
+<div class="card"><b>📅 Agenda</b><p>Arquivo: agenda.html</p><a class="btn primary" href="agenda.html">Abrir</a></div>
+<div class="card"><b>📈 Relatórios</b><p>Arquivo: relatorios.html</p><a class="btn primary" href="relatorios.html">Abrir</a></div>
+<div class="card"><b>🎯 Metas</b><p>Arquivo: metas.html</p><a class="btn primary" href="metas.html">Abrir</a></div>
+<div class="card"><b>👥 Clientes</b><p>Arquivo: clientes.html</p><a class="btn primary" href="clientes.html">Abrir</a></div>
+<div class="card"><b>🤖 IA</b><p>Arquivo: ia.html</p><a class="btn primary" href="ia.html">Abrir</a></div>
+</section>
+</main>
+<input id="fileImport" type="file" accept="application/json,.json" style="display:none">
+<div class="status" id="status">Pronto</div>
+<script>
+const VERSION='V546.20.7 RC3 CORRIGIDA';
+function moeda(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function isPago(x){return /pago/i.test(String(x||''))&&!/não/i.test(String(x||''));}
+function normalizar(t){const tipo=t.type==='rec'?'receita':(t.type==='dep'?'despesa':(t.tipo||''));const valor=Number(t.val??t.valor??0);const status=isPago(t.paid||t.status)?'pago':'pendente';return{id:String(t.id??Math.random()),tipo,type:t.type,categoria:t.cat||t.categoria||'Outros',cat:t.cat||t.categoria||'Outros',descricao:t.desc||t.descricao||'',desc:t.desc||t.descricao||'',data:t.date||t.data||'',date:t.date||t.data||'',valor,val:valor,status,paid:t.paid||(status==='pago'?'Pago':'Não pago'),origem:'backup_json'}}
+function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){console.warn('quota',k,e)}}
+function aplicarBackup(data){const allTx=Array.isArray(data.ALL_TX)?data.ALL_TX:[];const tx=allTx.map(normalizar);const receitas=tx.filter(x=>x.tipo==='receita');const despesas=tx.filter(x=>x.tipo==='despesa');const resumo={versao:VERSION,importadoEm:new Date().toISOString(),total:tx.length,receitas:receitas.length,despesas:despesas.length,receitasValor:receitas.reduce((s,x)=>s+x.valor,0),despesasValor:despesas.reduce((s,x)=>s+x.valor,0)};const state={meta:{versao:VERSION,importadoEm:resumo.importadoEm},financeiro:{lancamentos:tx,receitas,despesas,receber:receitas.filter(x=>x.status!=='pago'),pagar:despesas.filter(x=>x.status!=='pago')},clientes:[],orcamentos:[],agenda:[],metas:{},materiais:[]};['OFICINAOS_BACKUP_RAW','OficinaOS_BACKUP_RAW'].forEach(k=>localStorage.removeItem(k));safeSet('ALL_TX',JSON.stringify(allTx));safeSet('oficinaos_ALL_TX',JSON.stringify(allTx));safeSet('oficinaos_financeiro_lancamentos',JSON.stringify(tx));safeSet('oficinaos_state',JSON.stringify(state));safeSet('OFICINAOS_STATE',JSON.stringify(state));safeSet('STATE',JSON.stringify(state));safeSet('oficinaos_import_info',JSON.stringify(resumo));atualizarPainel();status.textContent='Importado: '+tx.length+' transações';alert('Backup importado. Transações: '+tx.length+' | Receitas: '+receitas.length+' | Despesas: '+despesas.length)}
+function info(){try{return JSON.parse(localStorage.getItem('oficinaos_import_info')||'null')}catch(e){return null}}
+function atualizarPainel(){const i=info();if(!i){kpis.innerHTML='<div class="kpi"><small>IMPORTAÇÃO</small><strong class="orange">Aguardando</strong></div><div class="kpi"><small>TRANSAÇÕES</small><strong>0</strong></div><div class="kpi"><small>RECEITAS</small><strong>0</strong></div><div class="kpi"><small>DESPESAS</small><strong>0</strong></div>';return}kpis.innerHTML='<div class="kpi"><small>IMPORTAÇÃO</small><strong class="ok">OK</strong></div><div class="kpi"><small>TRANSAÇÕES</small><strong>'+i.total+'</strong></div><div class="kpi"><small>RECEITAS</small><strong class="ok">'+moeda(i.receitasValor)+'</strong></div><div class="kpi"><small>DESPESAS</small><strong class="bad">'+moeda(i.despesasValor)+'</strong></div>'}
+fileImport.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{aplicarBackup(JSON.parse(ev.target.result))}catch(err){alert('Erro ao importar: '+err.message)}};r.readAsText(f)}
+function exportarBackup(){const keys=['ALL_TX','oficinaos_ALL_TX','oficinaos_financeiro_lancamentos','oficinaos_state','OFICINAOS_STATE','STATE','oficinaos_import_info'];const data={version:VERSION,exportedAt:new Date().toISOString(),localStorage:{}};keys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.localStorage[k]=v});const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='oficinaos_backup_v546_20_7.json';a.click();URL.revokeObjectURL(a.href)}
+function resetarImportacao(){if(!confirm('Limpar dados importados?'))return;['OFICINAOS_BACKUP_RAW','OficinaOS_BACKUP_RAW','ALL_TX','oficinaos_ALL_TX','oficinaos_financeiro_lancamentos','oficinaos_state','OFICINAOS_STATE','STATE','oficinaos_import_info'].forEach(k=>localStorage.removeItem(k));atualizarPainel();status.textContent='Importação limpa'}
+atualizarPainel();
+</script>
+</body>
+</html>
