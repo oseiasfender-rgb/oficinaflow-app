@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V546.21.1</title>
+<style>
+:root{--line:#ead7c4;--brown:#a95510;--muted:#7b6049;--green:#0aa34f;--red:#d93232;--orange:#e28a1a}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#fbf7f1,#f2eadf);font:13px Arial;color:#24160d}
+.top{min-height:58px;background:#fffaf4;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:8px 14px;box-shadow:0 2px 10px #0001;flex-wrap:wrap}
+.logo{background:var(--brown);color:#fff;padding:8px;border-radius:5px;font-weight:900}.brand b{letter-spacing:4px;font-size:16px}.brand small{display:block;color:#9b5a22;letter-spacing:2px;font-size:8px}
+.tools{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.main{padding:18px}.hero{background:#fffaf4;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;box-shadow:0 2px 8px #00000008;min-height:160px}
+.card b{display:block;font-size:16px;margin-bottom:8px}.card p{color:var(--muted);min-height:42px}.btn{border:1px solid #dcb990;background:#fffaf4;border-radius:5px;padding:8px 10px;cursor:pointer;font-weight:700;text-decoration:none;color:#24160d;display:inline-block}
+.btn.primary{background:var(--brown);color:#fff}.btn.green{background:#e8fff1;color:#087e3d}.btn.blue{background:#eaf4ff;color:#075c9b}.btn.red{background:#ffecec;color:#b50f17}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.kpi small{display:block;color:#80634b;letter-spacing:2px;font-size:10px}.kpi strong{display:block;font-size:20px;margin-top:6px}
+.ok{color:var(--green)}.bad{color:var(--red)}.orange{color:var(--orange)}.warnBox{background:#fff8e6;border:1px solid #ead7c4;border-radius:8px;padding:10px;margin-top:10px;color:#735022}
+.status{position:fixed;right:12px;bottom:10px;background:#fffaf4;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted);box-shadow:0 2px 10px #0001}
+.modal,.splash{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:100}.splash{z-index:200;background:radial-gradient(circle at 50% 20%,#3b251b,#110d0b 70%);color:white;padding:20px}.open{display:flex}
+.panel,.setup{background:#fffaf4;border:1px solid var(--line);border-radius:10px;width:min(760px,94vw);max-height:88vh;overflow:auto}.setup{background:#221914cc;border-color:#8b5b38;border-radius:18px;padding:26px;color:white}.setup h1{text-align:center;letter-spacing:12px;color:#ff9d4b}.setup p{text-align:center;color:#c2aaa0}
+.panelHead{background:linear-gradient(90deg,#6e2a09,#b45b13);color:white;padding:14px;display:flex;justify-content:space-between}.panelBody{padding:14px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{font-size:10px;font-weight:900;letter-spacing:2px;color:#6b4d35;display:block;margin-bottom:5px}.setup .field label{color:#d4bbb0}.field input{width:100%;padding:10px;border:1px solid #dcb990;border-radius:8px;background:white}.full{grid-column:1/-1}.setup .btn.primary{width:100%;font-size:18px;padding:14px;margin-top:14px;border-radius:14px}
+@media(max-width:800px){.tools{margin-left:0}.grid{grid-template-columns:1fr 1fr}.formGrid{grid-template-columns:1fr}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#a95510">
+<link rel="icon" href="icons/icon-192.svg">
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('Service Worker:',err)));
+}
+</script>
+</head>
+<body>
+<div class="splash" id="splash"><div class="setup"><h1>OFICINAOS</h1><p>SISTEMA DE GESTÃO AUTOMOTIVA</p><h3>CONFIGURAÇÃO INICIAL</h3><div class="formGrid">
+<div class="field full"><label>NOME DA OFICINA *</label><input id="cfgEmpresa" placeholder="Limaprata Reparações Automotivas"></div>
+<div class="field"><label>PROPRIETÁRIO *</label><input id="cfgUsuario" placeholder="Oséias"></div><div class="field"><label>CNPJ / CPF</label><input id="cfgDoc"></div>
+<div class="field"><label>CIDADE</label><input id="cfgCidade" placeholder="Leme/SP"></div><div class="field"><label>PIX</label><input id="cfgPix"></div><div class="field"><label>WHATSAPP</label><input id="cfgTel"></div></div>
+<button class="btn primary" onclick="salvarConfigInicial()">▶ Configurar e Entrar</button><p>Você pode alterar depois em Configurações.</p></div></div>
+<header class="top"><div class="logo">OS</div><div class="brand"><b id="brandName">OFICINAOS</b><small id="brandSub">GESTÃO AUTOMOTIVA</small></div><div class="tools">
+<button class="btn green" onclick="fileImport.click()">📤 Importar JSON</button><button class="btn blue" onclick="exportarBackup()">💾 Backup JSON</button><button class="btn" onclick="showConfig()">⚙️ Configurações</button><button class="btn red" onclick="limparDados()">🗑️ Limpar dados</button></div><a class="btn" href="diagnostico.html">🔍 Diagnóstico</a></header>
+<main class="main"><section class="hero"><h2 id="heroTitle">OficinaOS — Painel Mestre</h2><p>Abas congeladas funcionando. O painel mestre controla empresa, usuário, backup local automático e configurações.</p><div class="kpis" id="kpis"></div><div class="warnBox"><b>Status:</b> armazenamento local ativo. Nuvem real ainda não ativada.</div></section>
+<section class="grid">
+<div class="card"><b>🧾 Orçamento</b><p>Original congelado intacto.</p><a class="btn primary" href="orcamento.html">Abrir</a></div>
+<div class="card"><b>💰 Financeiro</b><p>Original congelado intacto.</p><a class="btn primary" href="financeiro.html">Abrir</a></div>
+<div class="card"><b>📅 Agenda</b><p>Original congelado intacto.</p><a class="btn primary" href="agenda.html">Abrir</a></div>
+<div class="card"><b>📈 Relatórios</b><p>Original congelado intacto.</p><a class="btn primary" href="relatorios.html">Abrir</a></div>
+<div class="card"><b>🎯 Metas</b><p>Original congelado intacto.</p><a class="btn primary" href="metas.html">Abrir</a></div>
+<div class="card"><b>👥 Clientes</b><p>Original congelado intacto.</p><a class="btn primary" href="clientes.html">Abrir</a></div>
+<div class="card"><b>🤖 IA</b><p>Original congelado intacto.</p><a class="btn primary" href="ia.html">Abrir</a></div></section></main>
+<input id="fileImport" type="file" accept="application/json,.json" style="display:none"><div class="status" id="status">💾 Local OK</div>
+<div class="modal" id="modal"><div class="panel"><div class="panelHead"><b id="modalTitle">Configurações</b><button class="btn" onclick="closeModal()">✕</button></div><div class="panelBody" id="modalBody"></div></div></div>
+<script>
+const VERSION='V546.21.1 MASTER CONFIG AUTOSAVE';
+const KEYS=['ALL_TX','oficinaos_ALL_TX','oficinaos_financeiro_lancamentos','oficinaos_state','OFICINAOS_STATE','STATE','oficinaos_import_info','OFICINAOS_BACKUP_RAW','OficinaOS_BACKUP_RAW','oficinaos_agenda_fotos','oficinaos_config','oficinaos_autobackup'];
+function getConfig(){try{return JSON.parse(localStorage.getItem('oficinaos_config')||'{}')}catch(e){return {}}}
+function setConfig(c){localStorage.setItem('oficinaos_config',JSON.stringify(c));aplicarConfigTela()}
+function aplicarConfigTela(){const c=getConfig();brandName.textContent=(c.empresa||'OFICINAOS').toUpperCase();brandSub.textContent=(c.cidade?c.cidade+' · ':'')+'GESTÃO AUTOMOTIVA';heroTitle.textContent=(c.empresa||'OficinaOS')+' — Painel Mestre'}
+function precisaConfig(){const c=getConfig();return !(c.empresa&&c.usuario)}
+function salvarConfigInicial(){const c={empresa:cfgEmpresa.value.trim(),usuario:cfgUsuario.value.trim(),documento:cfgDoc.value.trim(),cidade:cfgCidade.value.trim(),pix:cfgPix.value.trim(),telefone:cfgTel.value.trim(),multiusuario:[{nome:cfgUsuario.value.trim(),perfil:'Administrador'}],criadoEm:new Date().toISOString()};if(!c.empresa||!c.usuario){alert('Preencha nome da oficina e proprietário.');return}setConfig(c);splash.classList.remove('open');setStatus('⚙️ Configuração salva')}
+function showConfig(){const c=getConfig();modalTitle.textContent='⚙️ Configurações';modalBody.innerHTML='<div class="formGrid"><div class="field full"><label>NOME DA OFICINA</label><input id="mEmpresa" value="'+(c.empresa||'')+'"></div><div class="field"><label>PROPRIETÁRIO</label><input id="mUsuario" value="'+(c.usuario||'')+'"></div><div class="field"><label>CNPJ / CPF</label><input id="mDoc" value="'+(c.documento||'')+'"></div><div class="field"><label>CIDADE</label><input id="mCidade" value="'+(c.cidade||'')+'"></div><div class="field"><label>PIX</label><input id="mPix" value="'+(c.pix||'')+'"></div><div class="field"><label>WHATSAPP</label><input id="mTel" value="'+(c.telefone||'')+'"></div><div class="field full"><label>USUÁRIOS LOCAIS</label><input id="mUsers" value="'+((c.multiusuario||[]).map(u=>u.nome).join(', ')||c.usuario||'')+'"></div></div><br><button class="btn primary" onclick="salvarConfigModal()">Salvar configurações</button><div class="warnBox"><b>Multiusuário:</b> configuração local. Login real fica para backend/nuvem.</div>';modal.classList.add('open')}
+function salvarConfigModal(){const users=(mUsers.value||'').split(',').map(x=>x.trim()).filter(Boolean).map((nome,i)=>({nome,perfil:i===0?'Administrador':'Usuário'}));setConfig({empresa:mEmpresa.value.trim(),usuario:mUsuario.value.trim(),documento:mDoc.value.trim(),cidade:mCidade.value.trim(),pix:mPix.value.trim(),telefone:mTel.value.trim(),multiusuario:users,atualizadoEm:new Date().toISOString()});closeModal();setStatus('⚙️ Configurações salvas')}
+function closeModal(){modal.classList.remove('open')}
+function moeda(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function isPago(x){return /pago/i.test(String(x||''))&&!/não/i.test(String(x||''))}
+function normalizar(t){const tipo=t.type==='rec'?'receita':(t.type==='dep'?'despesa':(t.tipo||''));const valor=Number(t.val??t.valor??0);const status=isPago(t.paid||t.status)?'pago':'pendente';return{id:String(t.id??Math.random()),tipo,type:t.type,categoria:t.cat||t.categoria||'Outros',cat:t.cat||t.categoria||'Outros',descricao:t.desc||t.descricao||'',desc:t.desc||t.descricao||'',data:t.date||t.data||'',date:t.date||t.data||'',valor,val:valor,status,paid:t.paid||(status==='pago'?'Pago':'Não pago'),origem:'backup_json'}}
+function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){console.warn('quota',k,e)}}
+function aplicarBackup(data){const allTx=Array.isArray(data.ALL_TX)?data.ALL_TX:[];const tx=allTx.map(normalizar);const receitas=tx.filter(x=>x.tipo==='receita');const despesas=tx.filter(x=>x.tipo==='despesa');const resumo={versao:VERSION,importadoEm:new Date().toISOString(),total:tx.length,receitas:receitas.length,despesas:despesas.length,receitasValor:receitas.reduce((s,x)=>s+x.valor,0),despesasValor:despesas.reduce((s,x)=>s+x.valor,0)};const state={meta:{versao:VERSION,importadoEm:resumo.importadoEm},config:getConfig(),financeiro:{lancamentos:tx,receitas,despesas,receber:receitas.filter(x=>x.status!=='pago'),pagar:despesas.filter(x=>x.status!=='pago')},clientes:[],orcamentos:[],agenda:[],metas:{},materiais:[]};['OFICINAOS_BACKUP_RAW','OficinaOS_BACKUP_RAW'].forEach(k=>localStorage.removeItem(k));safeSet('ALL_TX',JSON.stringify(allTx));safeSet('oficinaos_ALL_TX',JSON.stringify(allTx));safeSet('oficinaos_financeiro_lancamentos',JSON.stringify(tx));safeSet('oficinaos_state',JSON.stringify(state));safeSet('OFICINAOS_STATE',JSON.stringify(state));safeSet('STATE',JSON.stringify(state));safeSet('oficinaos_import_info',JSON.stringify(resumo));atualizarPainel();setStatus('📤 JSON importado');alert('Backup importado. Transações: '+tx.length+' | Receitas: '+receitas.length+' | Despesas: '+despesas.length)}
+function info(){try{return JSON.parse(localStorage.getItem('oficinaos_import_info')||'null')}catch(e){return null}}
+function atualizarPainel(){const i=info();if(!i){kpis.innerHTML='<div class="kpi"><small>DADOS</small><strong class="orange">Limpo</strong></div><div class="kpi"><small>TRANSAÇÕES</small><strong>0</strong></div><div class="kpi"><small>RECEITAS</small><strong>0</strong></div><div class="kpi"><small>DESPESAS</small><strong>0</strong></div>';return}kpis.innerHTML='<div class="kpi"><small>DADOS</small><strong class="ok">Importado</strong></div><div class="kpi"><small>TRANSAÇÕES</small><strong>'+i.total+'</strong></div><div class="kpi"><small>RECEITAS</small><strong class="ok">'+moeda(i.receitasValor)+'</strong></div><div class="kpi"><small>DESPESAS</small><strong class="bad">'+moeda(i.despesasValor)+'</strong></div>'}
+fileImport.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{aplicarBackup(JSON.parse(ev.target.result))}catch(err){alert('Erro ao importar: '+err.message)}};r.readAsText(f)}
+function coletarBackup(){const data={version:VERSION,exportedAt:new Date().toISOString(),config:getConfig(),localStorage:{}};KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.localStorage[k]=v});return data}
+function exportarBackup(){const blob=new Blob([JSON.stringify(coletarBackup(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='oficinaos_backup_v546_21_1.json';a.click();URL.revokeObjectURL(a.href);setStatus('💾 Backup gerado')}
+function autosave(){try{localStorage.setItem('oficinaos_autobackup',JSON.stringify(coletarBackup()));setStatus('💾 Local OK')}catch(e){setStatus('⚠️ Autosave limitado')}}
+setInterval(autosave,4000)
+function limparDados(){if(prompt('Digite LIMPAR para zerar dados de teste')!=='LIMPAR')return;KEYS.filter(k=>k!=='oficinaos_config').forEach(k=>localStorage.removeItem(k));atualizarPainel();setStatus('🗑️ Dados limpos');alert('Dados limpos. Configurações preservadas.')}
+function setStatus(txt){status.textContent=txt+' · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
+aplicarConfigTela();atualizarPainel();if(precisaConfig())splash.classList.add('open');setStatus('💾 Local OK')
+</script><script src="oficinaos-state.js"></script>
+</body></html>
