@@ -30,5 +30,6 @@ function run(){let q=$('prompt').value.trim()||'Consulta operacional geral';let 
 $('send').onclick=run;document.querySelectorAll('.menu button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.mod});$('btnTest').onclick=()=>alert('✅ Menu antigo preservado\n✅ Dados fictícios carregados\n✅ Resumo operacional ativo\n✅ Materiais críticos ativos\n✅ Memória técnica ativa\n✅ Consulta funcionando');load();
 })();
 </script>
+<script src="ofix-state.js"></script>
 </body>
 </html>

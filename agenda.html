@@ -114,4 +114,5 @@ function renderAll(){renderCalendar();renderKanban();renderSide();renderTimeline
 $('loadSim').onclick=seed;$('addEvent').onclick=add;$('search').oninput=renderAll;$('filter').onchange=renderAll;$('closeModal').onclick=()=>$('modal').classList.remove('open');$('saveOS').onclick=saveModal;$('finishOS').onclick=finish;$('deleteOS').onclick=()=>{state.os=state.os.filter(x=>x.id!==state.selected);$('modal').classList.remove('open');renderAll()};$('btnTest').onclick=test;$('prev').onclick=()=>shiftMonth(-1);$('next').onclick=()=>shiftMonth(1);$('tabCal').onclick=()=>setAgendaTab('cal');$('tabKanban').onclick=()=>setAgendaTab('kanban');$('tabTimeline').onclick=()=>setAgendaTab('timeline'); shiftMonth(0); seed();
 })();
 </script>
+<script src="ofix-state.js"></script>
 </body></html>

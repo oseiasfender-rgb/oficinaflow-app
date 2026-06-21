@@ -74,4 +74,5 @@ setInterval(autosave,4000)
 function limparDados(){if(prompt('Digite LIMPAR para zerar dados de teste')!=='LIMPAR')return;KEYS.filter(k=>k!=='oficinaos_config').forEach(k=>localStorage.removeItem(k));atualizarPainel();setStatus('🗑️ Dados limpos');alert('Dados limpos. Configurações preservadas.')}
 function setStatus(txt){status.textContent=txt+' · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
 aplicarConfigTela();atualizarPainel();if(precisaConfig())splash.classList.add('open');setStatus('💾 Local OK')
-</script></body></html>
+</script><script src="ofix-state.js"></script>
+</body></html>

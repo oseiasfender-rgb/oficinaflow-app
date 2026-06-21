@@ -114,4 +114,5 @@ function validate(){const c=cliente();const tests=[['Clientes fictícios complet
 $('busca').oninput=renderLista;$('novo').onclick=novoCliente;$('btnTest').onclick=validate;$('addVeiculo').onclick=openVeiculo;$('closeVeiculo').onclick=()=>$('modalVeiculo').classList.remove('open');$('cancelVeiculo').onclick=()=>$('modalVeiculo').classList.remove('open');$('saveVeiculo').onclick=saveVeiculo;$('saveServico').onclick=()=>{const c=cliente();c.historico.push({tipo:'Serviço',data:$('sData').value,desc:$('sDesc').value+' · '+$('sCat').value,valor:n($('sValor').value),status:'Concluído'});save();render()};$('saveCRM').onclick=()=>{const c=cliente();c.crm.push({data:$('crmData').value||'2026-06-30',acao:$('crmStatus').value,desc:$('crmDesc').value});save();render()};document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));document.querySelectorAll('.pillbar button').forEach(b=>b.onclick=()=>{state.filter=b.dataset.filter;save();render()});bindPhotoImport();load();
 })();
 </script>
+<script src="ofix-state.js"></script>
 </body></html>
