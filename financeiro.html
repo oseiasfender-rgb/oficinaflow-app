@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<script>
+(function(){
+ if(window.__OFICINAOS_V54630_BOOT__)return;window.__OFICINAOS_V54630_BOOT__=true;
+ const nativeAlert=window.alert.bind(window);
+ const pats=['Teste V546','Motor unificado/KPIs','Receita parcelada','Despesa lançada como despesa','Render pós-edição','Tela sem NaN','OS vinculada','Sem duplicidade cadastral','Etapas válidas','Atrasos automáticos','Integração financeira preparada','Orçamentos avulsos com validade','Expiração automática','Filtros operacionais ativos','Clientes fictícios completos','Excluir com confirmação','Busca funcionando','Filtros ativos','Veículos em cards','Fotos por etapa','Importação de fotos ativa','Registrar serviço','Menu antigo preservado','Dados fictícios carregados','Resumo operacional ativo','Materiais críticos ativos','Memória técnica ativa','Consulta funcionando','Não usa fallback fictício','Fonte visível','Metas editáveis','Margem protegida','Lê lançamentos do STATE','Orçamentos lidos','Agenda/OS lida','Sem NaN'];
+ window.alert=function(msg){const t=String(msg||'');if(pats.some(p=>t.includes(p))){console.warn('[OficinaOS V546.30] popup bloqueado:',t);return;}return nativeAlert(msg);};
+ window.OFICINAOS_NUM=function(v){if(v===null||v===undefined||v===''||v==='NaN')return 0;if(typeof v==='string')v=v.replace(/R\$/g,'').replace(/\s/g,'').replace(/\./g,'').replace(',','.');v=Number(v);return Number.isFinite(v)?v:0;};
+})();
+</script>
+
+
+
+
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OficinaOS V546.15.1 — Financeiro PE Real</title>
+<style>
+:root{--bg:#f8f6f3;--panel:#fff;--soft:#faf5ee;--line:rgba(100,60,20,.14);--text:#2c1a08;--muted:#76533a;--gold:#b8621a;--green:#16a34a;--red:#dc2626;--orange:#d97706;--blue:#1d6fa4;--purple:#7c3aed}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Lato,system-ui,-apple-system,Segoe UI,Arial,sans-serif;font-size:15px}.top{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#faf5ee);position:sticky;top:0;z-index:5}.brand{display:flex;gap:10px;align-items:center}.logo{width:34px;height:34px;border-radius:5px;background:linear-gradient(135deg,#e8c090,#b8621a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900}.bname{font-family:Impact,Bebas Neue,sans-serif;letter-spacing:.08em;font-size:20px}.bsub{font-size:10px;letter-spacing:.25em;color:var(--gold)}.nav{display:flex;gap:4px}.tab{border:1px solid transparent;background:transparent;padding:8px 10px;border-radius:5px;color:var(--muted)}.tab.active{background:rgba(184,98,26,.1);border-color:rgba(184,98,26,.3);color:var(--gold);font-weight:700}.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:5px;padding:8px 10px;cursor:pointer;font-weight:700}.btn:hover{border-color:rgba(184,98,26,.35)}.btn.primary{background:linear-gradient(135deg,#b8621a,#9a4e12);color:#fff;border:0}.btn.ok,.green{background:rgba(22,163,74,.1);border-color:rgba(22,163,74,.25);color:#15803d}.btn.red,.danger{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.25);color:#b91c1c}.btn.warn{background:rgba(217,119,6,.09);border-color:rgba(217,119,6,.25);color:#b45309}.btn.blue{background:rgba(29,111,164,.09);border-color:rgba(29,111,164,.25);color:#1d6fa4}.btn.ghost{background:transparent}.app{display:grid;grid-template-columns:1fr 350px;min-height:calc(100vh - 60px)}.main{padding:18px 24px;overflow:auto}.side{padding:18px;background:#faf5ee;border-left:1px solid var(--line);position:sticky;top:60px;height:calc(100vh - 60px);overflow:auto}.toolbar,.quick{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.toolbar{display:grid;grid-template-columns:36px 94px 36px 160px 160px 96px auto;gap:8px;align-items:center}.toolbar .btn{height:34px;padding:6px 9px}.toolbar input,.toolbar select{height:34px;padding:6px 8px;font-size:13px}.quick .btn{height:34px;padding:6px 12px}.month{font-weight:900;letter-spacing:.1em;color:var(--gold);min-width:94px;text-align:center;font-size:13px}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;box-shadow:0 2px 8px rgba(150,80,20,.05)}.grid{display:grid;gap:12px}.cols2{grid-template-columns:repeat(2,1fr)}.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)}.titlebar{font-family:monospace;font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);margin-bottom:10px}.lbl{font-family:monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.val{font-family:Impact,Bebas Neue,sans-serif;font-size:28px;line-height:1;margin-top:4px}.sub{font-size:12px;color:var(--muted);margin-top:4px}#kpis{grid-template-columns:repeat(4,minmax(210px,1fr));align-items:stretch}#kpis .card{min-height:96px;padding:14px 16px}.toolbar+ .quick{margin-top:2px}.greenTxt{color:var(--green)}.redTxt{color:var(--red)}.blueTxt{color:var(--blue)}.orangeTxt{color:var(--orange)}.list{display:flex;flex-direction:column;gap:6px}.item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;border-radius:6px;padding:10px}.item.receita{border-left:4px solid var(--green)}.item.despesa{border-left:4px solid var(--red)}.desc{font-weight:800}.meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}.amount{font-family:monospace;font-weight:900;text-align:right}.actions{display:flex;gap:4px;justify-content:flex-end;flex-wrap:wrap}.mini{font-size:12px;padding:5px 7px}.badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 8px;font-size:12px;font-weight:900}.badge.pago{background:rgba(22,163,74,.12);color:#15803d}.badge.pendente{background:rgba(220,38,38,.10);color:#b91c1c}.badge.parcial{background:rgba(217,119,6,.12);color:#b45309}.badge.vencida{background:rgba(220,38,38,.12);color:#b91c1c;border:1px solid rgba(220,38,38,.2)}.progress{height:5px;background:#eee;border-radius:5px;overflow:hidden;margin-top:4px}.progress b{display:block;height:100%;background:var(--gold)}.form{display:flex;flex-direction:column;gap:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}input,select,textarea{width:100%;border:1px solid rgba(150,80,20,.2);border-radius:5px;background:#fffaf5;padding:9px;color:var(--text)}.switch,.segmented{display:flex;gap:6px}.switch .active,.quick .active{outline:2px solid rgba(184,98,26,.25);border-color:var(--gold);color:var(--gold)}.segBtn{flex:1;border:1px solid var(--line);background:#fff;border-radius:6px;padding:10px;cursor:pointer;font-weight:900}.segBtn.active.receita,.segBtn.active.pago{background:rgba(22,163,74,.12);border-color:rgba(22,163,74,.35);color:#15803d}.segBtn.active.despesa,.segBtn.active.pendente{background:rgba(220,38,38,.10);border-color:rgba(220,38,38,.35);color:#b91c1c}.segBtn.active.parcial{background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.35);color:#b45309}.segmented.three .segBtn{font-size:13px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20}.modal.open{display:flex}.box{background:#fff;border-radius:10px;border:1px solid rgba(184,98,26,.3);width:min(720px,92vw);max-height:90vh;overflow:auto}.boxHead{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}.boxBody{padding:16px}.editFooter{display:flex;gap:8px;margin-top:14px}.editFooter .dangerLink{margin-left:auto}.fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,#1d6fa4,#0d9488);color:#fff;font-size:24px;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:grab;z-index:10}.fab.dragging{cursor:grabbing}.qr{width:120px;height:120px;margin:10px auto;background:repeating-linear-gradient(45deg,#111 0 6px,#fff 6px 12px);border:8px solid #fff;box-shadow:0 0 0 1px var(--line)}.lockedBanner{display:none;background:#fff3cd;color:#7a4b00;border:1px solid #f0d98c;border-radius:6px;padding:9px;margin-bottom:10px}.financeClosed .lockedBanner{display:block}.financeClosed [data-edit],.financeClosed [data-del],.financeClosed [data-togglepay],.financeClosed #addLanc{opacity:.45;pointer-events:none}.muted{color:var(--muted);font-size:12px}.opCard{border-left:4px solid var(--gold)}.opCard.receber{border-left-color:var(--green)}.opCard.pagar{border-left-color:var(--red)}.opCard.recor{border-left-color:var(--blue)}@media(max-width:980px){.toolbar{display:flex}.toolbar input,.toolbar select{width:100%;max-width:none}.app{grid-template-columns:1fr}.side{position:static;height:auto;border-left:0;border-top:1px solid var(--line)}.cols4,.cols3,.cols2{grid-template-columns:1fr}.nav{display:none}.row{grid-template-columns:1fr}}
+</style>
+
+
+
+</head>
+<body>
+<div class="top"><div class="brand"><div class="logo">OS</div><div><div class="bname">OFICINAOS</div><div class="bsub">GESTÃO AUTOMOTIVA</div></div></div><div class="nav"><button class="tab active">📊 Financeiro</button><button class="tab">🧾 Orçamento</button><button class="tab">🚨 Contas</button><button class="tab">🎯 Metas</button><button class="tab">📅 Agenda</button><button class="tab">👥 Clientes</button><button class="tab">📈 Relatórios</button><button class="tab">🤖 IA</button></div><button class="btn" id="btnTest">🛡️ Teste integrado</button></div>
+<div class="app"><main class="main">
+ <div class="toolbar"><button class="btn" id="prevM">◀</button><span class="month" id="monthLabel"></span><button class="btn" id="nextM">▶</button><input id="search" placeholder="Buscar..."/><select id="catFilter"><option value="">Todas categorias</option></select><select id="statusFilter"><option value="">Tudo</option><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="parcial">Parcial</option></select></div>
+ <div class="quick"><button class="btn" data-q="hoje">Hoje</button><button class="btn" data-q="semana">Semana</button><button class="btn active" data-q="mes">Mês</button><button class="btn" data-q="vencidas">Vencidas</button><button class="btn" data-q="recorrentes">Recorrentes</button><button class="btn" data-q="recebidas">Recebidas</button><button class="btn" data-q="pendentes">Pendentes</button></div>
+ <div class="lockedBanner">🔒 Competência fechada. Reabra o mês para alterar lançamentos.</div>
+ <section class="grid cols4" id="kpis"></section>
+ <section class="grid cols2" style="margin-top:12px"><div class="card"><div class="titlebar">Receitas</div><div class="list" id="receitasList"></div></div><div class="card"><div class="titlebar">Despesas / Contas</div><div class="list" id="despesasList"></div></div></section>
+</main><aside class="side">
+ <div class="card"><div class="titlebar">Resultado do mês</div><div class="val greenTxt" id="sideResultado"></div><div class="grid cols2" style="margin-top:10px"><div class="card"><div class="lbl">Caixa</div><b id="sideCaixa"></b></div><div class="card"><div class="lbl">Competência</div><b id="sideComp"></b></div></div></div>
+ <div class="card" style="margin-top:12px"><div class="titlebar">Operação do mês</div><div class="grid" id="operacaoMes" style="gap:8px"></div><p class="muted"><b>Separação correta:</b> Financeiro mostra operação do mês. Dashboards, DRE, fluxo projetado longo e comparativos ficam reservados para Relatórios. Metas completas ficam em Metas.</p></div>
+ <div class="card" style="margin-top:12px"><div class="titlebar">Lançar transação</div><div class="switch"><button class="btn active" id="tipoReceita">+ Receita</button><button class="btn" id="tipoDespesa">− Despesa</button></div><div class="form" style="margin-top:8px"><input id="desc" placeholder="Descrição"><input id="valor" placeholder="Valor R$"><select id="categoria"><option>Serviços</option><option>Materiais de Pintura</option><option>Transporte Oficina</option><option>Internet</option><option>Assinatura</option><option>Impostos e Taxas</option><option>Restaurante</option><option>Outras</option></select><input id="data" type="date"><div class="row"><select id="modo"><option value="avista">À vista</option><option value="parcelado">Parcelado</option><option value="recorrente">Recorrente</option><option value="fixo">Fixo</option></select><input id="parcelas" type="number" min="1" value="1" title="Parcelas"></div><select id="freq"><option value="mensal">Mensal</option><option value="diario">Diário</option><option value="semanal">Semanal</option><option value="quinzenal">Quinzenal</option><option value="anual">Anual</option></select><select id="forma"><option>PIX</option><option>Cartão</option><option>Dinheiro</option><option>Boleto</option><option>Transferência</option></select><button class="btn primary" id="addLanc">+ Lançar</button><button class="btn ghost" id="loadSim">Carregar simulação fictícia</button><button class="btn ghost" id="closeMonth">🔒 Fechar mês</button></div></div>
+ <div class="card" style="margin-top:12px"><div class="titlebar">Formas de pagamento</div><div id="paySummary" class="grid"></div></div>
+ <div class="card" style="margin-top:12px"><div class="titlebar">Inadimplência</div><div id="agingBox"></div></div>
+ <div class="card" style="margin-top:12px"><div class="titlebar">Alertas</div><div id="alerts"></div></div>
+</aside></div>
+<button class="fab" id="pixFab">⚡</button>
+<div class="modal" id="modal"><div class="box"><div class="boxHead"><b id="modalTitle">Modal</b><button class="btn" id="closeModal">Fechar</button></div><div class="boxBody" id="modalBody"></div></div></div>
+<script>
+(()=>{
+const KEY='oficinaos_v546_14_10_3_financeiro_motor_unificado'; const $=id=>document.getElementById(id);
+const money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const n=v=>{let s=String(v??0).trim(); if(s.includes(',')&&s.includes('.')) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); const x=Number(s); return Number.isFinite(x)?x:0};
+const uid=p=>p+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const today='2026-06-15'; let currentType='receita'; let quickFilter='mes';
+const monthName=m=>['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'][Number(m.slice(5,7))-1]+' '+m.slice(0,4);
+const addDays=(d,days)=>{let x=new Date(d+'T12:00:00');x.setDate(x.getDate()+days);return x.toISOString().slice(0,10)};
+const addMonths=(d,months)=>{let x=new Date(d+'T12:00:00');x.setMonth(x.getMonth()+months);return x.toISOString().slice(0,10)};
+const addYears=(d,years)=>{let x=new Date(d+'T12:00:00');x.setFullYear(x.getFullYear()+years);return x.toISOString().slice(0,10)};
+function simulation(){const L=[]; const push=(o)=>L.push({id:uid('lan'),parcela:'1/1',forma:'PIX',frequencia:'mensal',...o});
+ // Receitas pagas e pendentes
+ push({tipo:'receita',descricao:'Orçamento HB20 - entrada',valor:2942.10,categoria:'Serviços',data:'2026-06-02',vencimento:'2026-06-02',status:'pago',forma:'PIX'});
+ push({tipo:'receita',descricao:'Pintura porta Corsa',valor:1250,categoria:'Pintura de Peças',data:'2026-06-05',vencimento:'2026-06-05',status:'pago',forma:'Dinheiro'});
+ push({tipo:'receita',descricao:'Funilaria Gol G3',valor:3600,categoria:'Chaparia / Amassados',data:'2026-06-07',vencimento:'2026-06-07',status:'pago',forma:'Cartão'});
+ push({tipo:'receita',descricao:'Saveiro Carlos parcela 1/3',valor:650,categoria:'Pintura Completa',data:'2026-06-10',vencimento:'2026-06-10',status:'pago',parcela:'1/3',forma:'PIX'});
+ push({tipo:'receita',descricao:'Saveiro Carlos parcela 2/3',valor:650,categoria:'Pintura Completa',data:'2026-06-10',vencimento:'2026-07-10',status:'pendente',parcela:'2/3',forma:'PIX'});
+ push({tipo:'receita',descricao:'Saveiro Carlos parcela 3/3',valor:650,categoria:'Pintura Completa',data:'2026-06-10',vencimento:'2026-08-10',status:'pendente',parcela:'3/3',forma:'PIX'});
+ push({tipo:'receita',descricao:'Montana Lucio - saldo',valor:1500,categoria:'Pintura de Peças',data:'2026-06-13',vencimento:'2026-06-20',status:'pendente',forma:'PIX'});
+ push({tipo:'receita',descricao:'Cliente João - parcial',valor:900,categoria:'Serviços',data:'2026-06-12',vencimento:'2026-06-12',status:'parcial',forma:'Transferência'});
+ // Despesas pagas, pendentes, vencidas, recorrentes
+ push({tipo:'despesa',descricao:'Neoenergia Elektro',valor:287.56,categoria:'Energia Elétrica',data:'2026-06-23',vencimento:'2026-06-23',status:'pendente',forma:'Boleto',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Saecil',valor:105.01,categoria:'Água / Saneamento',data:'2026-06-22',vencimento:'2026-06-22',status:'pendente',forma:'Boleto',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Claro Controle',valor:63.03,categoria:'Telefone',data:'2026-06-15',vencimento:'2026-06-15',status:'pendente',forma:'Boleto',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Google ChatGPT',valor:95.99,categoria:'Assinatura',data:'2026-06-10',vencimento:'2026-06-10',status:'pago',forma:'Cartão',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Primer PU fornecedor',valor:430,categoria:'Materiais de Pintura',data:'2026-06-07',vencimento:'2026-06-07',status:'pago',forma:'PIX'});
+ push({tipo:'despesa',descricao:'Verniz alto sólido',valor:620,categoria:'Materiais de Pintura',data:'2026-06-05',vencimento:'2026-06-05',status:'pendente',forma:'PIX'});
+ push({tipo:'despesa',descricao:'DAS MEI',valor:76.90,categoria:'Impostos e Taxas',data:'2026-06-20',vencimento:'2026-06-20',status:'pendente',forma:'Boleto',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Aluguel oficina',valor:1800,categoria:'Oficina',data:'2026-06-03',vencimento:'2026-06-03',status:'pago',forma:'Transferência',recorrente:true,fixo:true});
+ push({tipo:'despesa',descricao:'Fornecedor atrasado - lixas',valor:210,categoria:'Materiais de Pintura',data:'2026-06-01',vencimento:'2026-06-01',status:'pendente',forma:'PIX'});
+ push({tipo:'despesa',descricao:'Restaurante marmitas',valor:150,categoria:'Restaurante',data:'2026-06-12',vencimento:'2026-06-12',status:'pago',forma:'Dinheiro'});
+ return{competencia:'2026-06',metaReceita:12000,fechados:[],lancamentos:L,recibos:[],nfse:[],pix:[]};}
+function bootState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(saved && Array.isArray(saved.lancamentos) && saved.lancamentos.length>0) return saved;
+  }catch(e){}
+  const fresh=simulation();
+  localStorage.setItem(KEY, JSON.stringify(fresh));
+  return fresh;
+}
+let STATE=normalizeState(bootState());
+function save(){localStorage.setItem(KEY,JSON.stringify(STATE))}
+function monthOf(x){return String(x||'').slice(0,7)}
+function normalizeLanc(l){
+  const valor=n(l.valor ?? l.amount ?? l.total ?? 0);
+  const tipo=l.tipo==='despesa'?'despesa':'receita';
+  const status=finStatus(l);
+  const data=l.data || l.vencimento || today;
+  const vencimento=l.vencimento || data;
+  return {id:l.id||uid('lan'),grupo:l.grupo||l.group||uid('grp'),tipo,descricao:String(l.descricao||l.nome||'Lançamento'),valor,categoria:String(l.categoria||'Geral'),data,vencimento,status,parcela:l.parcela||'1/1',recorrente:!!l.recorrente,fixo:!!l.fixo,frequencia:l.frequencia||'mensal',forma:l.forma||'PIX',dataPagamento:l.dataPagamento||''};
+}
+function normalizeState(s){
+  s=s&&typeof s==='object'?s:simulation();
+  s.competencia=s.competencia||'2026-06';
+  s.metaReceita=n(s.metaReceita||12000);
+  // Ponto de equilíbrio não é mais fixo. É calculado pelos lançamentos fixos/recorrentes obrigatórios do mês.
+  if('pontoEquilibrio' in s) delete s.pontoEquilibrio;
+  s.fechados=Array.isArray(s.fechados)?s.fechados:[];
+  s.lancamentos=Array.isArray(s.lancamentos)?s.lancamentos.map(normalizeLanc):[];
+  if(!s.lancamentos.length) s=simulation();
+  return s;
+}
+function compDate(x){return x.vencimento||x.data||today}
+function cashDate(x){return x.dataPagamento||x.data||x.vencimento||today}
+function inCompetencia(x,m=STATE.competencia){return monthOf(compDate(x))===m}
+function inCaixa(x,m=STATE.competencia){return finStatus(x)==='pago' && monthOf(cashDate(x))===m}
+function finStatus(x){return x.status==='pago'?'pago':x.status==='parcial'?'parcial':'pendente'}
+function isVencido(x){return finStatus(x)!=='pago' && compDate(x)<today}
+function baseCompetencia(){return STATE.lancamentos.filter(l=>inCompetencia(l))}
+function filtered(){
+  let q=($('search').value||'').toLowerCase(),cat=$('catFilter').value,st=$('statusFilter').value;
+  return STATE.lancamentos.filter(l=>{
+    let d=compDate(l), ok=inCompetencia(l), fs=finStatus(l);
+    if(quickFilter==='hoje')ok=d===today;
+    if(quickFilter==='semana')ok=d>=today&&d<=addDays(today,7);
+    if(quickFilter==='vencidas')ok=isVencido(l);
+    if(quickFilter==='recorrentes')ok=inCompetencia(l)&&(l.recorrente||l.fixo);
+    if(quickFilter==='recebidas')ok=inCompetencia(l)&&l.tipo==='receita'&&fs==='pago';
+    if(quickFilter==='pendentes')ok=inCompetencia(l)&&fs!=='pago';
+    return ok&&(!q||(l.descricao+' '+l.categoria+' '+(l.parcela||'')).toLowerCase().includes(q))&&(!cat||l.categoria===cat)&&(!st||fs===st)
+  }).sort((a,b)=>compDate(a).localeCompare(compDate(b)));
+}
+function calcPontoEquilibrio(arr=baseCompetencia()){
+  // PE real = despesas fixas/recorrentes obrigatórias da competência.
+  // Não entram receitas, despesas eventuais, materiais avulsos ou compras extraordinárias.
+  return arr
+    .filter(x=>x.tipo==='despesa' && (x.fixo || x.recorrente))
+    .reduce((s,x)=>s+n(x.valor),0);
+}
+function peStatus(receitas,pe){
+  if(pe<=0) return {txt:'⚪ Sem fixos cadastrados',cls:'blueTxt',falta:0};
+  const falta=Math.max(0,pe-receitas);
+  if(falta<=0) return {txt:'🟢 PE coberto',cls:'greenTxt',falta:0};
+  if(receitas>=pe*0.7) return {txt:'🟡 Atenção · falta '+money(falta),cls:'orangeTxt',falta};
+  return {txt:'🔴 Abaixo do PE · falta '+money(falta),cls:'redTxt',falta};
+}
+function sum(arr=baseCompetencia()){
+  arr=Array.isArray(arr)?arr:[];
+  let rec=arr.filter(x=>x.tipo==='receita'), des=arr.filter(x=>x.tipo==='despesa');
+  let recCaixa=STATE.lancamentos.filter(x=>x.tipo==='receita'&&inCaixa(x));
+  let desCaixa=STATE.lancamentos.filter(x=>x.tipo==='despesa'&&inCaixa(x));
+  let recPend=rec.filter(x=>finStatus(x)!=='pago');
+  let desPend=des.filter(x=>finStatus(x)!=='pago');
+  const receitas=rec.reduce((s,x)=>s+n(x.valor),0);
+  const despesas=des.reduce((s,x)=>s+n(x.valor),0);
+  const pe=calcPontoEquilibrio(arr);
+  return {
+    receitas, despesas, pontoEquilibrio:pe,
+    caixa:recCaixa.reduce((s,x)=>s+n(x.valor),0)-desCaixa.reduce((s,x)=>s+n(x.valor),0),
+    competencia:receitas-despesas,
+    recCount:rec.length, desCount:des.length,
+    recPendCount:recPend.length, recPendVal:recPend.reduce((s,x)=>s+n(x.valor),0),
+    desPendCount:desPend.length, desPendVal:desPend.reduce((s,x)=>s+n(x.valor),0),
+    vencidas:desPend.filter(isVencido).length,
+    recorrentes:arr.filter(x=>x.tipo==='despesa'&&(x.recorrente||x.fixo)).length
+  };
+}
+function render(){
+  STATE=normalizeState(STATE); save();
+  $('monthLabel').textContent=monthName(STATE.competencia);$('data').value=$('data').value||today;
+  renderFilters();renderKpis();renderLists();renderOperacao();renderPaySummary();renderAging();renderSide();
+  document.body.classList.toggle('financeClosed',(STATE.fechados||[]).includes(STATE.competencia));
+}
+function renderFilters(){let cats=[...new Set(STATE.lancamentos.map(x=>x.categoria))].sort(),cur=$('catFilter').value;$('catFilter').innerHTML='<option value="">Todas categorias</option>'+cats.map(c=>`<option ${c===cur?'selected':''}>${c}</option>`).join('')}
+function renderKpis(){let s=sum(),marg=s.receitas?((s.competencia/s.receitas)*100):0,pe=peStatus(s.receitas,s.pontoEquilibrio);$('kpis').innerHTML=`<div class="card"><div class="lbl">Receitas</div><div class="val greenTxt">${money(s.receitas)}</div><div class="sub">${s.recCount} lançamento(s)</div></div><div class="card"><div class="lbl">Despesas</div><div class="val redTxt">${money(s.despesas)}</div><div class="sub">${s.desCount} lançamento(s)</div></div><div class="card"><div class="lbl">Resultado Líquido</div><div class="val ${s.competencia>=0?'greenTxt':'redTxt'}">${money(s.competencia)}</div><div class="sub">↗ Margem ${marg.toFixed(1)}%</div></div><div class="card"><div class="lbl">Ponto de equilíbrio real</div><div class="val ${pe.cls}">${money(s.pontoEquilibrio)}</div><div class="sub">${pe.txt}</div></div>`}
+function statusBadge(l){let fs=finStatus(l);let txt=fs==='pago'?'🟢 Pago':fs==='parcial'?'🟡 Parcial':'🔴 Pendente';return `<span class="badge ${fs}">${txt}</span>${isVencido(l)?' <span class="badge vencida">⚠️ vencida</span>':''}`}
+function itemHtml(l){let isRec=l.tipo==='receita',fs=finStatus(l),prog=l.parcela&&l.parcela!=='1/1'?Number(l.parcela.split('/')[0])/Number(l.parcela.split('/')[1])*100:0;return `<div class="item ${l.tipo}"><div><div class="desc">${l.descricao}</div><div class="meta"><span>${l.categoria}</span><span>${l.vencimento||l.data}</span><span>${statusBadge(l)}</span>${l.parcela?`<span>${l.parcela}</span>`:''}${l.recorrente?'<span>🔁 recorrente</span>':''}</div>${prog?`<div class="progress"><b style="width:${prog}%"></b></div>`:''}</div><div><div class="amount ${isRec?'greenTxt':'redTxt'}">${money(l.valor)}</div><div class="actions"><button class="btn mini" data-edit="${l.id}">✏️</button><button class="btn mini ${fs==='pago'?'ok':'red'}" data-togglepay="${l.id}">${fs==='pago'?'Pago':'Pendente'}</button>${isRec?`<button class="btn mini blue" data-pix="${l.id}">PIX</button><button class="btn mini" data-recibo="${l.id}">Recibo</button><button class="btn mini" data-nfse="${l.id}">NFS-e</button>`:''}<button class="btn mini danger" data-del="${l.id}">×</button></div></div></div>`}
+function renderLists(){let arr=filtered();$('receitasList').innerHTML=arr.filter(x=>x.tipo==='receita').map(itemHtml).join('')||'<div class="muted">Nenhuma receita.</div>';$('despesasList').innerHTML=arr.filter(x=>x.tipo==='despesa').map(itemHtml).join('')||'<div class="muted">Nenhuma despesa.</div>'}
+function renderOperacao(){let s=sum();$('operacaoMes').innerHTML=`<div class="card opCard receber"><div class="lbl">🟢 Receitas a receber</div><div class="val greenTxt">${money(s.recPendVal)}</div><div class="sub">${s.recPendCount} pendente(s)</div></div><div class="card opCard pagar"><div class="lbl">🔴 Contas a pagar</div><div class="val redTxt">${money(s.desPendVal)}</div><div class="sub">${s.desPendCount} pendente(s) · ${s.vencidas} vencida(s)</div></div><div class="card opCard recor"><div class="lbl">🔁 Recorrentes / fixas</div><div class="val blueTxt">${s.recorrentes}</div><div class="sub">lançamentos do mês</div></div>`}
+function renderPaySummary(){let arr=baseCompetencia(),map={};arr.forEach(x=>{map[x.forma||'Não informado']=(map[x.forma||'Não informado']||0)+n(x.valor)});$('paySummary').innerHTML=Object.entries(map).map(([k,v])=>`<div class="card"><b>${k}</b><div>${money(v)}</div></div>`).join('')}
+function renderAging(){let buckets={'0–7 dias':0,'8–15 dias':0,'16–30 dias':0,'30+ dias':0};STATE.lancamentos.filter(x=>x.tipo==='receita'&&isVencido(x)).forEach(x=>{let diff=Math.floor((new Date(today)-new Date(compDate(x)+'T00:00:00'))/86400000);if(diff<=7)buckets['0–7 dias']+=n(x.valor);else if(diff<=15)buckets['8–15 dias']+=n(x.valor);else if(diff<=30)buckets['16–30 dias']+=n(x.valor);else buckets['30+ dias']+=n(x.valor)});$('agingBox').innerHTML=Object.entries(buckets).map(([k,v])=>`<div class="item"><span>${k}</span><b>${money(v)}</b></div>`).join('')}
+function renderSide(){let s=sum(),cls=s.competencia>=0?'greenTxt':'redTxt',pe=peStatus(s.receitas,s.pontoEquilibrio);$('sideResultado').className='val '+cls;$('sideResultado').textContent=money(s.competencia);$('sideCaixa').textContent=money(s.caixa);$('sideComp').textContent=money(s.competencia);let alerts=[];if(s.vencidas)alerts.push(`⚠️ ${s.vencidas} conta(s) vencida(s).`);if(pe.falta>0)alerts.push(`${pe.txt}.`);if(!alerts.length)alerts.push('✅ Operação do mês sem alertas críticos.');$('alerts').innerHTML=alerts.map(a=>`<div class="card">${a}</div>`).join('')}
+function addFinance(){if((STATE.fechados||[]).includes(STATE.competencia))return alert('Competência fechada.');let desc=$('desc').value.trim(),valor=n($('valor').value),cat=$('categoria').value,data=$('data').value||today,parc=Math.max(1,parseInt($('parcelas').value||1)),modo=$('modo').value,freq=$('freq').value,forma=$('forma').value;if(!desc||!valor)return alert('Descrição e valor são obrigatórios.');let group=uid('grp'),each=valor/parc;for(let i=0;i<parc;i++){let due=data;if(freq==='diario')due=addDays(data,i);if(freq==='semanal')due=addDays(data,i*7);if(freq==='quinzenal')due=addDays(data,i*15);if(freq==='mensal')due=addMonths(data,i);if(freq==='anual')due=addYears(data,i);STATE.lancamentos.push({id:uid('lan'),grupo:group,tipo:currentType,descricao:desc+(parc>1?` ${i+1}/${parc}`:''),valor:each,categoria:cat,data:due,vencimento:due,status:'pendente',parcela:`${i+1}/${parc}`,recorrente:modo==='recorrente'||modo==='fixo',fixo:modo==='fixo',frequencia:freq,forma})}$('desc').value='';$('valor').value='';$('parcelas').value=1;quickFilter='mes';document.querySelectorAll('[data-q]').forEach(x=>x.classList.toggle('active',x.dataset.q===quickFilter));render()}
+function togglePaid(id){let l=STATE.lancamentos.find(x=>x.id===id);if(!l)return;l.status=finStatus(l)==='pago'?'pendente':'pago';l.dataPagamento=l.status==='pago'?today:'';if(l.status==='pago'&&l.recorrente&&l.parcela==='1/1'){let next=l.frequencia==='anual'?addYears(l.vencimento,1):l.frequencia==='semanal'?addDays(l.vencimento,7):l.frequencia==='diario'?addDays(l.vencimento,1):l.frequencia==='quinzenal'?addDays(l.vencimento,15):addMonths(l.vencimento,1);if(!STATE.lancamentos.some(x=>x.descricao===l.descricao&&x.vencimento===next))STATE.lancamentos.push({...l,id:uid('lan'),vencimento:next,data:next,status:'pendente',dataPagamento:''})}render()}
+function setEditSegment(group,value,hidden){document.querySelectorAll(group+' .segBtn').forEach(btn=>{let v=btn.dataset.edtype||btn.dataset.edstatus;btn.classList.toggle('active',v===value)});$(hidden).value=value}
+function openEdit(id){let l=STATE.lancamentos.find(x=>x.id===id);if(!l)return;$('modalTitle').textContent='✏️ Editar lançamento';let fs=finStatus(l),tipo=l.tipo;$('modalBody').innerHTML=`<input type="hidden" id="edTipo" value="${tipo}"><input type="hidden" id="edStatus" value="${fs}"><div class="form"><div class="lbl">Tipo do lançamento</div><div class="segmented tipoSeg"><button class="segBtn receita ${tipo==='receita'?'active':''}" data-edtype="receita">🟢 Receita</button><button class="segBtn despesa ${tipo==='despesa'?'active':''}" data-edtype="despesa">🔴 Despesa</button></div><div class="row"><input id="edDesc" value="${l.descricao}"><input id="edValor" value="${String(l.valor).replace('.',',')}"></div><div class="row"><input id="edData" type="date" value="${l.vencimento||l.data}"><input id="edCat" value="${l.categoria}"></div><select id="edForma"><option ${l.forma==='PIX'?'selected':''}>PIX</option><option ${l.forma==='Cartão'?'selected':''}>Cartão</option><option ${l.forma==='Dinheiro'?'selected':''}>Dinheiro</option><option ${l.forma==='Boleto'?'selected':''}>Boleto</option><option ${l.forma==='Transferência'?'selected':''}>Transferência</option></select><div class="lbl">Status financeiro</div><div class="segmented three statusSeg"><button class="segBtn pago ${fs==='pago'?'active':''}" data-edstatus="pago">🟢 Pago</button><button class="segBtn pendente ${fs==='pendente'?'active':''}" data-edstatus="pendente">🔴 Pendente</button><button class="segBtn parcial ${fs==='parcial'?'active':''}" data-edstatus="parcial">🟡 Parcial</button></div><div class="editFooter"><button class="btn primary" data-saveedit="${l.id}">💾 Salvar</button><button class="btn" data-canceledit="1">Cancelar</button><button class="btn danger dangerLink" data-deleteedit="${l.id}">🗑 Excluir</button></div></div>`;$('modal').classList.add('open')}
+function saveEdit(id){let l=STATE.lancamentos.find(x=>x.id===id);if(!l)return;l.tipo=$('edTipo').value;l.status=$('edStatus').value;l.descricao=$('edDesc').value.trim()||l.descricao;l.valor=n($('edValor').value);l.data=$('edData').value||l.data;l.vencimento=$('edData').value||l.vencimento;l.categoria=$('edCat').value.trim()||l.categoria;l.forma=$('edForma').value;l.dataPagamento=l.status==='pago'?today:'';$('modal').classList.remove('open');render()}
+function openPix(id){let l=STATE.lancamentos.find(x=>x.id===id)||{id:'avulso',descricao:'PIX avulso',valor:0};$('modalTitle').textContent='⚡ PIX';$('modalBody').innerHTML=`<div style="text-align:center"><div class="lbl">Cobrança</div><div class="val blueTxt">${money(l.valor)}</div><div class="qr"></div><p class="muted">000201PIX-OFICINAOS-${l.id}-${Number(l.valor||0).toFixed(2)}</p><button class="btn blue" onclick="navigator.clipboard&&navigator.clipboard.writeText('PIX OFICINAOS')">Copiar código</button></div>`;$('modal').classList.add('open')}
+function openRecibo(id){let l=STATE.lancamentos.find(x=>x.id===id); if(!l)return;$('modalTitle').textContent='🧾 Recibo';$('modalBody').innerHTML=`<h2>RECIBO</h2><p>Recebemos o valor de <b>${money(l.valor)}</b>.</p><p>Referente a: ${l.descricao} · ${l.categoria} · Parcela ${l.parcela||'1/1'}.</p><p>Forma: ${l.forma||'PIX'} · Data: ${l.dataPagamento||today}</p><button class="btn primary" onclick="window.print()">Imprimir/Salvar PDF</button>`;$('modal').classList.add('open')}
+function openNfse(id){let l=STATE.lancamentos.find(x=>x.id===id); if(!l)return;$('modalTitle').textContent='📋 NFS-e';$('modalBody').innerHTML=`<p class="card">Dados para copiar no portal gov.br/nfse.</p><textarea rows="6">PRESTAÇÃO DE SERVIÇOS AUTOMOTIVOS - OFICINAOS\nServiço: ${l.categoria}\nDescrição: ${l.descricao}\nParcela: ${l.parcela||'1/1'}\nValor: ${money(l.valor)}</textarea><button class="btn blue" onclick="window.open('https://www.nfse.gov.br/EmissorNacional','_blank')">Abrir Portal NFS-e</button>`;$('modal').classList.add('open')}
+function changeMonth(delta){let [y,m]=STATE.competencia.split('-').map(Number);m+=delta;if(m<1){m=12;y--}if(m>12){m=1;y++}STATE.competencia=`${y}-${String(m).padStart(2,'0')}`;render()}
+function test(){
+  STATE=simulation(); currentType='receita'; quickFilter='mes'; render();
+  let s=sum();
+  let okKpi=s.recCount>0&&s.desCount>0&&s.receitas>0&&s.despesas>0&&Math.abs(s.receitas-10842.10)<0.02&&Math.abs(s.despesas-3838.49)<0.02;
+  let oldLen=STATE.lancamentos.length;
+  $('desc').value='Teste 5x';$('valor').value='1000';$('parcelas').value=5;$('freq').value='mensal';$('modo').value='parcelado';currentType='receita';addFinance();
+  let added=STATE.lancamentos.slice(oldLen,oldLen+5);
+  let okParcelas=added.length===5&&added.every((x,i)=>x.parcela===`${i+1}/5`&&x.tipo==='receita'&&finStatus(x)==='pendente');
+  let beforeDesp=STATE.lancamentos.length;$('desc').value='Despesa teste';$('valor').value='300';$('parcelas').value=1;currentType='despesa';addFinance();
+  let okDesp=STATE.lancamentos[beforeDesp]?.tipo==='despesa';
+  let temp=STATE.lancamentos[0].id; togglePaid(temp); let okRender=sum().receitas>0 && document.body.textContent.includes('Receitas'); togglePaid(temp);
+  let old=STATE.lancamentos.length; STATE.lancamentos=STATE.lancamentos.filter(x=>x.id!==STATE.lancamentos[0].id); render(); let okDel=STATE.lancamentos.length===old-1;
+  let noNaN=!document.body.textContent.includes('NaN');
+  alert(`Diagnóstico Financeiro\nMotor unificado/KPIs: ${okKpi?'OK':'ERRO'}\nReceita parcelada 1/5..5/5: ${okParcelas?'OK':'ERRO'}\nDespesa lançada como despesa: ${okDesp?'OK':'ERRO'}\nRender pós-edição/toggle: ${okRender?'OK':'ERRO'}\nExclusão: ${okDel?'OK':'ERRO'}\nTela sem NaN: ${noNaN?'OK':'ERRO'}`);
+}
+function initFab(){let fab=$('pixFab'),drag=false,moved=false,dx=0,dy=0;let pos=JSON.parse(localStorage.getItem(KEY+'_pix')||'null');if(pos){fab.style.left=pos.x+'px';fab.style.top=pos.y+'px';fab.style.right='auto';fab.style.bottom='auto'}fab.addEventListener('pointerdown',e=>{drag=true;moved=false;dx=e.clientX-fab.getBoundingClientRect().left;dy=e.clientY-fab.getBoundingClientRect().top;fab.setPointerCapture(e.pointerId);fab.classList.add('dragging')});fab.addEventListener('pointermove',e=>{if(!drag)return;moved=true;let x=Math.min(Math.max(8,e.clientX-dx),innerWidth-66),y=Math.min(Math.max(70,e.clientY-dy),innerHeight-66);fab.style.left=x+'px';fab.style.top=y+'px';fab.style.right='auto';fab.style.bottom='auto'});fab.addEventListener('pointerup',()=>{if(drag){drag=false;fab.classList.remove('dragging');let r=fab.getBoundingClientRect();localStorage.setItem(KEY+'_pix',JSON.stringify({x:r.left,y:r.top}));setTimeout(()=>moved=false,40)}});fab.addEventListener('click',e=>{if(moved){e.preventDefault();return}openPix()})}
+document.body.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.id==='tipoReceita'){currentType='receita';b.classList.add('active');$('tipoDespesa').classList.remove('active')}if(b.id==='tipoDespesa'){currentType='despesa';b.classList.add('active');$('tipoReceita').classList.remove('active')}if(b.dataset.q){quickFilter=b.dataset.q;document.querySelectorAll('[data-q]').forEach(x=>x.classList.toggle('active',x.dataset.q===quickFilter));render()}if(b.id==='addLanc')addFinance();if(b.id==='loadSim'){STATE=normalizeState(simulation());currentType='receita';quickFilter='mes';localStorage.setItem(KEY,JSON.stringify(STATE));render()}if(b.id==='prevM')changeMonth(-1);if(b.id==='nextM')changeMonth(1);if(b.dataset.togglepay)togglePaid(b.dataset.togglepay);if(b.dataset.edit){if((STATE.fechados||[]).includes(STATE.competencia))return alert('Competência fechada.');openEdit(b.dataset.edit)}if(b.dataset.edtype){setEditSegment('.tipoSeg',b.dataset.edtype,'edTipo');return}if(b.dataset.edstatus){setEditSegment('.statusSeg',b.dataset.edstatus,'edStatus');return}if(b.dataset.canceledit){$('modal').classList.remove('open');return}if(b.dataset.deleteedit){if(confirm('Excluir este lançamento?')){STATE.lancamentos=STATE.lancamentos.filter(x=>x.id!==b.dataset.deleteedit);$('modal').classList.remove('open');render()}return}if(b.dataset.saveedit)saveEdit(b.dataset.saveedit);if(b.dataset.pix)openPix(b.dataset.pix);if(b.dataset.recibo)openRecibo(b.dataset.recibo);if(b.dataset.nfse)openNfse(b.dataset.nfse);if(b.dataset.del){if((STATE.fechados||[]).includes(STATE.competencia))return alert('Competência fechada.');if(confirm('Excluir lançamento?')){STATE.lancamentos=STATE.lancamentos.filter(x=>x.id!==b.dataset.del);render()}}if(b.id==='closeModal')$('modal').classList.remove('open');if(b.id==='closeMonth'){STATE.fechados=STATE.fechados||[];let i=STATE.fechados.indexOf(STATE.competencia);if(i>=0){STATE.fechados.splice(i,1);alert('Mês reaberto.')}else{STATE.fechados.push(STATE.competencia);alert('Mês fechado.')}render()}if(b.id==='btnTest')test()});
+['search','catFilter','statusFilter'].forEach(id=>$(id).addEventListener('input',render));initFab();render();
+})();
+</script>
+<script src="oficinaos-state.js?v=54630"></script>
+</body></html>

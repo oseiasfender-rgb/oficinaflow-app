@@ -1,0 +1,1 @@
+const CACHE_NAME='oficinaos-v546-30-state-master';self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{});

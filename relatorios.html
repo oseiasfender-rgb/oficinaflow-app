@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<script>
+(function(){
+ if(window.__OFICINAOS_V54630_BOOT__)return;window.__OFICINAOS_V54630_BOOT__=true;
+ const nativeAlert=window.alert.bind(window);
+ const pats=['Teste V546','Motor unificado/KPIs','Receita parcelada','Despesa lançada como despesa','Render pós-edição','Tela sem NaN','OS vinculada','Sem duplicidade cadastral','Etapas válidas','Atrasos automáticos','Integração financeira preparada','Orçamentos avulsos com validade','Expiração automática','Filtros operacionais ativos','Clientes fictícios completos','Excluir com confirmação','Busca funcionando','Filtros ativos','Veículos em cards','Fotos por etapa','Importação de fotos ativa','Registrar serviço','Menu antigo preservado','Dados fictícios carregados','Resumo operacional ativo','Materiais críticos ativos','Memória técnica ativa','Consulta funcionando','Não usa fallback fictício','Fonte visível','Metas editáveis','Margem protegida','Lê lançamentos do STATE','Orçamentos lidos','Agenda/OS lida','Sem NaN'];
+ window.alert=function(msg){const t=String(msg||'');if(pats.some(p=>t.includes(p))){console.warn('[OficinaOS V546.30] popup bloqueado:',t);return;}return nativeAlert(msg);};
+ window.OFICINAOS_NUM=function(v){if(v===null||v===undefined||v===''||v==='NaN')return 0;if(typeof v==='string')v=v.replace(/R\$/g,'').replace(/\s/g,'').replace(/\./g,'').replace(',','.');v=Number(v);return Number.isFinite(v)?v:0;};
+})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V546.17.1 — Relatórios Comparativo Mensal</title>
+<style>
+:root{--paper:#fffaf4;--line:#ead7c4;--brown:#a95510;--green:#0aa34f;--red:#df2f2f;--blue:#1779bf;--orange:#e28a1a}
+*{box-sizing:border-box}
+body{margin:0;font:12px Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#fbf7f1,#f2eadf);color:#21140b}
+.top{height:42px;background:#fffaf4;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;gap:18px;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:8px;min-width:220px}.logo{background:var(--brown);color:white;font-weight:800;border-radius:5px;padding:8px}.brand b{letter-spacing:4px;font-size:16px}.brand small{display:block;color:#9b5a22;letter-spacing:2px;font-size:8px}
+.nav{display:flex;gap:10px;align-items:center;flex:1;justify-content:center}.nav button{border:1px solid transparent;background:transparent;border-radius:4px;padding:7px 12px}.nav button.active{border:2px solid #111;background:#fff3e8}
+.main{display:grid;grid-template-columns:1fr 280px;min-height:calc(100vh - 42px)}
+.content{padding:14px 18px 60px}.side{border-left:1px solid var(--line);background:#fff6ed;padding:14px;position:sticky;top:42px;height:calc(100vh - 42px);overflow:auto}
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}.btn{border:1px solid #dcb990;background:#fffaf4;border-radius:5px;padding:8px 12px;cursor:pointer;font-weight:600}.btn.primary{background:var(--brown);color:#fff;border-color:var(--brown)}.btn.blue{background:#0f6fb4;color:#fff;border-color:#0f6fb4}
+select{border:1px solid #dcb990;background:#fffaf4;border-radius:4px;padding:8px;font:12px Arial}
+.card{background:#fffaf4;border:1px solid var(--line);border-radius:8px;padding:12px;box-shadow:0 2px 8px #00000008;margin-bottom:12px}.card h3{margin:0 0 10px;letter-spacing:3px;font-size:12px;color:#5d3213}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.kpi small{display:block;color:#80634b;letter-spacing:2px;font-size:10px}.kpi strong{display:block;font-size:22px;margin-top:6px}
+.green{color:var(--green)}.redtxt{color:var(--red)}.blueTxt{color:var(--blue)}.orange{color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}.table th,.table td{padding:8px;border-bottom:1px solid #f1dfce;text-align:left}.table th{background:#fff1df;color:#744113;font-size:10px;letter-spacing:2px}.table tr:last-child td{border-bottom:0}.num{text-align:right;font-weight:700}
+.bar{height:7px;background:#eee;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:var(--brown)}
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:11px;border:1px solid #ddd}.ok{background:#e8fff1;color:#087e3d;border-color:#b9efcb}.warn{background:#fff6da;color:#9a6200;border-color:#efd48a}.bad{background:#ffecec;color:#b50f17;border-color:#ffc2c2}.info{background:#eaf4ff;color:#075c9b;border-color:#b7dcff}
+.note{font-size:11px;color:#7b6049;line-height:1.45}
+@media(max-width:900px){.main{grid-template-columns:1fr}.side{position:relative;top:0;height:auto}.kpis,.grid2{grid-template-columns:1fr}.nav{overflow:auto;justify-content:flex-start}.brand{min-width:150px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="logo">OS</div><div><b>OFICINAOS</b><small>GESTÃO AUTOMOTIVA</small></div></div>
+  <nav class="nav"><button>📊 Financeiro</button><button>🧾 Orçamento</button><button>🚨 Contas</button><button>🗓️ Agenda</button><button>🎯 Metas</button><button class="active">📈 Relatórios</button><button>🤖 IA</button></nav>
+  <button class="btn" id="btnTest">🛡 Validar</button>
+</header>
+<main class="main">
+<section class="content">
+  <div class="toolbar">
+    <b>RELATÓRIOS — STATE REAL + COMPARATIVO</b>
+    <select id="periodo">
+      <option value="2026-06">Junho/2026</option>
+      <option value="2026-05">Maio/2026</option>
+      <option value="2026-04">Abril/2026</option>
+      <option value="2026-03">Março/2026</option>
+      <option value="ultimos3">Últimos 3 meses</option>
+      <option value="ultimos6">Últimos 6 meses</option>
+      <option value="ultimos12">Últimos 12 meses</option>
+      <option value="todos">Todos</option>
+    </select>
+    <button class="btn primary" id="reload">Recarregar STATE</button>
+    <button class="btn blue" id="demo">Carregar simulação</button>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="card"><h3>• COMPARATIVO MENSAL</h3><div id="comparativo"></div></div>
+  <div class="grid2">
+    <div class="card"><h3>• FINANCEIRO</h3><table class="table" id="tblFinanceiro"></table></div>
+    <div class="card"><h3>• OPERAÇÃO / AGENDA</h3><table class="table" id="tblOperacao"></table></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>• ORÇAMENTOS</h3><table class="table" id="tblOrcamentos"></table></div>
+    <div class="card"><h3>• PRODUTIVIDADE POR ETAPA</h3><div id="etapas"></div></div>
+  </div>
+  <div class="card"><h3>• RELATÓRIO EXECUTIVO</h3><div id="executivo" class="note"></div></div>
+</section>
+<aside class="side">
+  <h3>• FONTE DOS DADOS</h3><div id="sourceBox" class="card"></div>
+  <h3>• ALERTAS</h3><div id="alerts"></div>
+  <h3>• REGRA</h3><p class="note">Relatórios são somente leitura. Não cria lançamentos, orçamentos ou OS.</p>
+</aside>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const br=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const n=v=>{let x=Number(String(v??0).replace(',','.'));return Number.isFinite(x)?x:0};
+const period=()=>$('periodo').value;
+let RAW=null, DATA=null;
+
+function tryParse(v){try{return JSON.parse(v)}catch(e){return null}}
+function getAny(obj, paths){for(const p of paths){let cur=obj, ok=true;for(const k of p.split('.')){if(cur && k in cur)cur=cur[k];else{ok=false;break}}if(ok && cur!=null)return cur}return null}
+function demoState(){return {financeiro:{lancamentos:[
+{id:'r1',tipo:'receita',descricao:'Entrada HB20',valor:2500,status:'pago',data:'2026-06-05',categoria:'Funilaria'},
+{id:'r2',tipo:'receita',descricao:'Parcela Corolla',valor:1800,status:'pendente',data:'2026-06-20',categoria:'Pintura'},
+{id:'r3',tipo:'receita',descricao:'Polimento',valor:850,status:'parcial',data:'2026-06-18',categoria:'Polimento'},
+{id:'d1',tipo:'despesa',descricao:'Energia',valor:420,status:'pendente',data:'2026-06-12',categoria:'Fixa',recorrente:true},
+{id:'d2',tipo:'despesa',descricao:'Materiais pintura',valor:980,status:'pago',data:'2026-06-07',categoria:'Materiais'},
+{id:'d3',tipo:'despesa',descricao:'DAS MEI',valor:82,status:'pendente',data:'2026-06-20',categoria:'Fixa',recorrente:true},
+{id:'r4',tipo:'receita',descricao:'Serviço Maio',valor:3900,status:'pago',data:'2026-05-12',categoria:'Funilaria'},
+{id:'r5',tipo:'receita',descricao:'Serviço Abril',valor:2800,status:'pago',data:'2026-04-10',categoria:'Pintura'},
+{id:'r6',tipo:'receita',descricao:'Serviço Março',valor:2100,status:'pago',data:'2026-03-08',categoria:'Polimento'},
+{id:'d4',tipo:'despesa',descricao:'Materiais Maio',valor:1200,status:'pago',data:'2026-05-15',categoria:'Materiais'},
+{id:'d5',tipo:'despesa',descricao:'Energia Maio',valor:390,status:'pago',data:'2026-05-20',categoria:'Fixa',recorrente:true},
+{id:'d6',tipo:'despesa',descricao:'Materiais Abril',valor:900,status:'pago',data:'2026-04-11',categoria:'Materiais'}
+]},orcamentos:[
+{id:'ORC-3001',cliente:'Gustavo Souza',valor:5884.21,status:'Aprovado',data:'2026-06-10',validadeAte:'2026-07-10'},
+{id:'ORC-3002',cliente:'Cliente Seguro',valor:4200,status:'Expirado',data:'2026-05-01',validadeAte:'2026-05-31'},
+{id:'ORC-3003',cliente:'Erick',valor:2600,status:'Aberto',data:'2026-06-15',validadeAte:'2026-07-15'},
+{id:'ORC-2001',cliente:'Maio Cliente',valor:3300,status:'Convertido em OS',data:'2026-05-11'}
+],agenda:{os:[
+{id:'OS-1001',cliente:'Amigo Edgar',veiculo:'Strada Freedom',etapa:'Pintura',status:'Em andamento',prioridade:'Urgente',entrada:'2026-06-01',entrega:'2026-06-20',valor:1500},
+{id:'OS-1002',cliente:'Fiat Toro',veiculo:'Toro Volcano',etapa:'Preparação',status:'Aguardando peça',prioridade:'Normal',entrada:'2026-06-03',entrega:'2026-06-22',valor:3200},
+{id:'OS-1004',cliente:'Firmino',veiculo:'Corsa Prata',etapa:'Polimento',status:'Em andamento',prioridade:'Normal',entrada:'2026-06-16',entrega:'2026-06-21',valor:850},
+{id:'OS-0901',cliente:'Serviço Maio',veiculo:'Gol',etapa:'Entregue',status:'Entregue',prioridade:'Normal',entrada:'2026-05-01',entrega:'2026-05-08',valor:1400}
+]}}}
+function mergeCandidates(list){const out={financeiro:{lancamentos:[]},orcamentos:[],agenda:{os:[]}};list.forEach(s=>{const fin=getAny(s,['financeiro.lancamentos','lancamentos','financeiro.transacoes','transacoes'])||[];const orc=getAny(s,['orcamentos','orcamento.historico','orcamento.lista'])||[];const os=getAny(s,['agenda.os','os','agenda.eventos','eventos'])||[];if(Array.isArray(fin))out.financeiro.lancamentos.push(...fin);if(Array.isArray(orc))out.orcamentos.push(...orc);if(Array.isArray(os))out.agenda.os.push(...os)});return out}
+function loadState(){const candidates=[];if(window.OFICINA_STATE)candidates.push({name:'window.OFICINA_STATE',data:window.OFICINA_STATE});if(window.STATE)candidates.push({name:'window.STATE',data:window.STATE});['oficinaos_state','OFICINA_STATE','oficinaos_v546_state','oficinaos_v546_15_financeiro','oficinaos_v546_16_3_agenda'].forEach(k=>{const p=tryParse(localStorage.getItem(k));if(p)candidates.push({name:'localStorage:'+k,data:p})});if(!candidates.length){RAW={source:'simulação automática',data:demoState()}}else{RAW={source:candidates.map(c=>c.name).join(' + '),data:mergeCandidates(candidates.map(c=>c.data))}}DATA=normalize(RAW.data);renderAll()}
+function normalize(s){const lanc=getAny(s,['financeiro.lancamentos','lancamentos','financeiro.transacoes','transacoes'])||[];const orc=getAny(s,['orcamentos','orcamento.historico','orcamento.lista'])||[];const os=getAny(s,['agenda.os','os','agenda.eventos','eventos'])||[];return {lancamentos:lanc.map(x=>({id:x.id||'',tipo:(x.tipo||x.kind||'').toLowerCase(),descricao:x.descricao||x.nome||x.cliente||'',valor:n(x.valor||x.total),status:(x.status||'pendente').toLowerCase(),data:x.data||x.vencimento||x.criadoEm||'',categoria:x.categoria||x.centro||'Geral',recorrente:!!(x.recorrente||x.fixo)})),orcamentos:orc.map(x=>({id:x.id||x.numero||'',cliente:x.cliente||x.nome||'',valor:n(x.valor||x.total||(x.resumo&&x.resumo.total)),status:x.status||'Aberto',data:x.data||x.criadoEm||'',validadeAte:x.validadeAte||x.expiraEm||''})),os:os.map(x=>({id:x.id||'',cliente:x.cliente||'',veiculo:x.veiculo||'',etapa:x.etapa||x.etapaAtual||'Entrada',status:x.status||'Agendado',prioridade:x.prioridade||'Normal',entrada:x.entrada||x.data||'',entrega:x.entrega||'',valor:n(x.valor||x.total)}))}}
+function prevMonthKey(p){if(!/^\d{4}-\d{2}$/.test(p))return null;let [y,m]=p.split('-').map(Number);m--;if(m<1){m=12;y--}return y+'-'+String(m).padStart(2,'0')}
+function periodMonths(){const p=period();if(/^\d{4}-\d{2}$/.test(p))return [p];const base='2026-06';const count=p==='ultimos3'?3:p==='ultimos6'?6:p==='ultimos12'?12:null;if(!count)return null;const arr=[];let cur=base;for(let i=0;i<count;i++){arr.push(cur);cur=prevMonthKey(cur)}return arr}
+function monthOf(d){return String(d||'').slice(0,7)}
+function inPeriod(d){const p=period();if(p==='todos')return true;const ms=periodMonths();if(ms)return ms.includes(monthOf(d));return monthOf(d)===p}
+function calcForMonth(m){const l=DATA.lancamentos.filter(x=>monthOf(x.data)===m);const receitas=l.filter(x=>x.tipo==='receita');const despesas=l.filter(x=>x.tipo==='despesa');const recPagas=receitas.filter(x=>x.status==='pago').reduce((s,x)=>s+x.valor,0);const despPagas=despesas.filter(x=>x.status==='pago').reduce((s,x)=>s+x.valor,0);const resultado=recPagas-despPagas;const os=DATA.os.filter(x=>monthOf(x.entrada)===m||monthOf(x.entrega)===m).length;const orc=DATA.orcamentos.filter(x=>monthOf(x.data)===m).length;const convertidos=DATA.orcamentos.filter(x=>monthOf(x.data)===m&&/aprovado|convertido|os/i.test(String(x.status))).length;return {mes:m,recPagas,despPagas,resultado,os,orc,convertidos}}
+function pct(cur,prev){if(!prev)return cur?100:0;return ((cur-prev)/Math.abs(prev))*100}
+function fmtPct(v){return '<span class="'+(v>=0?'green':'redtxt')+'">'+(v>=0?'+':'')+v.toFixed(1)+'%</span>'}
+function calc(){const l=DATA.lancamentos.filter(x=>inPeriod(x.data));const receitas=l.filter(x=>x.tipo==='receita');const despesas=l.filter(x=>x.tipo==='despesa');const recPagas=receitas.filter(x=>x.status==='pago').reduce((s,x)=>s+x.valor,0);const recAberto=receitas.filter(x=>x.status!=='pago').reduce((s,x)=>s+x.valor,0);const despPagas=despesas.filter(x=>x.status==='pago').reduce((s,x)=>s+x.valor,0);const despAberto=despesas.filter(x=>x.status!=='pago').reduce((s,x)=>s+x.valor,0);const pe=despesas.filter(x=>x.recorrente||/fixa|mei|energia|aluguel|internet/i.test(x.categoria+' '+x.descricao)).reduce((s,x)=>s+x.valor,0);const resultado=recPagas-despPagas;const margem=recPagas?resultado/recPagas*100:0;const orcs=DATA.orcamentos.filter(x=>inPeriod(x.data)||period()==='todos');const os=DATA.os.filter(x=>inPeriod(x.entrada)||inPeriod(x.entrega)||period()==='todos');return {l,receitas,despesas,recPagas,recAberto,despPagas,despAberto,pe,resultado,margem,orcs,os}}
+function renderComparativo(){const p=period();if(!/^\d{4}-\d{2}$/.test(p)){const months=periodMonths();if(!months){$('comparativo').innerHTML='<p class="note">Selecione uma competência mensal para comparar.</p>';return}const rows=months.map(calcForMonth);$('comparativo').innerHTML='<table class="table"><tr><th>Mês</th><th class="num">Receitas</th><th class="num">Despesas</th><th class="num">Resultado</th><th class="num">OS</th></tr>'+rows.map(r=>'<tr><td>'+r.mes+'</td><td class="num">'+br(r.recPagas)+'</td><td class="num">'+br(r.despPagas)+'</td><td class="num">'+br(r.resultado)+'</td><td class="num">'+r.os+'</td></tr>').join('')+'</table>';return}const atual=calcForMonth(p),ant=calcForMonth(prevMonthKey(p));$('comparativo').innerHTML='<table class="table"><tr><th>Indicador</th><th class="num">'+p+'</th><th class="num">'+ant.mes+'</th><th class="num">Variação</th></tr><tr><td>Receitas pagas</td><td class="num">'+br(atual.recPagas)+'</td><td class="num">'+br(ant.recPagas)+'</td><td class="num">'+fmtPct(pct(atual.recPagas,ant.recPagas))+'</td></tr><tr><td>Despesas pagas</td><td class="num">'+br(atual.despPagas)+'</td><td class="num">'+br(ant.despPagas)+'</td><td class="num">'+fmtPct(pct(atual.despPagas,ant.despPagas))+'</td></tr><tr><td>Resultado</td><td class="num">'+br(atual.resultado)+'</td><td class="num">'+br(ant.resultado)+'</td><td class="num">'+fmtPct(pct(atual.resultado,ant.resultado))+'</td></tr><tr><td>OS no período</td><td class="num">'+atual.os+'</td><td class="num">'+ant.os+'</td><td class="num">'+(atual.os-ant.os)+'</td></tr><tr><td>Orçamentos convertidos</td><td class="num">'+atual.convertidos+'/'+atual.orc+'</td><td class="num">'+ant.convertidos+'/'+ant.orc+'</td><td class="num">'+(atual.convertidos-ant.convertidos)+'</td></tr></table>'}
+function renderAll(){const c=calc();renderComparativo();$('sourceBox').innerHTML='<p><b>Fonte:</b></p><p class="note">'+RAW.source+'</p><span class="badge info">'+DATA.lancamentos.length+' lançamentos</span> <span class="badge info">'+DATA.orcamentos.length+' orçamentos</span> <span class="badge info">'+DATA.os.length+' OS/eventos</span>';$('kpis').innerHTML=[['Receitas pagas',br(c.recPagas),'green'],['Despesas pagas',br(c.despPagas),'redtxt'],['Resultado líquido',br(c.resultado),'blueTxt'],['Margem',c.margem.toFixed(1)+'%','orange'],['Receitas a receber',br(c.recAberto),'green'],['Contas a pagar',br(c.despAberto),'redtxt'],['Ponto de equilíbrio',br(c.pe),'orange'],['OS no período',String(c.os.length),'blueTxt']].map(k=>'<div class="kpi"><small>'+k[0]+'</small><strong class="'+k[2]+'">'+k[1]+'</strong></div>').join('');
+$('tblFinanceiro').innerHTML='<tr><th>Indicador</th><th class="num">Valor</th></tr>'+[['Receitas pagas',c.recPagas],['Receitas pendentes/parciais',c.recAberto],['Despesas pagas',c.despPagas],['Despesas pendentes/vencidas',c.despAberto],['Ponto de equilíbrio',c.pe],['Resultado líquido',c.resultado]].map(r=>'<tr><td>'+r[0]+'</td><td class="num">'+br(r[1])+'</td></tr>').join('');
+$('tblOperacao').innerHTML='<tr><th>OS</th><th>Etapa</th><th>Status</th><th class="num">Valor</th></tr>'+c.os.map(x=>'<tr><td>'+x.id+' · '+x.cliente+'<br><span class="note">'+x.veiculo+'</span></td><td>'+x.etapa+'</td><td>'+x.status+'</td><td class="num">'+br(x.valor)+'</td></tr>').join('');
+$('tblOrcamentos').innerHTML='<tr><th>Orçamento</th><th>Status</th><th>Validade</th><th class="num">Valor</th></tr>'+c.orcs.map(x=>'<tr><td>'+x.id+' · '+x.cliente+'</td><td>'+x.status+'</td><td>'+(x.validadeAte||'-')+'</td><td class="num">'+br(x.valor)+'</td></tr>').join('');
+const etapas={};c.os.forEach(x=>etapas[x.etapa]=(etapas[x.etapa]||0)+1);const max=Math.max(1,...Object.values(etapas));$('etapas').innerHTML=Object.entries(etapas).map(([k,v])=>'<p><b>'+k+'</b> <span class="note">'+v+' veículo(s)</span></p><div class="bar"><span style="width:'+(v/max*100)+'%"></span></div>').join('')||'<p class="note">Sem OS no período.</p>';
+const alerts=[];if(c.resultado<c.pe)alerts.push(['bad','🔴 Resultado abaixo do ponto de equilíbrio.']);if(c.despAberto>c.recAberto)alerts.push(['warn','🟡 Contas a pagar superam receitas a receber.']);if(c.orcs.some(x=>String(x.status).toLowerCase().includes('expir')))alerts.push(['warn','⏳ Existem orçamentos expirados.']);if(c.os.some(x=>String(x.status).toLowerCase().includes('aguardando')))alerts.push(['info','🔧 Há veículos aguardando peça/cliente/seguro.']);$('alerts').innerHTML=alerts.map(a=>'<div class="card"><span class="badge '+a[0]+'">'+a[1]+'</span></div>').join('')||'<div class="card"><span class="badge ok">✅ Sem alertas críticos.</span></div>';$('executivo').innerHTML='<p><b>Resumo:</b> dados consolidados diretamente do STATE.</p><p>Resultado líquido: <b>'+br(c.resultado)+'</b>. Ponto de equilíbrio: <b>'+br(c.pe)+'</b>. Margem: <b>'+c.margem.toFixed(1)+'%</b>.</p><p>Relatórios permanecem somente leitura.</p>'}
+function loadDemo(){RAW={source:'simulação fictícia carregada manualmente',data:demoState()};DATA=normalize(RAW.data);renderAll()}
+function validate(){const c=calc();const checks=[['Lê lançamentos do STATE',DATA.lancamentos.length>0],['Sem NaN nos KPIs',[c.recPagas,c.recAberto,c.despPagas,c.despAberto,c.pe,c.resultado,c.margem].every(Number.isFinite)],['Comparativo mensal ativo',!!document.getElementById('comparativo')],['Orçamentos lidos',DATA.orcamentos.length>0],['Agenda/OS lida',DATA.os.length>0]];alert(checks.map(x=>(x[1]?'✅ ':'❌ ')+x[0]).join('\n'))}
+$('reload').onclick=loadState;$('demo').onclick=loadDemo;$('btnTest').onclick=validate;$('periodo').onchange=renderAll;loadState();
+})();
+</script>
+<script src="oficinaos-state.js?v=54630"></script>
+</body>
+</html>
