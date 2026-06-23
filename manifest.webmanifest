@@ -1,0 +1,8 @@
+{
+  "name": "OficinaOS Real Core",
+  "short_name": "OS Real",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf7f1",
+  "theme_color": "#a95510"
+}
