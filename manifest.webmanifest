@@ -1,0 +1,20 @@
+{
+  "name": "OficinaOS V547.00 Sistema Completo",
+  "short_name": "OficinaOS",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf7f1",
+  "theme_color": "#b8621a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
