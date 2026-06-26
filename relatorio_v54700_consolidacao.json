@@ -1,0 +1,15 @@
+{
+  "versao": "V547.00 SISTEMA COMPLETO GITHUB",
+  "gerado_em": "2026-06-25T22:55:05.312775",
+  "modulos": [
+    "orcamento.html",
+    "financeiro.html",
+    "agenda.html",
+    "relatorios.html",
+    "metas.html",
+    "clientes.html",
+    "ia.html"
+  ],
+  "status": "pacote consolidado para GitHub Pages",
+  "observacao": "validar com backup real após publicação"
+}
