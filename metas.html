@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V547.12 — Metas</title>
+<style>
+:root{--paper:#fffaf4;--line:#ead7c4;--brown:#a95510;--green:#0aa34f;--red:#d93232;--blue:#1779bf;--orange:#e28a1a}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#fbf7f1,#f2eadf);font:12px Arial,Helvetica,sans-serif;color:#24160d}
+.top{height:42px;background:#fffaf4;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;gap:18px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:8px}.logo{background:var(--brown);color:#fff;padding:8px;border-radius:5px;font-weight:800}.brand b{letter-spacing:4px;font-size:16px}.brand small{display:block;font-size:8px;letter-spacing:2px;color:#9b5a22}
+.nav{display:flex;gap:10px;flex:1;justify-content:center}.nav button{padding:7px 12px;border-radius:4px;border:1px solid transparent;background:transparent}.nav .active{border:2px solid #111;background:#fff3e8}
+.main{display:grid;grid-template-columns:1fr 300px;min-height:calc(100vh - 42px)}
+.content{padding:14px 18px 60px}.side{border-left:1px solid var(--line);background:#fff6ed;padding:14px;position:sticky;top:42px;height:calc(100vh - 42px);overflow:auto}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.btn{border:1px solid #dcb990;background:#fffaf4;border-radius:5px;padding:8px 12px;cursor:pointer;font-weight:600}.btn.primary{background:var(--brown);color:#fff;border-color:var(--brown)}.btn.green{background:#0aa34f;color:white;border-color:#0aa34f}.btn.red{background:#d93232;color:white;border-color:#d93232}.btn.blue{background:#1779bf;color:white;border-color:#1779bf}.btn.small{font-size:11px;padding:4px 7px}
+.card{background:#fffaf4;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px #00000008}.card h3{margin:0 0 10px;color:#5d3213;letter-spacing:3px;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px}.kpi small{display:block;font-size:10px;color:#80634b;letter-spacing:2px}.kpi strong{display:block;font-size:22px;margin-top:6px}
+.greenTxt{color:var(--green)}.redTxt{color:var(--red)}.blueTxt{color:var(--blue)}.orangeTxt{color:var(--orange)}
+.table{width:100%;border-collapse:collapse;background:#fff}.table th,.table td{padding:8px;border-bottom:1px solid #f1dfce;text-align:left}.table th{background:#fff1df;font-size:10px;letter-spacing:2px;color:#744113}.num{text-align:right;font-weight:700}
+.progress{height:8px;background:#ececec;border-radius:99px;overflow:hidden;margin-top:5px}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}
+.badge{display:inline-flex;padding:3px 8px;border-radius:999px;font-size:11px;border:1px solid #ddd}.ok{background:#e8fff1;color:#087e3d;border-color:#b9efcb}.warn{background:#fff6da;color:#9a6200;border-color:#efd48a}.bad{background:#ffecec;color:#b50f17;border-color:#ffc2c2}.info{background:#eaf4ff;color:#075c9b;border-color:#b7dcff}
+.note{font-size:11px;color:#7b6049;line-height:1.45}.empty{padding:18px;border:1px dashed #dcb990;border-radius:8px;background:#fffaf4;color:#7b6049}
+label{display:block;font-size:10px;letter-spacing:2px;color:#6d472c;font-weight:700;margin:6px 0 3px}input,select{width:100%;border:1px solid #dcb990;background:#fffaf4;border-radius:4px;padding:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:30}.modal.open{display:flex}.panel{background:#fffaf4;border-radius:12px;width:min(650px,92vw);border:1px solid #d5b38f}.panelHead{background:linear-gradient(90deg,#6e2a09,#b45b13);color:white;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-radius:12px 12px 0 0}.panelBody{padding:16px}.footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;background:#fff2e4;border-top:1px solid var(--line)}
+@media(max-width:900px){.main{grid-template-columns:1fr}.side{position:relative;top:0;height:auto}.kpis{grid-template-columns:1fr}.row{grid-template-columns:1fr}.nav{overflow:auto;justify-content:flex-start}}
+
+/* .18.5 — seletor compacto final */
+#competencia{
+  width:110px;
+  min-width:110px;
+  height:34px;
+  padding:6px 8px;
+  font-size:12px;
+}
+.toolbar{
+  align-items:center;
+}
+.toolbar b{
+  white-space:nowrap;
+}
+
+.top,.topbar,.nav-tabs{display:none!important} body{overflow:auto!important}\n</style>
+
+<style id="oficinaos-v547--shell">
+.v547-top{height:58px;display:flex;align-items:center;gap:14px;padding:0 18px;background:linear-gradient(180deg,#fff,#faf5ee);border-bottom:1px solid rgba(100,60,20,.14);box-shadow:0 2px 10px rgba(150,80,20,.08);position:sticky;top:0;z-index:9999}
+.v547-logo{width:34px;height:34px;border-radius:6px;background:linear-gradient(135deg,#e8c090,#b8621a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.v547-brand b{letter-spacing:.12em;font-size:18px}.v547-brand small{display:block;font-size:10px;letter-spacing:.22em;color:#b8621a}
+.v547-nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}.v547-nav a{border:1px solid transparent;background:transparent;border-radius:7px;padding:8px 10px;text-decoration:none;color:#5a3a1a;font:700 13px Arial}.v547-nav a.active,.v547-nav a:hover{background:rgba(184,98,26,.10);border-color:rgba(184,98,26,.28);color:#b8621a}
+.v547-actions{display:flex;gap:6px}.v547-actions button,.v547-actions label{border:1px solid rgba(100,60,20,.14);background:#fff;border-radius:7px;padding:8px 10px;font:700 12px Arial;cursor:pointer;color:#2c1a08}
+.v547-actions .primary{background:#b8621a;color:white;border-color:#b8621a}
+.v547-hide{display:none!important}
+@media(max-width:900px){.v547-top{height:auto;min-height:58px;flex-wrap:wrap;padding:10px}.v547-nav{margin-left:0;width:100%;overflow:auto}.v547-actions{width:100%;overflow:auto}}
+</style>
+
+</head>
+<body>
+<script id="oficinaos-v547--pre">
+(function(){
+  const FLAG='OFICINAOS_V54705__PURGED';
+  const Keys=[
+    'oficinaos__v546_30_financeiro','oficinaos__v546_30_orcamento','oficinaos__v546_30_clientes',
+    'oficinaos__v546_30_ia','oficinaos__v546_30_state','oficinaos__v546_30_metas',
+    'oficinaos__v546_30__off','OFICINAOS_V549_dados','OFICINAOS_dados_MASTER','OFICINAOS_dados',
+    'oficinaos_state','oficinaos_v546_state','oficinaos_v546_15_financeiro','oficinaos_v546_16_3_agenda'
+  ];
+  if(!localStorage.getItem(FLAG)){
+    Keys.forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+    try{localStorage.setItem('oficinaos__v546_30_financeiro',JSON.stringify({competencia:new Date().toISOString().slice(0,7),metaReceita:0,fechados:[],lancamentos:[],recibos:[],nfse:[],pix:[]}));}catch(e){}
+    try{localStorage.setItem('oficinaos__v546_30_orcamento',JSON.stringify({orcamento:null,historico:[],financeiro:{pendentes:[]},clientes:[],estoque:[],pecasCatalogo:[]}));}catch(e){}
+    try{localStorage.setItem('oficinaos__v546_30_clientes',JSON.stringify({clientes:[],selected:null,filter:'todos'}));}catch(e){}
+    try{localStorage.setItem('oficinaos__v546_30_ia',JSON.stringify({history:[],memory:[]}));}catch(e){}
+    try{localStorage.setItem('oficinaos__v546_30_state',JSON.stringify({clientes:[],veiculos:[],orcamentos:[],agenda:{os:[]},financeiro:{lancamentos:[]},metas:{}}));}catch(e){}
+    localStorage.setItem(FLAG,'1');
+  }
+})();
+</script>
+<header class="v547-top"><div class="v547-logo">OS</div><div class="v547-brand"><b>OFICINAOS</b><small>Gestão Inteligente da Oficina</small></div><nav class="v547-nav"><a href="index.html" class="">Painel</a><a href="clientes.html" class="">Clientes</a><a href="orcamento.html" class="">Orçamento</a><a href="agenda.html" class="">Agenda</a><a href="financeiro.html" class="">Financeiro</a><a href="relatorios.html" class="">Relatórios</a><a href="metas.html" class="active">Metas</a><a href="ia.html" class="">IA</a></nav><div class="v547-actions"><label>Importar<input id="v547Import" type="file" accept=".json,application/json" style="display:none"></label><button id="v547Backup" class="primary" type="button">Backup</button></div></header>
+
+<header class="top">
+<div class="brand"><div class="logo">OS</div><div><b>OFICINAOS</b><small>GESTÃO AUTOMOTIVA</small></div></div>
+<nav class="nav"><button>📊 Financeiro</button><button>🧾 Orçamento</button><button>🚨 Contas</button><button>🗓 Agenda</button><button class="active">🎯 Metas</button><button>📈 Relatórios</button><button>🤖 IA</button></nav>
+
+</header>
+<main class="main">
+<section class="content">
+<div class="toolbar">
+<b>METAS — </b>
+<select id="competencia"><option value="2026-06">Junho/2026</option><option value="2026-05">Maio/2026</option></select>
+<button class="btn primary" id="btnEditar">✏️ Editar objetivos</button>
+<button class="btn blue" id="btnReload">Atualizar</button>
+
+<button class="btn red" id="btnClear">Limpar </button>
+</div>
+<div id="sourceBanner"></div>
+<div class="kpis" id="kpis"></div>
+<div class="card"><h3>• MARGEM REAL</h3><div id="margemBox" class="note"></div></div>
+<div class="card"><h3>• META TOTAL</h3><table class="table" id="tblTotal"></table></div>
+<div class="card"><h3>• META POR CATEGORIA DE SERVIÇO</h3><table class="table" id="tblCategorias"></table><button class="btn green" id="btnAddCat">＋ Adicionar Meta por Categoria</button></div>
+<div class="card"><h3>• METAS OPERACIONAIS</h3><table class="table" id="tblOperacional"></table></div>
+<div class="card"><h3>• PROJEÇÃO E NECESSÁRIO POR DIA</h3><div id="projecao" class="note"></div></div>
+</section>
+<aside class="side">
+<h3>• ALERTAS</h3><div id="alerts"></div>
+<h3>• STATUS</h3><div id="statusBox"></div>
+<h3>• REGRA</h3><p class="note">Sem dados real, a aba mostra zerado e avisa.  só aparece quando acionada manualmente e .</p>
+</aside>
+</main>
+
+<div class="modal" id="modalMetas"><div class="panel"><div class="panelHead"><b>Editar Objetivos de Metas</b><button class="btn small" id="closeModal">✕</button></div><div class="panelBody">
+<div class="row"><div><label>Meta de faturamento (R$)</label><input id="mFaturamento" type="number"></div><div><label>Meta de margem (%)</label><input id="mMargem" type="number"></div></div>
+<div class="row"><div><label>Meta de OS entregues</label><input id="mOS" type="number"></div><div><label>Meta de ticket médio (R$)</label><input id="mTicket" type="number"></div></div>
+<label>Meta máxima de atrasos</label><input id="mAtraso" type="number">
+</div><div class="footer"><button class="btn" id="cancelModal">Cancelar</button><button class="btn primary" id="saveMetas">Salvar objetivos</button></div></div></div>
+
+<div class="modal" id="modalCat"><div class="panel"><div class="panelHead"><b>Meta por Categoria</b><button class="btn small" id="closeCat">✕</button></div><div class="panelBody">
+<input type="hidden" id="catIndex"><label>Categoria</label><input id="catNome" placeholder="Funilaria, Pintura, Solda..."><label>Meta (R$)</label><input id="catMeta" type="number" placeholder="Ex: 2000">
+</div><div class="footer"><button class="btn" id="cancelCat">Cancelar</button><button class="btn primary" id="saveCat">Salvar categoria</button></div></div></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const br=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const n=v=>{let x=Number(String(v??0).replace(',','.'));return Number.isFinite(x)?x:0};
+const META_KEY='oficinaos__v546_30_metas';
+const _KEY='oficinaos__v546_30__off';
+let DATA=null;
+let SOURCE='none';
+
+const defaultMetas={faturamento:0,margemObjetivo:0,os:0,ticket:0,atrasoMax:0,categorias:[]};
+
+function normalizeMetas(m){
+  m=m||{};
+  if('margem' in m && !('margemObjetivo' in m)) m.margemObjetivo=n(m.margem);
+  return {faturamento:n(m.faturamento||defaultMetas.faturamento),margemObjetivo:n(m.margemObjetivo||defaultMetas.margemObjetivo),os:n(m.os||defaultMetas.os),ticket:n(m.ticket||defaultMetas.ticket),atrasoMax:n(m.atrasoMax||defaultMetas.atrasoMax),categorias:Array.isArray(m.categorias)?m.categorias:defaultMetas.categorias};
+}
+function getMetas(){try{return normalizeMetas(JSON.parse(localStorage.getItem(META_KEY)))}catch(e){return normalizeMetas(defaultMetas)}}
+function setMetas(m){localStorage.setItem(META_KEY,JSON.stringify(normalizeMetas(m)))}
+
+function State(){return{financeiro:{lancamentos:[]},agenda:{os:[]}}}
+
+function readRealState(){
+  const keys=['oficinaos_state','OFICINA_dados','OficinaOS_dados','oficinaos_v546_state'];
+  for(const key of keys){
+    try{
+      const raw=JSON.parse(localStorage.getItem(key)||'null');
+      if(raw && raw.financeiro && Array.isArray(raw.financeiro.lancamentos)) return {raw,key};
+    }catch(e){}
+  }
+  if(window.OFICINA_dados && window.OFICINA_dados.financeiro) return {raw:window.OFICINA_dados,key:'window.OFICINA_dados'};
+  if(window.dados && window.dados.financeiro) return {raw:window.dados,key:'window.dados'};
+  return null;
+}
+
+function loadState(){
+  const real=readRealState();
+  if(real){
+    SOURCE='real:'+real.key;
+    DATA={lancamentos:(real.raw.financeiro&&real.raw.financeiro.lancamentos)||[],os:(real.raw.agenda&&real.raw.agenda.os)||[]};
+  }else if(false && localStorage.getItem(_KEY)==='1'){
+    SOURCE='simulacao_';
+    const raw=State();
+    DATA={lancamentos:raw.financeiro.lancamentos,os:raw.agenda.os};
+  }else{
+    SOURCE='sem dados';
+    DATA={lancamentos:[],os:[]};
+  }
+  renderAll();
+}
+
+function isPago(x){return String(x.status||'').toLowerCase()==='pago'}
+function calc(){
+  const metas=getMetas();
+  const rec=DATA.lancamentos.filter(x=>x.tipo==='receita'&&isPago(x));
+  const desp=DATA.lancamentos.filter(x=>x.tipo==='despesa'&&isPago(x));
+  const receitas=rec.reduce((s,x)=>s+n(x.valor),0);
+  const despesas=desp.reduce((s,x)=>s+n(x.valor),0);
+  const resultado=receitas-despesas;
+  const margem=(Number.isFinite(receitas)&&receitas>0)?(resultado/receitas)*100:0;
+  const osEntregues=DATA.os.filter(x=>/entregue/i.test(x.status)).length;
+  const ticket=osEntregues?receitas/osEntregues:0;
+  const atrasadas=DATA.os.filter(x=>/atras/i.test(x.status)).length;
+  const porCategoria={};
+  rec.forEach(x=>{const c=x.categoria||'Geral';porCategoria[c]=(porCategoria[c]||0)+n(x.valor)});
+  return{metas,receitas,despesas,resultado,margem:Number.isFinite(margem)?margem:0,osEntregues,ticket,atrasadas,porCategoria};
+}
+function progress(v,m){const p=Math.max(0,Math.min(100,m? v/m*100:0));return '<div class="progress"><span style="width:'+p+'%"></span></div>'}
+function status(v,m,mode){if(mode==='max')return v<=m?'<span class="badge ok">✅ dentro</span>':'<span class="badge bad">🔴 acima</span>';return v>=m?'<span class="badge ok">✅ batida</span>':'<span class="badge warn">⚠ abaixo</span>'}
+
+function renderSource(){
+  if(SOURCE.startsWith('real:')) $('sourceBanner').innerHTML='<div class="card"><span class="badge ok">✅ Fonte dos dados: dados real — '+SOURCE.replace('real:','')+'</span></div>';
+  else if(SOURCE==='simulacao_') $('sourceBanner').innerHTML='<div class="card"><span class="badge warn">⚠ Fonte dos dados: SIMULAÇÃO MANUAL. Não é dado real.</span></div>';
+  else $('sourceBanner').innerHTML='<div class="empty">⚠ Nenhum dados real encontrado. Metas está zerada para não mostrar dados como se fossem reais.</div>';
+}
+function renderAll(){
+const c=calc(),m=c.metas;
+renderSource();
+$('kpis').innerHTML=[['Meta Total',br(m.faturamento),'orangeTxt'],['Realizado',br(c.receitas),'greenTxt'],['Falta',br(Math.max(0,m.faturamento-c.receitas)),'redTxt'],['Margem atual',c.margem.toFixed(1)+'%','blueTxt']].map(k=>'<div class="kpi"><small>'+k[0]+'</small><strong class="'+k[2]+'">'+k[1]+'</strong></div>').join('');
+$('margemBox').innerHTML='Meta de margem: <b>'+m.margemObjetivo+'%</b><br>Margem atual calculada automaticamente: <b>'+c.margem.toFixed(1)+'%</b><br>Cálculo: <b>(receitas pagas − despesas pagas) ÷ receitas pagas</b>.<br><br>Fonte: <b>'+SOURCE+'</b>';
+$('tblTotal').innerHTML='<tr><th>Objetivo</th><th class="num">Meta</th><th class="num">Realizado</th><th>Status</th></tr>'+'<tr><td>Faturamento</td><td class="num">'+br(m.faturamento)+'</td><td class="num">'+br(c.receitas)+progress(c.receitas,m.faturamento)+'</td><td>'+status(c.receitas,m.faturamento)+'</td></tr>'+'<tr><td>Margem</td><td class="num">'+m.margemObjetivo+'%</td><td class="num">'+c.margem.toFixed(1)+'%'+progress(c.margem,m.margemObjetivo)+'</td><td>'+status(c.margem,m.margemObjetivo)+'</td></tr>'+'<tr><td>Ticket médio</td><td class="num">'+br(m.ticket)+'</td><td class="num">'+br(c.ticket)+progress(c.ticket,m.ticket)+'</td><td>'+status(c.ticket,m.ticket)+'</td></tr>';
+$('tblCategorias').innerHTML='<tr><th>Categoria</th><th class="num">Meta</th><th class="num">Realizado</th><th>Status</th><th>Ações</th></tr>'+m.categorias.map((cat,i)=>{const real=c.porCategoria[cat.nome]||0;return '<tr><td>'+cat.nome+'</td><td class="num">'+br(cat.meta)+'</td><td class="num">'+br(real)+progress(real,cat.meta)+'</td><td>'+status(real,cat.meta)+'</td><td><button class="btn small blue" onclick="window.editCat('+i+')">✏️</button> <button class="btn small red" onclick="window.delCat('+i+')">🗑</button></td></tr>'}).join('');
+$('tblOperacional').innerHTML='<tr><th>Objetivo</th><th class="num">Meta</th><th class="num">Realizado</th><th>Status</th></tr>'+'<tr><td>OS entregues</td><td class="num">'+m.os+'</td><td class="num">'+c.osEntregues+progress(c.osEntregues,m.os)+'</td><td>'+status(c.osEntregues,m.os)+'</td></tr>'+'<tr><td>Atrasos máximos</td><td class="num">'+m.atrasoMax+'</td><td class="num">'+c.atrasadas+'</td><td>'+status(c.atrasadas,m.atrasoMax,'max')+'</td></tr>';
+const diaAtual=15,diasMes=30,diasRest=diasMes-diaAtual,ritmo=c.receitas/diaAtual,proj=ritmo*diasMes,falta=Math.max(0,m.faturamento-c.receitas),necessarioDia=diasRest?falta/diasRest:0;$('projecao').innerHTML='Projeção no ritmo atual: <b>'+br(proj)+'</b>.<br>Falta para a meta: <b>'+br(falta)+'</b>.<br>Necessário por dia até o fim do mês: <b>'+br(necessarioDia)+'</b>.';
+const alerts=[];
+if(SOURCE==='sem dados') alerts.push('<div class="card"><span class="badge bad">🔴 sem dados real carregado</span></div>');
+if(SOURCE==='simulacao_') alerts.push('<div class="card"><span class="badge warn">⚠ dados de </span></div>');
+if(c.receitas<m.faturamento)alerts.push('<div class="card"><span class="badge warn">⚠ faturamento abaixo do objetivo</span></div>');
+if(c.margem<m.margemObjetivo)alerts.push('<div class="card"><span class="badge warn">⚠ margem abaixo da meta</span></div>');
+if(c.atrasadas>m.atrasoMax)alerts.push('<div class="card"><span class="badge bad">🔴 atrasos acima do limite</span></div>');
+$('alerts').innerHTML=alerts.join('')||'<div class="card"><span class="badge ok">✅ metas controladas</span></div>';
+$('statusBox').innerHTML='<div class="card"><p><b>Fonte:</b> '+SOURCE+'</p><p><b>dados:</b> '+(SOURCE.startsWith('real:')?'real':'não real')+'</p><p><b>Metas:</b> editáveis</p><p><b>Margem:</b> real/dinâmica</p><p><b>Categorias:</b> '+m.categorias.length+'</p></div>';
+}
+function openMetas(){const m=getMetas();$('mFaturamento').value=m.faturamento;$('mMargem').value=m.margemObjetivo;$('mOS').value=m.os;$('mTicket').value=m.ticket;$('mAtraso').value=m.atrasoMax;$('modalMetas').classList.add('open')}
+function saveMetas(){const m=getMetas();m.faturamento=n($('mFaturamento').value);m.margemObjetivo=n($('mMargem').value);m.os=n($('mOS').value);m.ticket=n($('mTicket').value);m.atrasoMax=n($('mAtraso').value);m.audit={updatedAt:new Date().toISOString()};setMetas(m);$('modalMetas').classList.remove('open');renderAll()}
+function openCat(i=''){const m=getMetas();$('catIndex').value=i;if(i===''){$('catNome').value='';$('catMeta').value=''}else{$('catNome').value=m.categorias[i].nome;$('catMeta').value=m.categorias[i].meta}$('modalCat').classList.add('open')}
+window.editCat=i=>openCat(i);
+window.delCat=i=>{if(!confirm('Excluir meta da categoria?'))return;const m=getMetas();m.categorias.splice(i,1);setMetas(m);renderAll()}
+function saveCat(){const m=getMetas();const idx=$('catIndex').value;const item={nome:$('catNome').value||'Categoria',meta:n($('catMeta').value)};if(idx==='')m.categorias.push(item);else m.categorias[Number(idx)]=item;setMetas(m);$('modalCat').classList.remove('open');renderAll()}
+function validate(){const c=calc();const tests=[['Sem NaN',[c.receitas,c.resultado,c.margem,c.ticket].every(Number.isFinite)],['Não usa fallback  automático',SOURCE!=='simulacao_automatica'],['Fonte visível',!!$('sourceBanner').innerText],['Metas editáveis',!!getMetas().faturamento],['Margem protegida',c.receitas>0?c.margem===((c.receitas-c.despesas)/c.receitas*100):c.margem===0]];alert(tests.map(x=>(x[1]?'✅ ':'❌ ')+x[0]).join('\\n'))}
+
+$('btnEditar').onclick=openMetas;
+$('closeModal').onclick=()=>$('modalMetas').classList.remove('open');
+$('cancelModal').onclick=()=>$('modalMetas').classList.remove('open');
+$('saveMetas').onclick=saveMetas;
+$('btnAddCat').onclick=()=>openCat('');
+$('closeCat').onclick=()=>$('modalCat').classList.remove('open');
+$('cancelCat').onclick=()=>$('modalCat').classList.remove('open');
+$('saveCat').onclick=saveCat;
+$('btn').onclick=()=>{localStorage.setItem(_KEY,'1');loadState()};
+$('btnClear').onclick=()=>{localStorage.removeItem(_KEY);loadState()};
+$('btnReload').onclick=loadState;
+$('btnTest').onclick=validate;
+loadState();
+})();
+</script>
+<script src="oficinaos-v547--.js?v=54705"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ const btn=[...document.querySelectorAll('button')].find(b=>(b.textContent||'').toLowerCase().includes('editar'));
+ if(btn){btn.onclick=function(){const s=OficinaOS.load();const v=prompt('Meta de faturamento mensal',s.metas&&s.metas.faturamento?s.metas.faturamento:10000);if(v===null)return;s.metas=s.metas||{};s.metas.faturamento=OficinaOS.n(v);OficinaOS.save(s);alert('Meta salva.');location.reload();};}
+});
+</script>
+
+</body>
+</html>

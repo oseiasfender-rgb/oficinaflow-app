@@ -1,0 +1,23 @@
+{
+  "versao": "V547.09 REAL DATA ENGINE",
+  "gerado_em": "2026-06-27T00:54:58.184258",
+  "base": "V547.08 Agenda Hotfix",
+  "backup_real": "OficinaOS-backup-2026-06-27.json",
+  "mapeamento": {
+    "ALL_TX": "financeiro.lancamentos",
+    "contas": "financeiro.contas",
+    "jobs": "agenda.os",
+    "clientes": "clientes + veiculos",
+    "metaPrincipal": "metas.faturamento",
+    "metasCat": "metas.categorias",
+    "dasStatus": "metas.dasStatus"
+  },
+  "contagens_convertidas": {
+    "clientes": 1,
+    "veiculos": 1,
+    "lancamentos": 1891,
+    "contas": 146,
+    "os": 18,
+    "metasCat": 7
+  }
+}
