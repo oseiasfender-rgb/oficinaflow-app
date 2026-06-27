@@ -1,0 +1,44 @@
+{
+  "versao": "V547.10 FINANCEIRO REAL ENGINE",
+  "gerado_em": "2026-06-27T02:15:36.417337",
+  "base": "V547.09 Real Data Engine",
+  "corrige": [
+    "caixa",
+    "competência",
+    "receitas",
+    "despesas",
+    "pendentes",
+    "contas",
+    "ponto de equilíbrio",
+    "margem",
+    "ticket médio"
+  ],
+  "validacao_backup_real": {
+    "total_lancamentos": 1891,
+    "2026-06": {
+      "receita_caixa": 4640.0,
+      "despesa_caixa": 9557.8,
+      "receita_comp": 6490.0,
+      "despesa_comp": 11772.85,
+      "rec_pendente": 1850.0,
+      "dep_pendente": 2215.05
+    },
+    "2026-05": {
+      "receita_caixa": 13870.0,
+      "despesa_caixa": 13204.78,
+      "receita_comp": 13870.0,
+      "despesa_comp": 13204.78,
+      "rec_pendente": 0,
+      "dep_pendente": 0
+    },
+    "2026-04": {
+      "receita_caixa": 5660.0,
+      "despesa_caixa": 7513.62,
+      "receita_comp": 5730.0,
+      "despesa_comp": 7513.62,
+      "rec_pendente": 70.0,
+      "dep_pendente": 0
+    }
+  },
+  "observacao": "Ponto de equilíbrio no navegador usa despesas fixas/recorrentes por categoria/descrição; V547.10 ainda pode precisar refinamento de categorias fixas após teste visual."
+}
