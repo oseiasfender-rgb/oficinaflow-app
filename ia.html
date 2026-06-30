@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OficinaOS V547.14 — IA</title><link rel="manifest" href="manifest.webmanifest">
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OficinaOS V547.30 — IA</title><link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--line:rgba(100,60,20,.14);--gold:#b8621a;--green:#16a34a;--red:#dc2626;--blue:#1d6fa4;--text:#2c1a08;--muted:#76533a}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#fbf7f1,#f2eadf);font-family:Arial,sans-serif;color:var(--text)}
@@ -14,10 +14,10 @@
 input,select,textarea{border:1px solid #dcb990;background:#fffaf4;border-radius:7px;padding:9px;width:100%}button{cursor:pointer}
 @media(max-width:900px){.grid,.grid3{grid-template-columns:1fr}.hero{display:block}.top{height:auto;flex-wrap:wrap;padding:10px}.nav{width:100%;margin-left:0}}
 </style>
-</head><body><header class="top"><div class="logo">OS</div><div class="brand"><b>OFICINAOS</b><small>V547.14 IDB</small></div><nav class="nav"><a class="" href="index.html">Painel</a><a class="" href="clientes.html">Clientes</a><a class="" href="orcamento.html">Orçamento</a><a class="" href="agenda.html">Agenda</a><a class="" href="financeiro.html">Financeiro</a><a class="" href="relatorios.html">Relatórios</a><a class="" href="metas.html">Metas</a><a class="active" href="ia.html">IA</a></nav><div class="actions"><label>Importar<input id="v547Import" type="file" accept=".json,application/json" style="display:none"></label><button id="v547Backup" class="primary">Backup</button></div></header><main class="main">
+</head><body><header class="top"><div class="logo">OS</div><div class="brand"><b>OFICINAOS</b><small>V547.30</small></div><nav class="nav"><a class="" href="index.html">Painel</a><a class="" href="clientes.html">Clientes</a><a class="" href="orcamento.html">Orçamento</a><a class="" href="agenda.html">Agenda</a><a class="" href="financeiro.html">Financeiro</a><a class="" href="relatorios.html">Relatórios</a><a class="" href="metas.html">Metas</a><a class="active" href="ia.html">IA</a></nav><div class="actions"><label>Importar<input id="v547Import" type="file" accept=".json,application/json" style="display:none"></label><button id="v547Backup" class="primary">Backup</button></div></header><main class="main">
 <section class="hero"><div><h1>IA Consultiva</h1><p>Manual inicial e leitura operacional.</p></div></section>
 <section class="card"><h3>Manual rápido do OficinaOS</h3><p>Fluxo recomendado: importar backup, conferir clientes, validar agenda, revisar financeiro, conferir relatórios e metas.</p><p>A IA é consultiva: lê os dados e sugere ações. Ela não altera registros automaticamente.</p></section>
 <section class="card" style="margin-top:12px"><textarea id="pergunta" rows="4" placeholder="Pergunte sobre faturamento, agenda, clientes ou metas..."></textarea><button id="consultar">Consultar</button><pre id="resp"></pre></section>
-</main><script src="oficinaos-v547-idb-core.js?v=54714"></script><script>
+</main><script src="oficinaos-v547-idb-core.js?v=54730"></script><script>
 consultar.onclick=async()=>{const s=await OficinaOS.load(),f=await OficinaOS.financials(new Date().toISOString().slice(0,7));resp.textContent='Clientes: '+s.clientes.length+'\nOS: '+s.agenda.os.length+'\nReceita caixa mês: '+OficinaOS.money(f.receitaCaixa)+'\nDespesa caixa mês: '+OficinaOS.money(f.despesaCaixa)+'\nPonto de equilíbrio: '+OficinaOS.money(f.pontoEquilibrio);};
 </script></body></html>

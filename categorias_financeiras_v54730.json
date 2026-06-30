@@ -1,0 +1,116 @@
+{
+  "version": "V547.30",
+  "receitas": {
+    "Funilaria": [
+      "Pequenos Reparos",
+      "Funilaria Média",
+      "Estrutural",
+      "Restauração"
+    ],
+    "Pintura": [
+      "Parcial",
+      "Total",
+      "Repintura",
+      "Retoque"
+    ],
+    "Estética": [
+      "Polimento",
+      "Cristalização",
+      "Espelhamento"
+    ],
+    "Soldagem": [
+      "MIG",
+      "TIG",
+      "Estrutural",
+      "Alumínio"
+    ],
+    "Peças": [
+      "Novas",
+      "Usadas",
+      "Recuperadas",
+      "Revenda"
+    ],
+    "Seguradoras": [
+      "Seguradora",
+      "Cooperativa",
+      "Particular"
+    ],
+    "Outros Serviços": [
+      "Diagnóstico",
+      "Vistoria",
+      "Laudo",
+      "Consultoria"
+    ]
+  },
+  "despesas": {
+    "Materiais": [
+      "Tintas",
+      "Lixas",
+      "Verniz",
+      "Massa",
+      "Solventes",
+      "Fitas",
+      "EPIs"
+    ],
+    "Instalações": [
+      "Aluguel",
+      "Energia",
+      "Água",
+      "Internet",
+      "Telefone"
+    ],
+    "Tecnologia": [
+      "ChatGPT",
+      "Hospedagem",
+      "Domínio",
+      "Software",
+      "Backup"
+    ],
+    "Governo": [
+      "DAS MEI",
+      "Impostos",
+      "Taxas",
+      "Licenças"
+    ],
+    "Ferramentas": [
+      "Compra",
+      "Manutenção",
+      "Calibração"
+    ],
+    "Equipamentos": [
+      "Compressor",
+      "Solda",
+      "Pistolas",
+      "Máquinas"
+    ],
+    "Financeiro": [
+      "Tarifas",
+      "Juros",
+      "Multas",
+      "Empréstimos"
+    ],
+    "Pró-labore": [
+      "Pró-labore",
+      "Retirada",
+      "Distribuição"
+    ],
+    "Marketing": [
+      "Facebook",
+      "Instagram",
+      "Google",
+      "Divulgação"
+    ],
+    "Transporte": [
+      "Combustível",
+      "Pedágio",
+      "Entrega"
+    ]
+  },
+  "flexivel": {
+    "permitir_novas_categorias": true,
+    "permitir_subcategorias": true,
+    "permitir_edicao": true,
+    "permitir_ocultar": true,
+    "metas_por_categoria": true
+  }
+}

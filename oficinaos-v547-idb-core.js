@@ -2,7 +2,7 @@
 (function(){
 'use strict';
 
-const VERSION='V547.14 MODULES IDB INTEGRATION';
+const VERSION='V547.30';
 const DB_NAME='OficinaOS_V547_DB';
 const DB_VERSION=1;
 const STORES=['clientes','veiculos','orcamentos','agenda','lancamentos','contas','metas','ia','meta'];
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded',wire);
 })();
 
 
-// V547.14 module CRUD helpers
+// V547.30 module CRUD helpers
 (function(){
 if(!window.OficinaOS)return;
 const OS=window.OficinaOS;
@@ -286,4 +286,369 @@ OS.saveOS=async o=>{o=o||{};o.id=o.id||uid('os');o.status=o.status||'Agendado';o
 OS.saveLancamento=async l=>{l=l||{};l.id=l.id||uid('lan');l.tipo=l.tipo||'receita';l.status=l.status||'pendente';l.data=l.data||new Date().toISOString().slice(0,10);l.vencimento=l.vencimento||l.data;l.competencia=l.competencia||String(l.vencimento||l.data).slice(0,7);l.valor=OS.n(l.valor);await OS.putMany('lancamentos',[l]);return l;};
 OS.saveConta=async c=>{c=c||{};c.id=c.id||uid('ct');c.status=c.status||'pendente';c.vencimento=c.vencimento||new Date().toISOString().slice(0,10);c.competencia=c.competencia||String(c.vencimento).slice(0,7);c.valor=OS.n(c.valor);await OS.putMany('contas',[c]);return c;};
 OS.saveMeta=async m=>{m=m||{};m.id='main';m.faturamento=OS.n(m.faturamento);await OS.setOne('metas',m);return m;};
+})();
+
+
+// V547.30 — Competência Real 
+(function(){
+if(!window.OficinaOS)return;
+const OS=window.OficinaOS;
+const arr=x=>Array.isArray(x)?x:[];
+const n=OS.n;
+function mes(v){return String(v||'').slice(0,7);}
+function isPago(x){return String(x.status||x.paid||'').toLowerCase()==='pago'||x.paid===true;}
+function isRec(x){return String(x.tipo||x.type||'').toLowerCase().includes('rece')||String(x.type).toLowerCase()==='rec';}
+function isDep(x){return String(x.tipo||x.type||'').toLowerCase().includes('desp')||String(x.type).toLowerCase()==='dep';}
+function dataCaixa(x){return String(x.dataPagamento||x.paidAt||x.data||x.vencimento||'').slice(0,10);}
+function competencia(x){return mes(x.competencia||x.vencimento||x.due||x.data||x.paidAt);}
+
+const oldFinancials=OS.financials;
+
+OS.caixaResumo=async function(m){
+  const s=await OS.load();
+  const tx=arr(s.financeiro&&s.financeiro.lancamentos);
+  const receitaCaixa=tx.filter(x=>isRec(x)&&isPago(x)&&mes(dataCaixa(x))===m).reduce((a,b)=>a+n(b.valor),0);
+  const despesaCaixa=tx.filter(x=>isDep(x)&&isPago(x)&&mes(dataCaixa(x))===m).reduce((a,b)=>a+n(b.valor),0);
+  return {mes:m,receitaCaixa,despesaCaixa,saldoCaixa:receitaCaixa-despesaCaixa};
+};
+
+OS.competenciaResumo=async function(m){
+  const s=await OS.load();
+  const tx=arr(s.financeiro&&s.financeiro.lancamentos);
+  const contas=arr(s.financeiro&&s.financeiro.contas);
+
+  const receitasCompetencia=tx.filter(x=>isRec(x)&&competencia(x)===m).reduce((a,b)=>a+n(b.valor),0);
+  const despesasCompetencia=tx.filter(x=>isDep(x)&&competencia(x)===m).reduce((a,b)=>a+n(b.valor),0);
+
+  const receitasPagasCompetencia=tx.filter(x=>isRec(x)&&competencia(x)===m&&isPago(x)).reduce((a,b)=>a+n(b.valor),0);
+  const receitasPendentesCompetencia=tx.filter(x=>isRec(x)&&competencia(x)===m&&!isPago(x)).reduce((a,b)=>a+n(b.valor),0);
+  const despesasPagasCompetencia=tx.filter(x=>isDep(x)&&competencia(x)===m&&isPago(x)).reduce((a,b)=>a+n(b.valor),0);
+  const despesasPendentesCompetencia=tx.filter(x=>isDep(x)&&competencia(x)===m&&!isPago(x)).reduce((a,b)=>a+n(b.valor),0);
+
+  const contasCompetencia=contas.filter(x=>competencia(x)===m);
+  const contasTotal=contasCompetencia.reduce((a,b)=>a+n(b.valor),0);
+  const contasPagas=contasCompetencia.filter(isPago).reduce((a,b)=>a+n(b.valor),0);
+  const contasPendentes=contasCompetencia.filter(x=>!isPago(x)).reduce((a,b)=>a+n(b.valor),0);
+
+  const resultadoCompetencia=receitasCompetencia-despesasCompetencia;
+  const margemCompetencia=receitasCompetencia>0?(resultadoCompetencia/receitasCompetencia)*100:0;
+  return {mes:m,receitasCompetencia,despesasCompetencia,resultadoCompetencia,margemCompetencia,receitasPagasCompetencia,receitasPendentesCompetencia,despesasPagasCompetencia,despesasPendentesCompetencia,contasTotal,contasPagas,contasPendentes,contasQuantidade:contasCompetencia.length};
+};
+
+OS.financials=async function(m){
+  const base=oldFinancials?await oldFinancials(m):{};
+  const cx=await OS.caixaResumo(m);
+  const cp=await OS.competenciaResumo(m);
+  const fx=OS.fixedExpenses?await OS.fixedExpenses(m):{total:0,pago:0,pendente:0,items:[]};
+  const s=await OS.load();
+  const osEntregues=arr(s.agenda&&s.agenda.os).filter(o=>/entreg/i.test(o.status||'')&&mes(o.entrega||o.entrada)===m).length;
+  return {...base,...cx,receitaCompetencia:cp.receitasCompetencia,despesaCompetencia:cp.despesasCompetencia,resultadoCompetencia:cp.resultadoCompetencia,margemCompetencia:cp.margemCompetencia,receitaPendente:cp.receitasPendentesCompetencia,despesaPendente:cp.despesasPendentesCompetencia,contasTotal:cp.contasTotal,contasPagas:cp.contasPagas,contasPendentes:cp.contasPendentes,contasQuantidade:cp.contasQuantidade,pontoEquilibrio:fx.total,despesasFixasPagas:fx.pago,despesasFixasPendentes:fx.pendente,despesasFixasItens:fx.items,osEntregues,ticketMedio:osEntregues?cx.receitaCaixa/osEntregues:0,margem:cx.receitaCaixa>0?(cx.saldoCaixa/cx.receitaCaixa)*100:0};
+};
+
+OS.saveLancamento=async function(l){
+  l=l||{};
+  l.id=l.id||OS.uid('lan');
+  l.tipo=l.tipo||'receita';
+  l.status=l.status||'pendente';
+  l.data=l.data||new Date().toISOString().slice(0,10);
+  l.vencimento=l.vencimento||l.data;
+  l.competencia=l.competencia||String(l.vencimento||l.data).slice(0,7);
+  l.valor=OS.n(l.valor);
+  await OS.putMany('lancamentos',[l]);
+  return l;
+};
+})();
+
+
+// V547.30 — Motor de Contas Real
+(function(){
+if(!window.OficinaOS)return;
+const OS=window.OficinaOS;
+const arr=x=>Array.isArray(x)?x:[];
+const n=OS.n;
+function hoje(){return new Date().toISOString().slice(0,10)}
+function mes(v){return String(v||'').slice(0,7)}
+function isPago(x){return String(x.status||x.paid||'').toLowerCase()==='pago'||x.paid===true}
+function comp(x){return mes(x.competencia||x.vencimento||x.due||x.data||x.paidAt)}
+function venc(x){return String(x.vencimento||x.due||x.data||'').slice(0,10)}
+
+OS.contasResumo=async function(m){
+  const s=await OS.load();
+  const contas=arr(s.financeiro&&s.financeiro.contas);
+  const list=contas.filter(c=>comp(c)===m);
+  const pagas=list.filter(isPago);
+  const pendentes=list.filter(c=>!isPago(c));
+  const vencidas=pendentes.filter(c=>venc(c) && venc(c)<hoje());
+  const futuras=pendentes.filter(c=>venc(c) && venc(c)>=hoje());
+  const recorrentes=list.filter(c=>c.recorrente||c.recurKey);
+  return {
+    mes:m,
+    total:list.reduce((a,b)=>a+n(b.valor),0),
+    pagas:pagas.reduce((a,b)=>a+n(b.valor),0),
+    pendentes:pendentes.reduce((a,b)=>a+n(b.valor),0),
+    vencidas:vencidas.reduce((a,b)=>a+n(b.valor),0),
+    futuras:futuras.reduce((a,b)=>a+n(b.valor),0),
+    qtdTotal:list.length,
+    qtdPagas:pagas.length,
+    qtdPendentes:pendentes.length,
+    qtdVencidas:vencidas.length,
+    qtdFuturas:futuras.length,
+    qtdRecorrentes:recorrentes.length,
+    lista:list
+  };
+};
+
+OS.pagarConta=async function(id, dataPagamento){
+  const contas=await OS.getAll('contas');
+  const conta=contas.find(c=>String(c.id)===String(id));
+  if(!conta)throw new Error('Conta não encontrada');
+  conta.status='pago';
+  conta.paid=true;
+  conta.paidAt=dataPagamento||hoje();
+  await OS.putMany('contas',[conta]);
+
+  const lancamentos=await OS.getAll('lancamentos');
+  const exists=lancamentos.some(l=>String(l.contaId||'')===String(conta.id)||String(l.legacyId||'')===String(conta.id));
+  if(!exists){
+    await OS.saveLancamento({
+      tipo:'despesa',
+      descricao:conta.descricao||conta.nome,
+      valor:conta.valor,
+      data:conta.paidAt,
+      vencimento:conta.vencimento||conta.due,
+      competencia:conta.competencia||mes(conta.vencimento||conta.due),
+      status:'pago',
+      categoria:conta.categoria||'Geral',
+      contaId:conta.id,
+      recorrente:!!conta.recorrente,
+      recurKey:conta.recurKey||'',
+      origem:'contas'
+    });
+  }
+  return conta;
+};
+
+OS.desfazerPagamentoConta=async function(id){
+  const contas=await OS.getAll('contas');
+  const conta=contas.find(c=>String(c.id)===String(id));
+  if(!conta)throw new Error('Conta não encontrada');
+  conta.status='pendente';
+  conta.paid=false;
+  conta.paidAt='';
+  await OS.putMany('contas',[conta]);
+
+  const lancamentos=await OS.getAll('lancamentos');
+  const keep=lancamentos.filter(l=>String(l.contaId||'')!==String(id));
+  await OS.clearStore('lancamentos');
+  await OS.putMany('lancamentos',keep);
+  return conta;
+};
+
+OS.clearStore=async function(store){
+  const db=await OS.openDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(store,'readwrite');
+    tx.objectStore(store).clear();
+    tx.oncomplete=resolve;
+    tx.onerror=()=>reject(tx.error);
+  });
+};
+
+OS.gerarRecorrenteProximoMes=async function(conta){
+  conta=conta||{};
+  const base=String(conta.vencimento||conta.due||hoje());
+  const d=new Date(base+'T00:00:00');
+  d.setMonth(d.getMonth()+1);
+  const vencimento=d.toISOString().slice(0,10);
+  const nova={
+    id:'ct_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),
+    nome:conta.nome||conta.descricao,
+    descricao:conta.descricao||conta.nome,
+    categoria:conta.categoria||'Geral',
+    valor:n(conta.valor),
+    vencimento,
+    due:vencimento,
+    competencia:vencimento.slice(0,7),
+    status:'pendente',
+    paid:false,
+    paidAt:'',
+    recorrente:true,
+    recurKey:conta.recurKey||('rec_'+(conta.descricao||conta.nome||'conta').toLowerCase().replace(/\W+/g,'_')),
+    origem:'recorrente'
+  };
+  await OS.putMany('contas',[nova]);
+  return nova;
+};
+
+const oldFinancials=OS.financials;
+OS.financials=async function(m){
+  const f=oldFinancials?await oldFinancials(m):{};
+  const c=await OS.contasResumo(m);
+  return {
+    ...f,
+    contasTotal:c.total,
+    contasPagas:c.pagas,
+    contasPendentes:c.pendentes,
+    contasVencidas:c.vencidas,
+    contasFuturas:c.futuras,
+    qtdContas:c.qtdTotal,
+    qtdContasPagas:c.qtdPagas,
+    qtdContasPendentes:c.qtdPendentes,
+    qtdContasVencidas:c.qtdVencidas,
+    qtdContasFuturas:c.qtdFuturas,
+    qtdContasRecorrentes:c.qtdRecorrentes
+  };
+};
+})();
+
+
+// V547.30 — Motor de Recorrentes Real
+(function(){
+if(!window.OficinaOS)return;
+const OS=window.OficinaOS;
+const arr=x=>Array.isArray(x)?x:[];
+const n=OS.n;
+function today(){return new Date().toISOString().slice(0,10)}
+function ym(v){return String(v||'').slice(0,7)}
+function addMonths(iso,months){
+  const d=new Date((iso||today())+'T00:00:00');
+  const day=d.getDate();
+  d.setMonth(d.getMonth()+months);
+  if(d.getDate()<day)d.setDate(0);
+  return d.toISOString().slice(0,10);
+}
+function recurKey(c){
+  return String(c.recurKey||c.recorrenciaId||('rec_'+String(c.descricao||c.nome||'conta').toLowerCase().replace(/\W+/g,'_')+'_'+n(c.valor)));
+}
+function isRecorrente(c){return !!(c.recorrente||c.recur||c.recurKey||c.recorrenciaId)}
+
+OS.recorrentesResumo=async function(){
+  const contas=await OS.getAll('contas');
+  const rec=contas.filter(isRecorrente);
+  const grupos={};
+  rec.forEach(c=>{
+    const k=recurKey(c);
+    if(!grupos[k])grupos[k]=[];
+    grupos[k].push(c);
+  });
+  Object.values(grupos).forEach(g=>g.sort((a,b)=>String(a.competencia||a.vencimento).localeCompare(String(b.competencia||b.vencimento))));
+  return {
+    totalGrupos:Object.keys(grupos).length,
+    totalContas:rec.length,
+    grupos
+  };
+};
+
+OS.gerarRecorrentesAte=async function(mesFinal){
+  const contas=await OS.getAll('contas');
+  const rec=contas.filter(isRecorrente);
+  const porGrupo={};
+  rec.forEach(c=>{
+    const k=recurKey(c);
+    if(!porGrupo[k])porGrupo[k]=[];
+    porGrupo[k].push(c);
+  });
+  const existentes=new Set(contas.map(c=>recurKey(c)+'|'+String(c.competencia||ym(c.vencimento||c.due))));
+  const novas=[];
+  Object.entries(porGrupo).forEach(([k,grupo])=>{
+    grupo.sort((a,b)=>String(a.competencia||a.vencimento).localeCompare(String(b.competencia||b.vencimento)));
+    let base=grupo[grupo.length-1];
+    let venc=String(base.vencimento||base.due||today()).slice(0,10);
+    let next=addMonths(venc,1);
+    while(ym(next)<=mesFinal){
+      const comp=ym(next);
+      const unique=k+'|'+comp;
+      if(!existentes.has(unique)){
+        const nova={
+          id:'ct_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8),
+          nome:base.nome||base.descricao,
+          descricao:base.descricao||base.nome,
+          categoria:base.categoria||'Geral',
+          valor:n(base.valor),
+          competencia:comp,
+          vencimento:next,
+          due:next,
+          status:'pendente',
+          paid:false,
+          paidAt:'',
+          recorrente:true,
+          recurKey:k,
+          origem:'recorrente'
+        };
+        novas.push(nova);
+        existentes.add(unique);
+      }
+      next=addMonths(next,1);
+    }
+  });
+  if(novas.length)await OS.putMany('contas',novas);
+  return novas;
+};
+
+OS.criarRecorrenteManual=async function(dados){
+  dados=dados||{};
+  const venc=String(dados.vencimento||today()).slice(0,10);
+  const key='rec_'+String(dados.descricao||dados.nome||'conta').toLowerCase().replace(/\W+/g,'_')+'_'+n(dados.valor);
+  const conta={
+    id:'ct_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8),
+    nome:dados.nome||dados.descricao,
+    descricao:dados.descricao||dados.nome,
+    categoria:dados.categoria||'Geral',
+    valor:n(dados.valor),
+    competencia:ym(venc),
+    vencimento:venc,
+    due:venc,
+    status:'pendente',
+    paid:false,
+    paidAt:'',
+    recorrente:true,
+    recurKey:key,
+    origem:'recorrente'
+  };
+  await OS.putMany('contas',[conta]);
+  return conta;
+};
+
+OS.excluirRecorrenciaFutura=async function(recurKeyValue, apartirMes){
+  const contas=await OS.getAll('contas');
+  const manter=contas.filter(c=>!(recurKey(c)===recurKeyValue && ym(c.competencia||c.vencimento)>=apartirMes && String(c.status)!=='pago'));
+  await OS.clearStore('contas');
+  await OS.putMany('contas',manter);
+  return {removidas:contas.length-manter.length};
+};
+
+const oldContasResumo=OS.contasResumo;
+OS.contasResumo=async function(m){
+  const base=oldContasResumo?await oldContasResumo(m):{};
+  const contas=await OS.getAll('contas');
+  const recMes=contas.filter(c=>isRecorrente(c)&&ym(c.competencia||c.vencimento)===m);
+  return {...base,qtdRecorrentes:recMes.length,recorrentesValor:recMes.reduce((a,b)=>a+n(b.valor),0)};
+};
+})();
+
+
+// V547.30s Financeiros Real
+(function(){
+if(!window.OficinaOS)return;
+const OS=window.OficinaOS;
+const old=OS.financials;
+OS.financials=async function(m){
+  const f=await old(m);
+  const pe = Math.max(3000, Number(f.pontoEquilibrio||0));
+  const faturamento = Number(f.receitaCaixa||0);
+  const lucro = Number(f.saldoCaixa||0);
+
+  f.kpi={
+    faturamento,
+    lucro,
+    margem:faturamento>0?(lucro/faturamento)*100:0,
+    ticket:f.ticketMedio||0,
+    pe,
+    pePercent:pe>0?(faturamento/pe)*100:0,
+    os:f.osEntregues||0,
+    receber:f.receitaPendente||0,
+    pagar:f.despesaPendente||0
+  };
+  return f;
+};
 })();
