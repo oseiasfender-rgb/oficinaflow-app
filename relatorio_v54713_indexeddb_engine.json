@@ -1,6 +1,0 @@
-{
-  "versao": "V547.13 INDEXEDDB ENGINE",
-  "gerado_em": "2026-06-27T16:58:35.921780",
-  "mudanca": "localStorage substituído por IndexedDB",
-  "status": "candidato para teste de importação grande"
-}
