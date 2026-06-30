@@ -1,0 +1,10 @@
+{
+  "versao": "V547.30 RELEASE FINAL REAL",
+  "edicao": "CLEAN V1",
+  "estado": "zerado_para_importacao",
+  "orcamento_inicial": "01",
+  "storage": "IndexedDB",
+  "modo_dados": "importar_backup_real_no_navegador",
+  "gerado_em": "2026-06-30T11:19:24.964861",
+  "observacao": "Nenhum backup real foi embutido no código."
+}
