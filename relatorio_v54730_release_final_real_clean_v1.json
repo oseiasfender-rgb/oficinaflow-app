@@ -1,9 +1,0 @@
-{
-  "versao": "V547.30 RELEASE FINAL REAL CLEAN V1",
-  "base": "OFICINAOS_V547_27_TESTES_FINAIS_1.zip",
-  "gerado_em": "2026-06-30T11:19:24.968962",
-  "dados_embutidos": false,
-  "estado": "clean",
-  "inclui_limpeza_indexeddb": true,
-  "proximo_passo_usuario": "limpar banco local e importar backup real mais recente"
-}
