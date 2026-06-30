@@ -1,0 +1,10 @@
+{
+  "versao": "V547.17 AUDITORIA OPERACIONAL",
+  "gerado_em": "2026-06-29T17:58:39.848309",
+  "inclui_v547_16_configuracoes": true,
+  "stores_adicionadas": [
+    "configuracoes",
+    "auditoria"
+  ],
+  "proxima": "V547.18 CENTRAL DE ALERTAS"
+}
