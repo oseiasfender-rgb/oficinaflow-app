@@ -3,9 +3,10 @@
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OficinaOS — Limpeza Inicial</title>
 <style>body{font-family:Arial,sans-serif;background:#f8f6f3;color:#2c1a08;margin:0;padding:24px}.card{background:#fffaf4;border:1px solid rgba(100,60,20,.14);border-radius:14px;padding:18px;max-width:760px;margin:auto}button{border:1px solid rgba(100,60,20,.14);background:#b8621a;color:white;border-radius:8px;padding:12px 16px;font-weight:700;cursor:pointer}.warn{background:#fff6da;border:1px solid #e6bf62;border-radius:10px;padding:12px;margin:12px 0}.ok{color:#16a34a;font-weight:700}</style>
 <link rel="stylesheet" href="heritage-layout-v54728.css">
+<link rel="stylesheet" href="design-unification-v54729.css">
 </head>
 <body><div class="card"><h1>OficinaOS — Limpeza Inicial</h1><p>Use esta tela antes de importar o backup real mais recente.</p><div class="warn"><b>Atenção:</b> isto apaga o banco local IndexedDB deste navegador. Faça backup antes se houver dados importantes.</div><button id="limpar">Limpar banco local</button><p id="saida"></p><hr><p><a href="index.html">Voltar para o OficinaOS</a></p></div>
 <script>
 limpar.onclick=async()=>{if(!confirm('Tem certeza que deseja apagar os dados locais deste navegador?'))return;const req=indexedDB.deleteDatabase('OficinaOSDB');req.onsuccess=()=>{saida.innerHTML='<span class="ok">Banco local limpo. Agora abra o sistema e importe o backup real.</span>';};req.onerror=()=>{saida.textContent='Erro ao limpar o banco local.';};req.onblocked=()=>{saida.textContent='Feche outras abas do OficinaOS e tente novamente.';};};
-</script><div class="footer-v54728">OficinaOS V547.28 Heritage • Limaprata Reparações Automotivas • Leme/SP</div>
+</script><div class="footer-v54729"></div>
 </body></html>

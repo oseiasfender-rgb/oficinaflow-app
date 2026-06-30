@@ -1,4 +1,4 @@
-# V547.30s Financeiros Real
+# V547.29s Financeiros Real
 
 KPIs implementados:
 
@@ -11,4 +11,4 @@ KPIs implementados:
 - Despesa pendente.
 
 Próxima etapa:
-V547.30ayout Final.
+V547.29ayout Final.

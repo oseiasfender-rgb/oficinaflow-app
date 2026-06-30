@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — MOTOR DE COMPETÊNCIA REAL
+# OficinaOS V547.29 — MOTOR DE COMPETÊNCIA REAL
 
 Caixa e competência separados.
 
@@ -14,4 +14,4 @@ Usa mês de referência, vencimento ou competência do lançamento/conta.
 - `OficinaOS.financials(mes)` separado
 - campo Competência no novo lançamento
 
-Próxima etapa: V547.30 — MOTOR DE CONTAS REAL.
+Próxima etapa: V547.29 — MOTOR DE CONTAS REAL.

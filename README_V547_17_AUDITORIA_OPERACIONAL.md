@@ -1,10 +1,10 @@
-# OficinaOS V547.30 — Auditoria Operacional
+# OficinaOS V547.29 — Auditoria Operacional
 
 Data: 29/06/2026
 
 ## Incluído
 
-### V547.30 — Configurações
+### V547.29 — Configurações
 Arquivo:
 - `configuracoes.html`
 
@@ -19,7 +19,7 @@ Campos:
 - documentos;
 - sistema.
 
-### V547.30 — Auditoria Operacional
+### V547.29 — Auditoria Operacional
 Arquivo:
 - `auditoria.html`
 
@@ -40,4 +40,4 @@ Eventos rastreados:
 - configurações salvas.
 
 ## Próxima etapa
-V547.30 — Central de Alertas.
+V547.29 — Central de Alertas.

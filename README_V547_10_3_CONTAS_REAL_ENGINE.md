@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — MOTOR DE CONTAS REAL
+# OficinaOS V547.29 — MOTOR DE CONTAS REAL
 
 ## Regra definitiva
 
@@ -15,4 +15,4 @@ A conta só vira despesa de caixa quando marcada como paga.
 - ações Pagar/Desfazer na aba Contas do Financeiro
 
 ## Próxima etapa
-V547.30 — MOTOR DE RECORRENTES REAL.
+V547.29 — MOTOR DE RECORRENTES REAL.

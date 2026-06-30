@@ -1,4 +1,4 @@
-# Checklist V547.30 — Release Final Real CLEAN V1
+# Lista de Verificação V547.29 — Release Final Real CLEAN V1
 
 - [ ] Abrir `limpar-dados.html`.
 - [ ] Limpar IndexedDB local.

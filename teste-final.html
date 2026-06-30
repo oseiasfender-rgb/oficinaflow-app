@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OficinaOS V547.28 — Testes Finais 1</title>
+<title>OficinaOS V547.29 — Testes Finais 1</title>
 <style>
 body{font-family:Arial,sans-serif;background:#f8f6f3;color:#2c1a08;margin:0;padding:24px}
 .card{background:#fffaf4;border:1px solid rgba(100,60,20,.14);border-radius:14px;padding:16px;margin:12px 0}
@@ -12,13 +12,14 @@ button{border:1px solid rgba(100,60,20,.14);background:#b8621a;color:white;borde
 pre{white-space:pre-wrap;background:#fff;border:1px solid #ead7c4;padding:12px;border-radius:10px}
 </style>
 <link rel="stylesheet" href="heritage-layout-v54728.css">
+<link rel="stylesheet" href="design-unification-v54729.css">
 </head>
 <body>
-<h1>OficinaOS V547.28 — Testes Finais ❶</h1>
+<h1>OficinaOS V547.29 — Testes Finais ❶</h1>
 <p>Use esta página para validar rapidamente o banco local, módulos principais e rotas do sistema.</p>
 <div class="card"><button id="run">Executar teste no navegador</button></div>
 <div id="out"></div>
-<script src="oficinaos-v547-idb-core.js?v=54728"></script>
+<script src="oficinaos-v547-idb-core.js?v=54729"></script>
 <script>
 const pages=['index.html','orcamento.html','financeiro.html','agenda.html','clientes.html','relatorios.html','metas.html','ia.html','busca.html','alertas.html','configuracoes.html','auditoria.html','preferencias.html','dashboard-operacional.html','fotos-os.html'];
 function line(name,ok,detail=''){return `<div>${ok?'<span class=ok>✅</span>':'<span class=bad>❌</span>'} <b>${name}</b> ${detail}</div>`}
@@ -40,7 +41,7 @@ run.onclick=async()=>{
    html+=line('Financeiro calculou',!!f,`Caixa: ${OficinaOS.money(f.receitaCaixa||0)} / ${OficinaOS.money(f.despesaCaixa||0)}`);
    if(OficinaOS.gerarAlertas){const a=await OficinaOS.gerarAlertas(); html+=line('Alertas calculados',Array.isArray(a),String(a.length));}
    if(OficinaOS.buscaGlobal){const b=await OficinaOS.buscaGlobal('a'); html+=line('Busca Global respondeu',Array.isArray(b),String(b.length));}
-   if(OficinaOS.dashboardOperacional){const d=await OficinaOS.dashboardOperacional(); html+=line('Dashboard Operacional respondeu',!!d,String(d.osAbertas||0)+' OS abertas');}
+   if(OficinaOS.dashboardOperacional){const d=await OficinaOS.dashboardOperacional(); html+=line('Painel Operacional respondeu',!!d,String(d.osAbertas||0)+' OS abertas');}
    if(OficinaOS.resumoFotosOS){const ft=await OficinaOS.resumoFotosOS(); html+=line('Fotos OS respondeu',!!ft,String(ft.total||0)+' fotos');}
  }catch(e){
    html+=`<pre>${e.stack||e.message}</pre>`;
@@ -49,6 +50,6 @@ run.onclick=async()=>{
  out.innerHTML=html;
 };
 </script>
-<div class="footer-v54728">OficinaOS V547.28 Heritage • Limaprata Reparações Automotivas • Leme/SP</div>
+<div class="footer-v54729"></div>
 </body>
 </html>

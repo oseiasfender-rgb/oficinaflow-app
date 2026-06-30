@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Release Final Real CLEAN V1
+# OficinaOS V547.29 — Release Final Real CLEAN V1
 
 Data: 30/06/2026
 
@@ -9,7 +9,7 @@ Versão final limpa para publicação e uso real.
 Esta versão foi entregue zerada, pronta para importar o backup real mais recente no navegador.
 
 ## Versão inicial
-- Sistema: V547.30 Release Final Real
+- Sistema: V547.29 Release Final Real
 - Edição: CLEAN V1
 - Orçamento inicial recomendado: 01
 - Banco: IndexedDB

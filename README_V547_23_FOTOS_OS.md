@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Fotos OS
+# OficinaOS V547.29 — Fotos OS
 
 Data: 29/06/2026
 
@@ -10,4 +10,4 @@ Incluído:
 - Exclusão de fotos.
 - Auditoria ao adicionar/remover foto.
 
-Próxima etapa: V547.30elease Final real.
+Próxima etapa: V547.29elease Final real.

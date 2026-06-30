@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — IndexedDB Storage Engine
+# OficinaOS V547.29 — IndexedDB Storage Engine
 
 Migração estrutural de armazenamento.
 

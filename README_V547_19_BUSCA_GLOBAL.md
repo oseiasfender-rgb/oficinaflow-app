@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Busca Global
+# OficinaOS V547.29 — Busca Global
 
 Data: 29/06/2026
 
@@ -17,4 +17,4 @@ Arquivo:
 - auditoria.
 
 ## Próxima etapa
-V547.30 — Final UI completo.
+V547.29 — Final UI completo.

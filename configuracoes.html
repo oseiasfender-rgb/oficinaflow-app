@@ -13,7 +13,7 @@
 input,select,textarea{border:1px solid #dcb990;background:#fffaf4;border-radius:7px;padding:9px;width:100%;margin:4px 0 10px}label{font-size:12px;color:#76533a;font-weight:700}
 @media(max-width:900px){.grid,.grid2{grid-template-columns:1fr}.top{height:auto;flex-wrap:wrap;padding:10px}.nav{width:100%;margin-left:0}}
 
-/* V547.28 — Responsividade / Validação visual */
+/* V547.29 — Responsividade / Validação visual */
 :root{
   --v547-safe-bottom: 84px;
 }
@@ -173,6 +173,7 @@ body{
 
 </style>
 <link rel="stylesheet" href="heritage-layout-v54728.css">
+<link rel="stylesheet" href="design-unification-v54729.css">
 </head><body><header class="top"><div class="logo">OS</div><div class="brand"><b>OFICINAOS</b><small>Gestão Inteligente</small></div><nav class="nav"><a class="" href="index.html">Painel</a><a class="" href="orcamento.html">Orçamento</a><a class="" href="financeiro.html">Financeiro</a><a class="" href="agenda.html">Agenda</a><a class="" href="clientes.html">Clientes</a><a class="" href="relatorios.html">Relatórios</a><a class="" href="metas.html">Metas</a><a class="" href="ia.html">IA</a><a class="active" href="configuracoes.html">Configurações</a><a class="" href="auditoria.html">Auditoria</a><a href="alertas.html">Alertas</a><a href="busca.html">Busca</a><a href="preferencias.html">Preferências</a><a href="dashboard-operacional.html">Operacional</a><a href="fotos-os.html">Fotos OS</a></nav><div class="actions"><label>Importar<input id="v547Import" type="file" accept=".json,application/json" style="display:none"></label><button id="v547Backup" class="primary">Backup</button></div></header><main class="main">
 <section class="hero"><div><h1>Configurações</h1><p>Dados centrais da empresa, financeiro, documentos e sistema.</p></div><button class="primary" id="salvar">Salvar configurações</button></section>
 <section class="grid2">
@@ -183,7 +184,7 @@ body{
 <div class="card"><h3>Documentos</h3><label>PIX</label><input id="pix"><label>Assinatura</label><input id="assinatura"><label>Rodapé PDF</label><textarea id="rodape"></textarea></div>
 <div class="card"><h3>Sistema</h3><label>Tema</label><select id="tema"><option value="claro">Claro</option><option value="escuro">Escuro</option></select><label>Backup automático</label><select id="backupAutomatico"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
 </section>
-</main><script src="oficinaos-v547-idb-core.js?v=54728"></script><script>
+</main><script src="oficinaos-v547-idb-core.js?v=54729"></script><script>
 async function carregar(){
  const c=await OficinaOS.carregarConfiguracoes();
  empresaNome.value=c.empresa?.nome||''; responsavel.value=c.empresa?.responsavel||''; cnpj.value=c.empresa?.cnpj||'';
@@ -206,5 +207,5 @@ salvar.onclick=async()=>{
  alert('Configurações salvas.');
 };
 carregar();
-</script><div class="footer-v54728">OficinaOS V547.28 Heritage • Limaprata Reparações Automotivas • Leme/SP</div>
+</script><div class="footer-v54729"></div>
 </body></html>

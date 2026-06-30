@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Responsividade / Validação Visual
+# OficinaOS V547.29 — Responsividade / Validação Visual
 
 Data: 29/06/2026
 
@@ -6,7 +6,7 @@ Data: 29/06/2026
 Etapa de responsividade e validação visual concluída.
 
 ## Base
-V547.30 — Deploy Preparation.
+V547.29 — Deploy Preparation.
 
 ## O que foi aplicado
 - Ajustes responsivos globais.
@@ -17,7 +17,7 @@ V547.30 — Deploy Preparation.
 - Resumos laterais descem abaixo do conteúdo no celular.
 - PIX flutuante preservado.
 - Regras de impressão adicionadas.
-- Versionamento atualizado para V547.30.
+- Versionamento atualizado para V547.29.
 
 ## Próxima etapa
-V547.30 — Testes finais.
+V547.29 — Testes finais.

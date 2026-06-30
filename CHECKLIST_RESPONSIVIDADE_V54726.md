@@ -1,4 +1,4 @@
-# Checklist V547.30 — Responsividade / Validação visual
+# Lista de Verificação V547.29 — Responsividade / Validação visual
 
 ## Notebook / Monitor
 - [ ] Menu superior sem quebra visual.
@@ -6,7 +6,7 @@
 - [ ] Financeiro preserva colunas principais.
 - [ ] Orçamento preserva resumo lateral.
 - [ ] Agenda preserva calendário e lateral.
-- [ ] Clientes preserva CRM/Relacionamento.
+- [ ] Clientes preserva Relacionamento/Relacionamento.
 - [ ] Relatórios preserva gráficos.
 - [ ] IA preserva menu lateral e conversa.
 - [ ] PIX flutuante não cobre botões importantes.

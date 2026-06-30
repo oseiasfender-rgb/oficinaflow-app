@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — MODULES IDB INTEGRATION
+# OficinaOS V547.29 — MODULES IDB INTEGRATION
 
 Módulos principais conectados diretamente ao IndexedDB.
 

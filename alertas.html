@@ -14,7 +14,7 @@
 .badge{border-radius:99px;padding:4px 8px;font-size:12px;font-weight:700}.critico{background:#ffecec;color:#b50f17}.aviso{background:#fff6da;color:#9a6200}.ok{background:#e8fff1;color:#087e3d}
 @media(max-width:900px){.grid{grid-template-columns:1fr}.top{height:auto;flex-wrap:wrap;padding:10px}.nav{width:100%;margin-left:0}}
 
-/* V547.28 — Responsividade / Validação visual */
+/* V547.29 — Responsividade / Validação visual */
 :root{
   --v547-safe-bottom: 84px;
 }
@@ -174,6 +174,7 @@ body{
 
 </style>
 <link rel="stylesheet" href="heritage-layout-v54728.css">
+<link rel="stylesheet" href="design-unification-v54729.css">
 </head><body><header class="top"><div class="logo">OS</div><div class="brand"><b>OFICINAOS</b><small>Gestão Inteligente</small></div><nav class="nav"><a class="" href="index.html">Painel</a><a class="" href="orcamento.html">Orçamento</a><a class="" href="financeiro.html">Financeiro</a><a class="" href="agenda.html">Agenda</a><a class="" href="clientes.html">Clientes</a><a class="" href="relatorios.html">Relatórios</a><a class="" href="metas.html">Metas</a><a class="" href="ia.html">IA</a><a class="active" href="alertas.html">Alertas</a><a class="" href="configuracoes.html">Configurações</a><a class="" href="auditoria.html">Auditoria</a><a href="busca.html">Busca</a><a href="preferencias.html">Preferências</a><a href="dashboard-operacional.html">Operacional</a><a href="fotos-os.html">Fotos OS</a></nav><div class="actions"><label>Importar<input id="v547Import" type="file" accept=".json,application/json" style="display:none"></label><button id="v547Backup" class="primary">Backup</button></div></header><main class="main">
 <section class="hero"><div><h1>Central de Alertas</h1><p>Contas vencidas, OS atrasadas, metas e ponto de equilíbrio.</p></div><button class="primary" id="atualizar">Atualizar</button></section>
 <section class="grid">
@@ -183,7 +184,7 @@ body{
 <div class="card kpi"><small>Total</small><strong id="total">0</strong></div>
 </section>
 <section class="card" style="margin-top:12px"><table class="table" id="tabela"></table></section>
-</main><script src="oficinaos-v547-idb-core.js?v=54728"></script><script>
+</main><script src="oficinaos-v547-idb-core.js?v=54729"></script><script>
 async function render(){
  const a=await OficinaOS.gerarAlertas();
  criticos.textContent=a.filter(x=>x.nivel==='critico').length;
@@ -194,5 +195,5 @@ async function render(){
 }
 atualizar.onclick=render;
 render();
-</script><div class="footer-v54728">OficinaOS V547.28 Heritage • Limaprata Reparações Automotivas • Leme/SP</div>
+</script><div class="footer-v54729"></div>
 </body></html>

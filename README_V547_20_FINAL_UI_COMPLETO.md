@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Final UI Completo
+# OficinaOS V547.29 — Final UI Completo
 
 Data: 29/06/2026
 
@@ -14,10 +14,10 @@ Consolidar o layout final preservando os Módulos Clean já aprovados.
 - Preparação para as próximas etapas finais.
 
 ## Base
-V547.30 — Busca Global.
+V547.29 — Busca Global.
 
 ## Próximas etapas
-- V547.30referências.
-- V547.30ainel Operacional.
-- V547.30otos OS.
-- V547.30elease Final real.
+- V547.29referências.
+- V547.29ainel Operacional.
+- V547.29otos OS.
+- V547.29elease Final real.

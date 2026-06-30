@@ -1,4 +1,4 @@
-# Checklist V547.30 — Deploy Preparation
+# Lista de Verificação V547.29 — Deploy Preparation
 
 - [ ] `index.html` na raiz.
 - [ ] `manifest.webmanifest` na raiz.

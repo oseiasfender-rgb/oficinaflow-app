@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — Central de Alertas
+# OficinaOS V547.29 — Central de Alertas
 
 Data: 29/06/2026
 
@@ -18,4 +18,4 @@ Arquivo:
 - ponto de equilíbrio atingido.
 
 ## Próxima etapa
-V547.30 — Busca Global.
+V547.29 — Busca Global.

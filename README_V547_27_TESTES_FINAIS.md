@@ -1,15 +1,15 @@
-# OficinaOS V547.30 — Testes finais ❶
+# OficinaOS V547.29 — Testes finais ❶
 
 Data: 29/06/2026
 
 ## Base
-V547.30 — Responsividade / Validação visual.
+V547.29 — Responsividade / Validação visual.
 
 ## Incluído
 - Página `teste-final.html`.
 - Relatório estrutural JSON.
-- Checklist de testes finais.
-- Cache atualizado para V547.30.
+- Lista de Verificação de testes finais.
+- Cache atualizado para V547.29.
 
 ## Como testar
 1. Abra `teste-final.html`.
@@ -19,5 +19,5 @@ V547.30 — Responsividade / Validação visual.
 5. Confira os módulos principais.
 
 ## Próxima etapa
-Se os testes passarem: V547.30 — Release Final real.
-Se houver erro: V547.30 — Correções finais.
+Se os testes passarem: V547.29 — Release Final real.
+Se houver erro: V547.29 — Correções finais.

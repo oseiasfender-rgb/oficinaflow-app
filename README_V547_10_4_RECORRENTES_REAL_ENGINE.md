@@ -1,4 +1,4 @@
-# OficinaOS V547.30 — MOTOR DE RECORRENTES REAL
+# OficinaOS V547.29 — MOTOR DE RECORRENTES REAL
 
 ## Regra
 Recorrência gera contas futuras, mas não gera despesa de caixa automaticamente.
@@ -14,4 +14,4 @@ A despesa só entra no caixa quando a conta recorrente for marcada como paga.
 - geração sem duplicar competência já existente
 
 ## Próxima etapa
-V547.30 — KPIs FINANCEIROS REAL.
+V547.29 — KPIs FINANCEIROS REAL.

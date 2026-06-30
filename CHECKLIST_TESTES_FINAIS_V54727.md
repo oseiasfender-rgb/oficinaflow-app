@@ -1,4 +1,4 @@
-# V547.30 — Testes finais ❶
+# V547.29 — Testes finais ❶
 
 ## Teste estrutural
 - [ ] Abrir `teste-final.html`.
@@ -8,7 +8,7 @@
 - [ ] Confirmar Financeiro calculando.
 - [ ] Confirmar Alertas.
 - [ ] Confirmar Busca Global.
-- [ ] Confirmar Dashboard Operacional.
+- [ ] Confirmar Painel Operacional.
 - [ ] Confirmar Fotos OS.
 
 ## Teste com backup real
@@ -32,7 +32,7 @@
 - [ ] Impressão.
 - [ ] PIX flutuante.
 
-## Antes da V547.30
+## Antes da V547.29
 - [ ] Corrigir qualquer erro visto no navegador.
 - [ ] Confirmar termos em português Brasil.
 - [ ] Confirmar modelo PDF Premium.
