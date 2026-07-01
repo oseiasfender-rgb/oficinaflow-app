@@ -1,0 +1,26 @@
+{
+  "versao": "OFICINAOS V547.30 — HERITAGE FINAL RELEASE",
+  "produto": "OficinaOS V1",
+  "status": "release_final",
+  "gerado_em": "2026-06-30T21:45:10.694418",
+  "base": "OFICINAOS_V547_29_1_FINAL_BASE.zip",
+  "motor": "100% V547",
+  "persistencia": "100% IndexedDB",
+  "visual": "70% V547 / 30% V4",
+  "empresa": "Configurável em Configurações > Empresa",
+  "ia": "Consultor Especialista OficinaOS",
+  "pix": "Central Rápida flutuante preservada",
+  "dados": "Clean para importação de backup real",
+  "proxima_geracao": {
+    "V2": [
+      "login",
+      "nuvem",
+      "sincronização"
+    ],
+    "V3": [
+      "multiempresa",
+      "SaaS",
+      "assinaturas"
+    ]
+  }
+}

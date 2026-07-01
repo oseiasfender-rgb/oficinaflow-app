@@ -1,0 +1,11 @@
+{
+  "versao": "V547.31.1 VISUAL CONSOLIDATION",
+  "data": "2026-07-01T02:32:39.538232",
+  "base": [
+    "OFICINAOS_V1_FINAL.zip",
+    "OFICINAOS_V547_30_1_HERITAGE_STRUCTURAL_FIX.zip",
+    "OFICINAOS_V547_30_3_GLOBAL_TOOLBAR_RECOVERY.zip"
+  ],
+  "status": "consolidacao_visual",
+  "proxima_etapa": "OFICINAOS_V1_FINAL_PACKAGE"
+}
