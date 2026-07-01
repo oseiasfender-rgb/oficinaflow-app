@@ -1,0 +1,19 @@
+{
+  "versao": "V547.31.2 HERITAGE MERGE",
+  "produto": "OficinaOS V1",
+  "gerado_em": "2026-07-01T14:59:33.465408",
+  "base": "OFICINAOS_V547_31_1_VISUAL_CONSOLIDATION.zip",
+  "correcao": "Index refeito com densidade operacional das abas congeladas, sem simplificar módulos.",
+  "inclui": [
+    "Orçamento híbrido",
+    "Materiais & Insumos",
+    "Peças Usadas & Recuperadas",
+    "Financeiro V547 com Contas unificadas",
+    "Agenda híbrida",
+    "Metas V4",
+    "Relatórios V4",
+    "IA V4",
+    "Toolbar global",
+    "Configurações Empresa"
+  ]
+}
