@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V548.10 — Real Operation Test</title>
+<style>
+body{margin:0;background:#f8f6f3;color:#2c1a08;font-family:Arial,sans-serif}
+main{max-width:1100px;margin:auto;padding:28px}
+h1{letter-spacing:.08em}
+.card{background:#fff;border:1px solid rgba(100,60,20,.14);border-left:4px solid #b8621a;border-radius:10px;padding:18px;margin:14px 0;box-shadow:0 2px 10px rgba(150,80,20,.08)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+label{display:block;margin:8px 0}
+input[type=checkbox]{transform:scale(1.2);margin-right:8px}
+textarea{width:100%;min-height:100px;border:1px solid rgba(100,60,20,.2);border-radius:8px;background:#faf5ee;padding:10px}
+button{background:#b8621a;color:white;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
+.status{font-weight:900;color:#16a34a}
+.warn{border-left-color:#d97706}
+.danger{border-left-color:#dc2626}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>OFICINAOS V548.10 — REAL OPERATION TEST</h1>
+<p>Use esta página para validar operação real. Não use dados fictícios.</p>
+
+<div class="card">
+<h2>Status do teste</h2>
+<p>Local: <span class="status" id="localStatus">verificando...</span></p>
+<p>Última atualização: <span id="time"></span></p>
+<button onclick="salvarTeste()">Salvar checklist</button>
+<button onclick="exportarTeste()">Exportar relatório</button>
+</div>
+
+<div class="grid">
+<div class="card"><h2>1. Empresa</h2>
+<label><input type="checkbox" data-k="empresa_nome">Nome configurado</label>
+<label><input type="checkbox" data-k="empresa_cnpj">CNPJ configurado</label>
+<label><input type="checkbox" data-k="empresa_whatsapp">WhatsApp configurado</label>
+<label><input type="checkbox" data-k="empresa_pdf">Dados aparecem no PDF</label></div>
+
+<div class="card"><h2>2. Clientes</h2>
+<label><input type="checkbox" data-k="cliente_cadastrar">Cadastrar cliente</label>
+<label><input type="checkbox" data-k="cliente_editar">Editar cliente</label>
+<label><input type="checkbox" data-k="cliente_veiculo">Cadastrar veículo</label>
+<label><input type="checkbox" data-k="cliente_historico">Histórico aparece</label></div>
+
+<div class="card"><h2>3. Orçamento</h2>
+<label><input type="checkbox" data-k="orc_cliente">Criar orçamento com cliente</label>
+<label><input type="checkbox" data-k="orc_prioridade">Prioridade funcionando</label>
+<label><input type="checkbox" data-k="orc_complexidade">Complexidade funcionando</label>
+<label><input type="checkbox" data-k="orc_materiais">Materiais calculam</label>
+<label><input type="checkbox" data-k="orc_pecas">Peças recuperadas calculam</label>
+<label><input type="checkbox" data-k="orc_pdf">PDF gera</label></div>
+
+<div class="card"><h2>4. Agenda / OS</h2>
+<label><input type="checkbox" data-k="agenda_criar">Criar OS</label>
+<label><input type="checkbox" data-k="agenda_etapas">Mover etapas</label>
+<label><input type="checkbox" data-k="agenda_timeline">Linha do Tempo aparece</label>
+<label><input type="checkbox" data-k="agenda_fotos">Fotos por etapa funcionam</label></div>
+
+<div class="card"><h2>5. Financeiro</h2>
+<label><input type="checkbox" data-k="fin_receita">Lançar receita</label>
+<label><input type="checkbox" data-k="fin_despesa">Lançar despesa</label>
+<label><input type="checkbox" data-k="fin_conta">Conta integrada funciona</label>
+<label><input type="checkbox" data-k="fin_parcial">Pagamento parcial funciona</label>
+<label><input type="checkbox" data-k="fin_recorrente">Recorrente funciona</label></div>
+
+<div class="card"><h2>6. Metas / Relatórios</h2>
+<label><input type="checkbox" data-k="metas_criar">Criar meta</label>
+<label><input type="checkbox" data-k="metas_editar">Editar meta</label>
+<label><input type="checkbox" data-k="rel_receitas">Receitas aparecem</label>
+<label><input type="checkbox" data-k="rel_despesas">Despesas aparecem</label>
+<label><input type="checkbox" data-k="rel_lucro">Lucro aparece</label></div>
+
+<div class="card"><h2>7. Backup</h2>
+<label><input type="checkbox" data-k="backup_exportar">Exportar JSON</label>
+<label><input type="checkbox" data-k="backup_limpar">Limpar sistema</label>
+<label><input type="checkbox" data-k="backup_importar">Importar JSON</label>
+<label><input type="checkbox" data-k="backup_restaurar">Dados restauram</label></div>
+
+<div class="card"><h2>8. IA / PWA</h2>
+<label><input type="checkbox" data-k="ia_abrir">IA abre</label>
+<label><input type="checkbox" data-k="ia_responder">IA responde</label>
+<label><input type="checkbox" data-k="pwa_instalar">PWA instala</label>
+<label><input type="checkbox" data-k="offline">Offline abre</label></div>
+</div>
+
+<div class="card warn">
+<h2>Ocorrências encontradas</h2>
+<textarea id="ocorrencias" placeholder="Descreva erros reais encontrados no navegador..."></textarea>
+</div>
+
+<div class="card danger">
+<h2>Bloqueadores para produção</h2>
+<textarea id="bloqueadores" placeholder="Liste o que impede usar na oficina hoje..."></textarea>
+</div>
+
+</main>
+<script>
+const KEY='OFICINAOS_V54810_TEST';
+localStatus.textContent = window.localStorage ? 'OK' : 'ERRO';
+time.textContent = new Date().toLocaleString('pt-BR');
+
+function getData(){
+  const checks={};
+  document.querySelectorAll('[data-k]').forEach(i=>checks[i.dataset.k]=i.checked);
+  return {versao:'V548.10 REAL OPERATION TEST',data:new Date().toISOString(),checks,ocorrencias:ocorrencias.value,bloqueadores:bloqueadores.value};
+}
+function setData(d){
+  if(!d)return;
+  Object.entries(d.checks||{}).forEach(([k,v])=>{const el=document.querySelector('[data-k="'+k+'"]'); if(el)el.checked=!!v;});
+  ocorrencias.value=d.ocorrencias||'';
+  bloqueadores.value=d.bloqueadores||'';
+}
+function salvarTeste(){
+  localStorage.setItem(KEY,JSON.stringify(getData()));
+  alert('Checklist salvo.');
+}
+function exportarTeste(){
+  const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='relatorio_v54810_real_operation_test.json';
+  a.click();
+}
+try{setData(JSON.parse(localStorage.getItem(KEY)||'null'));}catch(e){}
+document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('change',()=>localStorage.setItem(KEY,JSON.stringify(getData()))));
+</script>
+</body>
+</html>
