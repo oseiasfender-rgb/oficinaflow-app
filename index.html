@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OficinaOS V548.20 — Function Recovery</title>
+<title>OficinaOS V548.21 — Clean Sanitation</title>
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{
@@ -210,7 +210,7 @@ input,select,textarea{width:100%;border:1px solid #dcb990;background:#fffaf4;bor
 <section id="mod-orcamento" class="panel active"><div class="orc-layout">
 <main class="orc-left">
 <div class="card"><div class="sec-title"><span class="sec-icon">👤</span><span class="sec-lbl">Cliente, veículo e identificação</span></div>
-<div class="form-grid three"><div class="field"><label>Cliente</label><input id="clientName" data-field="cliente" placeholder="Nome do cliente"></div><div class="field"><label>WhatsApp</label><input id="clientPhone" data-field="telefone" placeholder="(19) 99999-9999"></div><div class="field"><label>Documento</label><input id="clientDoc" data-field="doc" placeholder="CPF/CNPJ opcional"></div><div class="field"><label>Veículo</label><input id="vehicle" data-field="veiculo" placeholder="Modelo"></div><div class="field"><label>Cor</label><input id="vehicleColor" data-field="cor" placeholder="Cor"></div><div class="field"><label>Placa</label><input id="vehiclePlate" data-field="placa" placeholder="ABC1D23"></div><div class="field"><label>Ano</label><input id="vehicleYear" data-field="ano" placeholder="2020"></div><div class="field"><label>Serviço</label><input id="serviceType" data-field="servico" placeholder="Funilaria e pintura"></div><div class="field"><label>Orçamento Nº</label><input id="orcNumber" data-field="numero" readonly></div></div>
+<div class="form-grid three"><div class="field"><label>Cliente</label><input id="clientName" data-field="cliente" placeholder=""></div><div class="field"><label>WhatsApp</label><input id="clientPhone" data-field="telefone" placeholder=""></div><div class="field"><label>Documento</label><input id="clientDoc" data-field="doc" placeholder=""></div><div class="field"><label>Veículo</label><input id="vehicle" data-field="veiculo" placeholder="Modelo"></div><div class="field"><label>Cor</label><input id="vehicleColor" data-field="cor" placeholder="Cor"></div><div class="field"><label>Placa</label><input id="vehiclePlate" data-field="placa" placeholder="ABC1D23"></div><div class="field"><label>Ano</label><input id="vehicleYear" data-field="ano" placeholder="2020"></div><div class="field"><label>Serviço</label><input id="serviceType" data-field="servico" placeholder="Funilaria e pintura"></div><div class="field"><label>Orçamento Nº</label><input id="orcNumber" data-field="numero" readonly></div></div>
 <div style="margin-top:.8rem" class="field"><label>Identificação e descrição do serviço</label><textarea id="serviceDesc" data-field="descricao" placeholder="Descreva o serviço técnico em tópicos"></textarea></div>
 <div class="form-grid" style="margin-top:.8rem"><div class="field"><label>Status</label><select id="orcStatus" class="status-select"><option value="Aberto">🟢 Aberto</option><option value="Enviado ao cliente">📨 Enviado ao cliente</option><option value="Aprovado">✅ Aprovado</option><option value="Convertido em OS">🛠️ Convertido em OS</option><option value="Cancelado">❌ Cancelado</option></select></div><div class="field"><label>Data prevista</label><input id="orcDue" type="date"></div></div>
 </div>
@@ -231,7 +231,7 @@ input,select,textarea{width:100%;border:1px solid #dcb990;background:#fffaf4;bor
 </div></section>
 <section id="financeiro" class="os-tab "><div class="os-tab-inner">
 <!-- V1.0.30 CLEAN: arquivo gerado sem dados de cliente, finanças, agenda, metas, simulações ou histórico. -->
-<div><div class="bname">OFICINAOS</div><div class="bsub">GESTÃO AUTOMOTIVA</div></div></div><div class="nav"><button class="tab active">📊 Financeiro</button><button class="tab">🧾 Orçamento</button><button class="tab">🚨 Contas</button><button class="tab">🎯 Metas</button><button class="tab">📅 Agenda</button><button class="tab">👥 Clientes</button><button class="tab">📈 Relatórios</button><button class="tab">🤖 IA</button></div><button class="btn" id="btnTest">🛡️ Teste integrado</button></div>
+<div><div class="bname">OFICINAOS</div><div class="bsub">GESTÃO AUTOMOTIVA</div></div></div><div class="nav"><button class="tab active">📊 Financeiro</button><button class="tab">🧾 Orçamento</button><button class="tab">🚨 Contas</button><button class="tab">🎯 Metas</button><button class="tab">📅 Agenda</button><button class="tab">👥 Clientes</button><button class="tab">📈 Relatórios</button><button class="tab">🤖 IA</button></div></div>
 <div class="app"><main class="main">
  <div class="toolbar"><button class="btn" id="prevM">◀</button><span class="month" id="monthLabel"></span><button class="btn" id="nextM">▶</button><input id="search" placeholder="Buscar..."/><select id="catFilter"><option value="">Todas categorias</option></select><select id="statusFilter"><option value="">Tudo</option><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="parcial">Parcial</option></select></div>
  <div class="quick"><button class="btn" data-q="hoje">Hoje</button><button class="btn" data-q="semana">Semana</button><button class="btn active" data-q="mes">Mês</button><button class="btn" data-q="vencidas">Vencidas</button><button class="btn" data-q="recorrentes">Recorrentes</button><button class="btn" data-q="recebidas">Recebidas</button><button class="btn" data-q="pendentes">Pendentes</button></div>
@@ -253,7 +253,7 @@ input,select,textarea{width:100%;border:1px solid #dcb990;background:#fffaf4;bor
 <section id="agenda" class="os-tab "><div class="os-tab-inner">
 <!-- V1.0.30 CLEAN: arquivo gerado sem dados de cliente, finanças, agenda, metas, simulações ou histórico. -->
 
-<main class="main"><section class="content"><div class="toolbar"><button class="btn" id="prev">◀</button><b id="monthLabel">JUNHO 2026</b><button class="btn" id="next">▶</button><input id="search" placeholder="Buscar cliente, veículo, OS..." style="max-width:260px"><select id="filter"><option value="todos">Todos</option><option value="hoje">Hoje</option><option value="semana">Semana</option><option value="atrasados">Atrasados</option><option value="urgentes">Urgentes</option><option value="pintura">Pintura</option><option value="entrega">Entrega</option><option value="aguardando">Aguardando peça</option><option value="finalizados">Finalizados</option><option value="orcamentos">Orçamentos</option><option value="expirados">Orçamentos expirados</option><option value="followup">Follow-up</option></select><button class="btn primary" id="loadSim"></button></div><div class="tabs"><button class="btn active" id="tabCal">Calendário</button><button class="btn" id="tabQuadro de Produção">Quadro de Produção produção</button><button class="btn" id="tabLinha do Tempo">Linha do Tempo OS</button></div><div id="calendarView"><div class="title" id="calTitle">JUNHO 2026</div><div class="grid" id="calendar"></div><p class="meta">🔵 Serviço agendado · 🔴 Atrasado · 🟢 Entrega · ⚠ Urgente</p></div><div id="kanbanView" class="hidden"><div class="kanban" id="kanban"></div></div><div id="timelineView" class="hidden"><div class="layout2"><div class="card"><h3>OS / PRODUÇÃO</h3><div id="timelineList" class="list"></div></div><div class="card"><h3>CAPACIDADE DA OFICINA</h3><div id="capacity"></div><h3>FOTOS POR ETAPA</h3><div class="photoBox" id="photos"></div></div></div></div></section><aside class="side"><h3>• SERVIÇOS DO MÊS</h3><div id="monthServices"></div><h3>• NOVO SERVIÇO / OS</h3><label>Cliente</label><input id="fCliente" placeholder="Nome do cliente"><label>Veículo / modelo</label><input id="fVeiculo" placeholder="Ex: Corsa Sedan"><div class="row"><div><label>Entrada</label><input id="fEntrada" type="date"></div><div><label>Entrega prevista</label><input id="fEntrega" type="date"></div></div><label>Etapa atual</label><select id="fEtapa"></select><label>Prioridade</label><select id="fPrioridade"><option>Normal</option><option>Urgente</option><option>Programado</option></select><label>Status</label><select id="fStatus"><option>Agendado</option><option>Em andamento</option><option>Aguardando peça</option><option>Entregue</option></select><label>Valor R$</label><input id="fValor" type="number" step="0.01"><label>Observações</label><textarea id="fObs"></textarea><div class="row"><div><label>Tipo</label><select id="fTipo"><option>OS</option><option>Orçamento avulso</option><option>Follow-up</option><option>Retorno/Garantia</option></select></div><div><label>Validade orçamento</label><select id="fValidade"><option value="7">7 dias</option><option value="15">15 dias</option><option value="30" selected>30 dias</option><option value="60">60 dias</option></select></div></div><button class="btn primary" id="addEvent" style="width:100%;margin-top:8px">+ AGENDAR / VINCULAR OS</button><div class="card" style="margin-top:12px"><h3>• REGRA OPERACIONAL</h3><p class="side-note">Agenda = produção + entregas + follow-up de orçamento. Orçamento avulso só vira produção quando convertido em OS.</p></div><div class="card" style="margin-top:12px"><h3>• INTEGRAÇÕES</h3><p class="meta">Orçamento aprovado → agenda OS. Entrega finalizada → habilita cobrança no Financeiro e histórico do cliente.</p></div></aside></main><div class="fab">⚡</div><div class="modal" id="modal"><div class="panel"><div class="panelHead"><b id="modalTitle">OS</b><button class="btn small" id="closeModal">✕</button></div><div class="panelBody"><div id="modalBody"></div></div><div class="footer"><button class="btn green" id="finishOS">Finalizar / converter entrega</button><button class="btn blue" id="saveOS">Salvar edição</button><button class="btn red" id="deleteOS">Excluir</button></div></div></div>
+<main class="main"><section class="content"><div class="toolbar"><button class="btn" id="prev">◀</button><b id="monthLabel">JUNHO 2026</b><button class="btn" id="next">▶</button><input id="search" placeholder="Buscar cliente, veículo, OS..." style="max-width:260px"><select id="filter"><option value="todos">Todos</option><option value="hoje">Hoje</option><option value="semana">Semana</option><option value="atrasados">Atrasados</option><option value="urgentes">Urgentes</option><option value="pintura">Pintura</option><option value="entrega">Entrega</option><option value="aguardando">Aguardando peça</option><option value="finalizados">Finalizados</option><option value="orcamentos">Orçamentos</option><option value="expirados">Orçamentos expirados</option><option value="followup">Follow-up</option></select><button class="btn primary" id="loadSim"></button></div><div class="tabs"><button class="btn active" id="tabCal">Calendário</button><button class="btn" id="tabQuadro de Produção">Quadro de Produção produção</button><button class="btn" id="tabLinha do Tempo">Linha do Tempo OS</button></div><div id="calendarView"><div class="title" id="calTitle">JUNHO 2026</div><div class="grid" id="calendar"></div><p class="meta">🔵 Serviço agendado · 🔴 Atrasado · 🟢 Entrega · ⚠ Urgente</p></div><div id="kanbanView" class="hidden"><div class="kanban" id="kanban"></div></div><div id="timelineView" class="hidden"><div class="layout2"><div class="card"><h3>OS / PRODUÇÃO</h3><div id="timelineList" class="list"></div></div><div class="card"><h3>CAPACIDADE DA OFICINA</h3><div id="capacity"></div><h3>FOTOS POR ETAPA</h3><div class="photoBox" id="photos"></div></div></div></div></section><aside class="side"><h3>• SERVIÇOS DO MÊS</h3><div id="monthServices"></div><h3>• NOVO SERVIÇO / OS</h3><label>Cliente</label><input id="fCliente" placeholder=""><label>Veículo / modelo</label><input id="fVeiculo" placeholder="Ex: Corsa Sedan"><div class="row"><div><label>Entrada</label><input id="fEntrada" type="date"></div><div><label>Entrega prevista</label><input id="fEntrega" type="date"></div></div><label>Etapa atual</label><select id="fEtapa"></select><label>Prioridade</label><select id="fPrioridade"><option>Normal</option><option>Urgente</option><option>Programado</option></select><label>Status</label><select id="fStatus"><option>Agendado</option><option>Em andamento</option><option>Aguardando peça</option><option>Entregue</option></select><label>Valor R$</label><input id="fValor" type="number" step="0.01"><label>Observações</label><textarea id="fObs"></textarea><div class="row"><div><label>Tipo</label><select id="fTipo"><option>OS</option><option>Orçamento avulso</option><option>Follow-up</option><option>Retorno/Garantia</option></select></div><div><label>Validade orçamento</label><select id="fValidade"><option value="7">7 dias</option><option value="15">15 dias</option><option value="30" selected>30 dias</option><option value="60">60 dias</option></select></div></div><button class="btn primary" id="addEvent" style="width:100%;margin-top:8px">+ AGENDAR / VINCULAR OS</button><div class="card" style="margin-top:12px"><h3>• REGRA OPERACIONAL</h3><p class="side-note">Agenda = produção + entregas + follow-up de orçamento. Orçamento avulso só vira produção quando convertido em OS.</p></div><div class="card" style="margin-top:12px"><h3>• INTEGRAÇÕES</h3><p class="meta">Orçamento aprovado → agenda OS. Entrega finalizada → habilita cobrança no Financeiro e histórico do cliente.</p></div></aside></main><div class="fab">⚡</div><div class="modal" id="modal"><div class="panel"><div class="panelHead"><b id="modalTitle">OS</b><button class="btn small" id="closeModal">✕</button></div><div class="panelBody"><div id="modalBody"></div></div><div class="footer"><button class="btn green" id="finishOS">Finalizar / converter entrega</button><button class="btn blue" id="saveOS">Salvar edição</button><button class="btn red" id="deleteOS">Excluir</button></div></div></div>
 
 </div></section>
 <section id="relatorios" class="os-tab "><div class="os-tab-inner">
@@ -307,7 +307,7 @@ input,select,textarea{width:100%;border:1px solid #dcb990;background:#fffaf4;bor
 <button class="btn primary" id="btnEditar">✏️ Editar objetivos</button>
 <button class="btn blue" id="btnReload">Recarregar STATE</button>
 <button class="btn" id="btnDemo"> identificada</button>
-<button class="btn red" id="btnClearDemo">Limpar simulação</button>
+
 </div>
 <div id="sourceBanner"></div>
 <div class="kpis" id="kpis"></div>
@@ -543,7 +543,7 @@ document.addEventListener("click",e=>{
 
 
 <script>
-/* OFICINAOS V548.20 — FUNCTION RECOVERY
+/* OFICINAOS V548.21 — CLEAN SANITATION
    Escopo: recuperar cálculo/STATE da aba Orçamento, remover resíduos de teste e conectar ações principais.
    Não altera layout visual congelado.
 */
@@ -808,7 +808,31 @@ document.addEventListener("click",e=>{
       <p>Assinatura: ______________________________</p>
       <p>WhatsApp: ${o.whatsapp||''}</p>
       <script>window.print()</script>
-      </body></html>
+      
+<script>
+(function(){
+  const forbidden=[/rodar\s*teste/i,/teste\s*integrado/i,/simula[cç][aã]o\s*fict/i,/carregar\s*simula/i,/dados\s*fict/i,/sem_state_real/i,/nenhum\s*state\s*real/i];
+  const samples=["Nome do cliente","(19) 99999-9999","CPF/CNPJ opcional","Ex: VW Gol G5","Ex: Prata metálico","ABC-1234","Digite ou selecione...","Descreva o problema relatado pelo cliente","Cliente Seguro","Amigo Edgar","Fiat Toro","Gustavo Souza","Marcos Silva","OSEIAS MOREIRA DA SILVA","marcos@email.com","000.000.000-03"];
+  function clean(){
+    document.querySelectorAll('button,div,section,article,p,h1,h2,h3,h4,span,small,label').forEach(el=>{
+      const txt=(el.textContent||'').trim();
+      if(forbidden.some(r=>r.test(txt))){
+        const block=el.closest('.card,section,article,div,button');
+        if(block && block!==document.body && block.textContent.length<1200) block.remove(); else el.remove();
+      }
+    });
+    document.querySelectorAll('input,textarea').forEach(el=>{
+      if(samples.some(t=>String(el.value||'').trim().toLowerCase()===t.toLowerCase())) el.value='';
+      if(samples.some(t=>String(el.placeholder||'').trim().toLowerCase()===t.toLowerCase())) el.placeholder='';
+      if(forbidden.some(r=>r.test(el.placeholder||''))) el.placeholder='';
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();
+  setTimeout(clean,500);
+})();
+</script>
+
+</body></html>
     `);
     w.document.close();
   }
@@ -845,6 +869,30 @@ document.addEventListener("click",e=>{
   else boot();
 
   window.OficinaOS_FunctionRecovery = {calcOrcamento, salvarOrcamento, novaVersao, aprovarFinanceiro, abrirHistorico, gerarPDF, loadState, saveState};
+})();
+</script>
+
+
+<script>
+(function(){
+  const forbidden=[/rodar\s*teste/i,/teste\s*integrado/i,/simula[cç][aã]o\s*fict/i,/carregar\s*simula/i,/dados\s*fict/i,/sem_state_real/i,/nenhum\s*state\s*real/i];
+  const samples=["Nome do cliente","(19) 99999-9999","CPF/CNPJ opcional","Ex: VW Gol G5","Ex: Prata metálico","ABC-1234","Digite ou selecione...","Descreva o problema relatado pelo cliente","Cliente Seguro","Amigo Edgar","Fiat Toro","Gustavo Souza","Marcos Silva","OSEIAS MOREIRA DA SILVA","marcos@email.com","000.000.000-03"];
+  function clean(){
+    document.querySelectorAll('button,div,section,article,p,h1,h2,h3,h4,span,small,label').forEach(el=>{
+      const txt=(el.textContent||'').trim();
+      if(forbidden.some(r=>r.test(txt))){
+        const block=el.closest('.card,section,article,div,button');
+        if(block && block!==document.body && block.textContent.length<1200) block.remove(); else el.remove();
+      }
+    });
+    document.querySelectorAll('input,textarea').forEach(el=>{
+      if(samples.some(t=>String(el.value||'').trim().toLowerCase()===t.toLowerCase())) el.value='';
+      if(samples.some(t=>String(el.placeholder||'').trim().toLowerCase()===t.toLowerCase())) el.placeholder='';
+      if(forbidden.some(r=>r.test(el.placeholder||''))) el.placeholder='';
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();
+  setTimeout(clean,500);
 })();
 </script>
 
