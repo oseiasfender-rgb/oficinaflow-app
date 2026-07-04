@@ -1,1 +1,0 @@
-# V549.40 — Document Engine State Integration\n\n- [ ] Document Center no Orçamento.\n- [ ] Dados reais do STATE no documento.\n- [ ] Histórico salva em STATE.historico.documentos.\n- [ ] WhatsApp monta mensagem automática.\n- [ ] QR anexado.\n\nTeste: `DocumentEngineTestRunner.run()`\n
