@@ -1,0 +1,1 @@
+# OFICINAOS V548.35 — QR Engine\n\nMotor de QR do Document Engine.\n

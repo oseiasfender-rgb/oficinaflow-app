@@ -1,0 +1,14 @@
+{
+  "versao": "V549.40 DOCUMENT ENGINE STATE INTEGRATION",
+  "gerado_em": "2026-07-04T20:50:35.516407",
+  "base": "OFICINAOS_DOCUMENT_ENGINE_RC2.zip",
+  "implementado": [
+    "State Connector reforçado",
+    "Document Center no fluxo do Orçamento",
+    "Histórico documental",
+    "WhatsApp automático",
+    "Fotos por orçamento/OS",
+    "QR via QREngine",
+    "Teste integrado atualizado"
+  ]
+}
