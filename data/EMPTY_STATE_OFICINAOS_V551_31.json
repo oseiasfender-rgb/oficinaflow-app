@@ -1,0 +1,69 @@
+{
+  "version": "551.31",
+  "releaseStage": "INDEXEDDB_STORAGE_UPGRADE",
+  "createdAt": null,
+  "updatedAt": null,
+  "empresa": {},
+  "usuarios": [],
+  "clientes": [],
+  "veiculos": [],
+  "orcamentos": [],
+  "agenda": [],
+  "fotos": [],
+  "fluxos": [],
+  "financeiro": {
+    "lancamentos": [],
+    "contas": [],
+    "recibos": []
+  },
+  "metas": {
+    "principal": 0,
+    "categorias": [],
+    "historico": []
+  },
+  "relatorios": {},
+  "ia": {
+    "memoria": [],
+    "consultas": [],
+    "alertas": [],
+    "insights": [],
+    "planoAcao": {}
+  },
+  "historico": {
+    "eventos": [],
+    "documentos": [],
+    "orcamentos": []
+  },
+  "documentos": {
+    "config": {
+      "templatePadrao": "",
+      "historico": true,
+      "whatsapp": true,
+      "qr": true
+    }
+  },
+  "configuracoes": {},
+  "backup": {
+    "historico": [],
+    "ultimaGravacao": "",
+    "origem": "OficinaOS Clean Start"
+  },
+  "admin": {
+    "enabled": true,
+    "sections": [
+      "contas",
+      "auditoria",
+      "alertas",
+      "busca",
+      "configuracoes"
+    ]
+  },
+  "publicacao": {},
+  "monitoramento": {
+    "eventos": []
+  },
+  "storage": {
+    "engine": "indexedDB",
+    "fallback": "localStorage"
+  }
+}

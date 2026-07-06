@@ -1,0 +1,46 @@
+<!doctype html><html lang='pt-BR'><head><meta charset='utf-8'><title>OficinaOS V551.39</title><script src="core/storage-adapter.js"></script>
+<script src="core/clean-start.js"></script>
+<script src="core/autosave-smart-backup.js"></script>
+<script src="core/state-manager.js"></script>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#111827">
+<meta name="application-name" content="OficinaOS">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OficinaOS">
+<link rel="apple-touch-icon" href="assets/icon-192.svg">
+
+</head><body><script src="modules/orcamento/orcamento-core.js"></script>
+<script src="modules/financeiro/financeiro-core.js"></script>
+<script src="modules/agenda/agenda-core.js"></script>
+<script src="modules/clientes/clientes-core.js"></script>
+<script src="modules/metas/metas-core.js"></script>
+<script src="modules/relatorios/relatorios-core.js"></script>
+<script src="modules/ia/ia-core.js"></script>
+<script src="core/final-merge.js"></script>
+<script src="core/operational-flow.js"></script>
+<script src="core/backup-core.js"></script>
+<script src="core/pwa-readiness.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./service-worker.js').catch(function(err){
+      console.warn('OficinaOS Service Worker não registrado:', err);
+    });
+  });
+}
+</script>
+<script src="core/full-system-qa.js"></script>
+<script src="core/bug-fix-final.js"></script>
+<script src="core/release-freeze.js"></script>
+<script src="core/operational-release.js"></script>
+<script src="core/admin-shell.js"></script>
+<script src="core/tab-fusion-excellence.js"></script>
+<script src="core/first-run-wizard.js"></script>
+<script src="core/publicacao-controlada.js"></script>
+<script src="core/production-dist.js"></script>
+<script src="core/browser-runtime-qa.js"></script>
+<script src="core/pdf-premium-qa.js"></script>
+<script src="core/ia-consultant-manual.js"></script>
+<script src="core/github-start-final.js"></script>
+</body></html>

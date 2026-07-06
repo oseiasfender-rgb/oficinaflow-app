@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OficinaOS V551.34 — Primeiro Uso</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f8f6f3;color:#23180f;margin:0;padding:24px}
+.wrap{max-width:980px;margin:auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:white;border:1px solid #e8dccf;border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(0,0,0,.06)}
+button,input,textarea{padding:12px;border-radius:12px;border:1px solid #d6c8b8;margin:4px 0;width:100%;box-sizing:border-box}
+button{background:#111827;color:white;cursor:pointer}.danger{background:#7f1d1d}.ok{background:#166534}
+pre{background:#111827;color:#f8f6f3;padding:16px;border-radius:14px;white-space:pre-wrap;overflow:auto;max-height:420px}
+.badge{display:inline-block;background:#efe0cf;border:1px solid #d7b990;border-radius:999px;padding:4px 10px;margin:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>OficinaOS — Primeiro Uso V551.34</h1>
+<p><span class="badge">Zero absoluto</span><span class="badge">Importação real</span><span class="badge">Configuração da empresa</span><span class="badge">Backup inicial</span></p>
+<div class="grid">
+<div class="card"><h2>1. Verificar armazenamento</h2><p>Confirma IndexedDB, StorageAdapter e AutoSave.</p><button onclick="run(FirstRunWizard.checkStorage())">Verificar IndexedDB</button></div>
+<div class="card"><h2>2. Começar do zero</h2><p>Remove qualquer resíduo local e inicia vazio.</p><button class="danger" onclick="run(FirstRunWizard.startZero('COMEÇAR DO ZERO'))">Começar do zero absoluto</button></div>
+<div class="card"><h2>3. Configurar empresa</h2><input id="nome" placeholder="Nome da empresa"><input id="resp" placeholder="Responsável"><input id="tel" placeholder="Telefone/WhatsApp"><input id="cnpj" placeholder="CNPJ"><input id="end" placeholder="Endereço"><button onclick="run(FirstRunWizard.saveEmpresa({nome:nome.value,responsavel:resp.value,telefone:tel.value,cnpj:cnpj.value,endereco:end.value,cidade:'Leme/SP'}))">Salvar empresa</button></div>
+<div class="card"><h2>4. Importar backup real</h2><textarea id="json" rows="5" placeholder="Cole aqui o backup JSON real"></textarea><button onclick="run(FirstRunWizard.importBackup(json.value))">Importar backup real</button></div>
+<div class="card"><h2>5. Backup inicial</h2><p>Cria o primeiro backup local versionado.</p><button onclick="run(FirstRunWizard.createInitialBackup())">Gerar primeiro backup</button></div>
+<div class="card"><h2>6. Concluir</h2><p>Marca o sistema como pronto para a primeira ação real.</p><button class="ok" onclick="run(FirstRunWizard.complete())">Concluir primeiro uso</button></div>
+</div>
+<h2>Status</h2>
+<button onclick="show(FirstRunWizard.status())">Atualizar status</button>
+<button onclick="show(FirstRunWizard.nextRecommendation())">Próxima recomendação</button>
+<pre id="out">Aguardando...</pre>
+</div>
+<script src="../core/storage-adapter.js"></script>
+<script src="../core/clean-start.js"></script>
+<script src="../core/autosave-smart-backup.js"></script>
+<script src="../core/first-run-wizard.js"></script>
+<script>
+async function run(p){try{show(await p)}catch(e){show({error:e.message})}}
+function show(x){document.getElementById('out').textContent=typeof x==='string'?x:JSON.stringify(x,null,2)}
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+{
+  "version": "551.38",
+  "title": "Manual Consultor OficinaOS",
+  "sections": [
+    {
+      "id": "primeiro_uso",
+      "title": "Primeiro uso",
+      "keywords": [
+        "começar",
+        "zero",
+        "importar",
+        "empresa",
+        "wizard"
+      ],
+      "steps": [
+        "Abra wizard/index.html.",
+        "Verifique IndexedDB.",
+        "Escolha começar do zero ou importar backup real.",
+        "Configure a empresa.",
+        "Gere o primeiro backup.",
+        "Conclua o assistente.",
+        "Cadastre o primeiro cliente real."
+      ]
+    },
+    {
+      "id": "clientes",
+      "title": "Clientes e veículos",
+      "keywords": [
+        "cliente",
+        "veículo",
+        "placa",
+        "telefone",
+        "whatsapp"
+      ],
+      "steps": [
+        "Abra Clientes.",
+        "Cadastre cliente real.",
+        "Vincule veículo.",
+        "Use busca antes de duplicar cadastro.",
+        "Confira histórico do cliente."
+      ]
+    },
+    {
+      "id": "orcamento",
+      "title": "Orçamento",
+      "keywords": [
+        "orçamento",
+        "serviço",
+        "materiais",
+        "total",
+        "aprovar"
+      ],
+      "steps": [
+        "Abra Orçamento.",
+        "Informe cliente e veículo.",
+        "Descreva o serviço.",
+        "Defina complexidade e prioridade.",
+        "Informe mão de obra, materiais, peças e terceiros.",
+        "Confira total.",
+        "Gere PDF premium.",
+        "Após aprovação, envie para Agenda."
+      ]
+    },
+    {
+      "id": "pdf_premium",
+      "title": "PDF Premium",
+      "keywords": [
+        "pdf",
+        "premium",
+        "limaprata",
+        "garantia",
+        "assinatura"
+      ],
+      "steps": [
+        "Confira dados da empresa.",
+        "Confira cliente, veículo e descrição.",
+        "Abra pdf/index.html.",
+        "Rode PDFPremiumQA.openPreview().",
+        "Salve como PDF pelo navegador.",
+        "Confira garantia, assinatura, total e cabeçalho."
+      ]
+    },
+    {
+      "id": "agenda",
+      "title": "Agenda",
+      "keywords": [
+        "agenda",
+        "execução",
+        "prazo",
+        "etapa"
+      ],
+      "steps": [
+        "Crie agenda a partir do orçamento aprovado.",
+        "Defina data e etapa.",
+        "Atualize status durante execução.",
+        "Registre observações/fotos.",
+        "Conclua e envie ao histórico."
+      ]
+    },
+    {
+      "id": "financeiro",
+      "title": "Financeiro e recibos",
+      "keywords": [
+        "financeiro",
+        "receita",
+        "despesa",
+        "conta",
+        "recibo"
+      ],
+      "steps": [
+        "Registre receitas e despesas reais.",
+        "Contas só viram despesa ao marcar como paga.",
+        "Desfazer pagamento remove vínculo.",
+        "Gere recibo a partir de recebimento real.",
+        "Confira fluxo de caixa."
+      ]
+    },
+    {
+      "id": "contas",
+      "title": "Contas a pagar",
+      "keywords": [
+        "contas",
+        "pagar",
+        "vencida",
+        "pendente",
+        "paga"
+      ],
+      "steps": [
+        "Abra Administração > Contas.",
+        "Cadastre vencimento e valor.",
+        "Acompanhe pendentes/vencidas.",
+        "Marque paga somente quando real.",
+        "Confira auditoria."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Backup",
+      "keywords": [
+        "backup",
+        "restaurar",
+        "importar",
+        "indexeddb",
+        "autosave"
+      ],
+      "steps": [
+        "AutoSave salva STATE em até 4 segundos.",
+        "Backup completo não roda a cada 4 segundos.",
+        "Faça backup diário.",
+        "Antes de importar ou zerar, faça backup crítico.",
+        "Exporte JSON antes de mudanças importantes."
+      ]
+    },
+    {
+      "id": "indexeddb",
+      "title": "IndexedDB",
+      "keywords": [
+        "indexeddb",
+        "localstorage",
+        "armazenamento",
+        "storage"
+      ],
+      "steps": [
+        "IndexedDB é o armazenamento principal.",
+        "localStorage é fallback/espelho leve.",
+        "Rode await StorageAdapter.status().",
+        "Rode CleanStart.verifyZero() no início limpo.",
+        "Mantenha backup exportado fora do navegador."
+      ]
+    },
+    {
+      "id": "administracao",
+      "title": "Administração",
+      "keywords": [
+        "auditoria",
+        "alertas",
+        "busca",
+        "configurações",
+        "admin"
+      ],
+      "steps": [
+        "Use Administração para Contas, Auditoria, Alertas, Busca Global e Configurações.",
+        "Resolva alertas críticos.",
+        "Use Busca antes de cadastrar.",
+        "Configurações alimentam PDF e sistema."
+      ]
+    },
+    {
+      "id": "qa",
+      "title": "QA do navegador",
+      "keywords": [
+        "qa",
+        "teste",
+        "pwa",
+        "cache",
+        "service worker"
+      ],
+      "steps": [
+        "Abra qa/index.html.",
+        "Rode await BrowserRuntimeQA.run().",
+        "Teste Desktop e Android.",
+        "Confirme Service Worker, Cache, IndexedDB e AutoSave.",
+        "Reabra para confirmar persistência."
+      ]
+    },
+    {
+      "id": "erros",
+      "title": "Erros comuns",
+      "keywords": [
+        "erro",
+        "tela branca",
+        "cache",
+        "não salva",
+        "pwa"
+      ],
+      "steps": [
+        "Tela branca: limpe cache e service worker.",
+        "Não salva: verifique StorageAdapter e AutoSave.",
+        "Dados sumiram: restaure backup JSON.",
+        "PWA antigo: reinstale após publicar nova versão.",
+        "PDF quebrou: valide em pdf/index.html."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Posso começar com dados fictícios?",
+      "a": "Não no pacote de produção. Use dados reais ou backup real."
+    },
+    {
+      "q": "Backup é a cada 4 segundos?",
+      "a": "Não. AutoSave é até 4 segundos; backup completo é diário, crítico ou inteligente."
+    },
+    {
+      "q": "Onde ficam Contas, Auditoria, Alertas, Busca e Configurações?",
+      "a": "Na área Administração."
+    },
+    {
+      "q": "O sistema usa IndexedDB?",
+      "a": "Sim. IndexedDB é principal; localStorage é fallback/espelho leve."
+    },
+    {
+      "q": "Qual a primeira ação real?",
+      "a": "Wizard, empresa, backup inicial, cliente real, veículo real e orçamento real."
+    }
+  ]
+}

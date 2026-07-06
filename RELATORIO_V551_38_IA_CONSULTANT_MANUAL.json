@@ -1,0 +1,32 @@
+{
+  "versao": "V551.38 IA CONSULTANT MANUAL",
+  "gerado_em": "2026-07-06T09:38:39.656769",
+  "base": "OFICINAOS_V551_37_PDF_PREMIUM_FINAL_VERIFICATION.zip",
+  "status": "Manual Consultor adicionado à IA",
+  "implementado": [
+    "core/ia-consultant-manual.js",
+    "IAConsultor",
+    "ia/consultor.html",
+    "manual/IA_CONSULTANT_MANUAL_DATA_V551_38.json",
+    "atalho na Aba 7-IA-CLEAN.html",
+    "busca interna",
+    "FAQ",
+    "diagnóstico operacional",
+    "guia de primeiro uso",
+    "erros comuns"
+  ],
+  "secoes": [
+    "Primeiro uso",
+    "Clientes e veículos",
+    "Orçamento",
+    "PDF Premium",
+    "Agenda",
+    "Financeiro e recibos",
+    "Contas a pagar",
+    "Backup",
+    "IndexedDB",
+    "Administração",
+    "QA do navegador",
+    "Erros comuns"
+  ]
+}

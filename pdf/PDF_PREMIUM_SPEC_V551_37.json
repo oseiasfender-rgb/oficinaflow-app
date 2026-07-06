@@ -1,0 +1,36 @@
+{
+  "version": "551.37",
+  "title": "Especificação PDF Premium Limaprata",
+  "company_default": {
+    "nome": "LIMAPRATA Reparações Automotivas",
+    "responsavel": "Oséias",
+    "telefone": "(19) 98612-7516",
+    "cnpj": "55.254.863/0001-87",
+    "endereco": "Av. Herminio Ometto, 576",
+    "cidade": "Leme/SP"
+  },
+  "required_sections": [
+    "Cabeçalho premium",
+    "Orçamento Nº e data",
+    "Dados da empresa",
+    "Cliente",
+    "Veículo",
+    "Descrição do serviço",
+    "Complexidade",
+    "Prioridade",
+    "Serviços e materiais",
+    "Total geral",
+    "Garantia",
+    "Assinaturas",
+    "Rodapé profissional"
+  ],
+  "visual_requirements": [
+    "alto contraste",
+    "cores cobre/grafite/bege",
+    "hierarquia clara",
+    "sem sobreposição",
+    "total destacado",
+    "assinatura legível",
+    "A4 imprimível"
+  ]
+}

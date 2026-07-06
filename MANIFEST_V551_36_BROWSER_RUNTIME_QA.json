@@ -1,0 +1,27 @@
+{
+  "package": "OFICINAOS_V551_36_BROWSER_RUNTIME_QA",
+  "version": "551.36",
+  "base": "OFICINAOS_V551_35_PRODUCTION_DIST_CLEAN.zip",
+  "official_base": "Abas CLEAN",
+  "generated_at": "2026-07-06T02:00:08.458294",
+  "purpose": "Validação real no navegador antes de uso definitivo",
+  "entrypoint": "index.html",
+  "qa_entrypoint": "qa/index.html",
+  "core": [
+    "core/browser-runtime-qa.js"
+  ],
+  "checks": [
+    "IndexedDB",
+    "Clean Start",
+    "AutoSave",
+    "Backup",
+    "First Run Wizard",
+    "PWA",
+    "Cache",
+    "AdminShell",
+    "TabFusion",
+    "Ambiente"
+  ],
+  "tests_folder_present": false,
+  "next_recommendation": "V551.37 — PDF Premium Final Verification"
+}

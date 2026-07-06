@@ -1,0 +1,15 @@
+{
+  "package": "OFICINAOS_V551_38_IA_CONSULTANT_MANUAL",
+  "version": "551.38",
+  "base": "OFICINAOS_V551_37_PDF_PREMIUM_FINAL_VERIFICATION.zip",
+  "official_base": "Abas CLEAN",
+  "generated_at": "2026-07-06T09:38:39.656227",
+  "entrypoint": "index.html",
+  "ia_consultor_entrypoint": "ia/consultor.html",
+  "core": [
+    "core/ia-consultant-manual.js"
+  ],
+  "manual_data": "manual/IA_CONSULTANT_MANUAL_DATA_V551_38.json",
+  "sections_count": 12,
+  "faq_count": 5
+}

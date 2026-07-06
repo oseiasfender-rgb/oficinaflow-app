@@ -1,0 +1,45 @@
+{
+  "version": "551.34",
+  "title": "Fluxo oficial de primeiro uso",
+  "steps": [
+    {
+      "step": 1,
+      "key": "storage",
+      "label": "Verificar IndexedDB, StorageAdapter e AutoSave"
+    },
+    {
+      "step": 2,
+      "key": "mode",
+      "label": "Escolher começar do zero ou importar backup"
+    },
+    {
+      "step": 3,
+      "key": "empresa",
+      "label": "Configurar dados reais da empresa"
+    },
+    {
+      "step": 4,
+      "key": "importacao",
+      "label": "Importar backup real, se houver"
+    },
+    {
+      "step": 5,
+      "key": "backup",
+      "label": "Gerar primeiro backup real"
+    },
+    {
+      "step": 6,
+      "key": "concluir",
+      "label": "Liberar primeira ação completa"
+    }
+  ],
+  "first_real_actions": [
+    "Cadastrar cliente real",
+    "Cadastrar veículo real",
+    "Criar orçamento real",
+    "Agendar serviço",
+    "Gerar documento/PDF",
+    "Registrar financeiro/recibo",
+    "Gerar backup"
+  ]
+}
