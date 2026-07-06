@@ -1,0 +1,5 @@
+- [ ] Subir na raiz do GitHub
+- [ ] Limpar cache/service worker antigo
+- [ ] Abrir index.html
+- [ ] Testar cliente, orçamento, agenda, financeiro e backup
+- [ ] Rodar qa/index.html

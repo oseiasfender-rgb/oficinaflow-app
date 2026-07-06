@@ -1,0 +1,13 @@
+{
+  "package": "OFICINAOS_V551_40_OPERATIONAL_UI_FUSION_FIX",
+  "version": "551.40",
+  "base": "OFICINAOS_GITHUB_START_FINAL.zip",
+  "generated_at": "2026-07-06T22:30:52.159479",
+  "purpose": "Correção visual e operacional da interface principal",
+  "entrypoint": "index.html",
+  "new_files": [
+    "assets/operational-ui-fusion.css",
+    "core/operational-ui-fusion.js"
+  ],
+  "publish_instruction": "Substituir o conteúdo anterior do GitHub Pages por este pacote."
+}
