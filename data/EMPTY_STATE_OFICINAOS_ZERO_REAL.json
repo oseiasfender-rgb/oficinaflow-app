@@ -1,0 +1,52 @@
+{
+  "version": "551.41",
+  "releaseStage": "LAYOUT_OFICIAL_ZERO_REAL",
+  "empresa": {},
+  "configuracoes": {
+    "empresa": {},
+    "orcamento": {
+      "proximoNumero": null,
+      "prefixo": "",
+      "validadeDias": null
+    },
+    "pdf": {
+      "modelo": "premium",
+      "ultimoNumero": null
+    },
+    "financeiro": {
+      "pontoEquilibrio": 3000
+    }
+  },
+  "clientes": [],
+  "veiculos": [],
+  "orcamentos": [],
+  "agenda": [],
+  "financeiro": {
+    "lancamentos": [],
+    "contas": [],
+    "recibos": []
+  },
+  "metas": {},
+  "relatorios": {},
+  "ia": {
+    "consultor": {
+      "enabled": true,
+      "manualLoaded": true
+    }
+  },
+  "logs": [],
+  "historico": {
+    "eventos": [],
+    "documentos": []
+  },
+  "backup": {
+    "historico": [],
+    "ultimaGravacao": ""
+  },
+  "firstRun": {
+    "version": "551.41",
+    "completed": false,
+    "currentStep": "storage",
+    "mode": "undecided"
+  }
+}
