@@ -1,0 +1,22 @@
+{
+  "version": "V700.30",
+  "date": "2026-07-15",
+  "status": "candidato_homologacao",
+  "completed": {
+    "state_unico": true,
+    "event_bus": true,
+    "indexeddb": true,
+    "ids_unicos": true,
+    "integracao_sete_abas": true,
+    "hidratacao_modulos": true,
+    "teste_unitario": true,
+    "sintaxe_core": true
+  },
+  "pending_browser": [
+    "render visual das sete abas",
+    "importação real no navegador",
+    "PWA/offline",
+    "Android"
+  ],
+  "next": "V700.40 — hotfixes após homologação real"
+}

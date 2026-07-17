@@ -1,0 +1,28 @@
+{
+  "version": "V700.50",
+  "source": "OficinaOS-backup-2026-07-16.json",
+  "source_sha256": "392d478cb25dac9e8753c74e7c987e566fea0d073b7282ddc4eed7f65185cb66",
+  "raw_top_level": {
+    "version": "1.0",
+    "exportedAt": "2026-07-16T21:55:02.123Z",
+    "ALL_TX": 1948,
+    "jobs": 24,
+    "clientes": 1,
+    "estoque": 0,
+    "contas": 198,
+    "metaPrincipal": "12000",
+    "metasCat": 7,
+    "nextTxId": "5",
+    "dasStatus": 3
+  },
+  "converted": {
+    "clientes": 25,
+    "orcamentos": 24,
+    "agenda_os": 24,
+    "financeiro_lancamentos": 1948,
+    "financeiro_contas": 198,
+    "metas_categorias": 7,
+    "meta_principal": 12000.0
+  },
+  "seed_policy": "somente_se_indexeddb_estiver_vazio"
+}

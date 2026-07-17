@@ -1,0 +1,19 @@
+{
+  "version": "V700.41",
+  "date": "2026-07-16",
+  "fixes": {
+    "legacy_json_formats": true,
+    "new_json_format": true,
+    "indexeddb_write_confirmation": true,
+    "indexeddb_readback": true,
+    "forced_event_broadcast": true,
+    "seven_tabs_forced_refresh": true,
+    "import_summary": true,
+    "reject_empty_unknown_json": true
+  },
+  "validation": {
+    "unit": true,
+    "syntax": true
+  },
+  "status": "candidato_reteste_importacao"
+}

@@ -1,0 +1,17 @@
+{
+  "version": "V700.10",
+  "date": "2026-07-15",
+  "completed": [
+    "STATE único",
+    "Event Bus",
+    "IndexedDB",
+    "IDs únicos",
+    "Import/Export JSON",
+    "adapters iniciais"
+  ],
+  "pending": [
+    "remoção total dos states locais",
+    "migração dos renders das 7 abas"
+  ],
+  "next": "V700.20"
+}

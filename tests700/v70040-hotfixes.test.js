@@ -1,0 +1,1 @@
+const assert=require('assert');require('../core700/state.js');require('../core700/events.js');require('../core700/ids.js');const s=OficinaOSState700.get();assert(Array.isArray(s.financeiro.lancamentos));assert(Array.isArray(s.agenda.os));assert(Array.isArray(s.metas.categorias));console.log('✅ V700.40 estrutura de hotfixes: OK');

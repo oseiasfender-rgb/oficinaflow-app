@@ -1,0 +1,59 @@
+{
+  "version": "V601.11",
+  "duplicate_internal_headers_removed": true,
+  "single_main_header": true,
+  "client_to_budget": true,
+  "client_to_agenda": true,
+  "client_to_finance": true,
+  "indexeddb_preserved": true,
+  "syntax": [
+    {
+      "file": "index.html",
+      "scripts": 2,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/agenda.html",
+      "scripts": 5,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/clientes.html",
+      "scripts": 5,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/financeiro.html",
+      "scripts": 5,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/ia.html",
+      "scripts": 4,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/metas.html",
+      "scripts": 4,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/orcamento.html",
+      "scripts": 5,
+      "ok": true,
+      "errors": []
+    },
+    {
+      "file": "modulos/relatorios.html",
+      "scripts": 4,
+      "ok": true,
+      "errors": []
+    }
+  ]
+}

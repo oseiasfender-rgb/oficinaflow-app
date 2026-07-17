@@ -1,0 +1,18 @@
+{
+  "version": "V700.40",
+  "date": "2026-07-16",
+  "hotfixes": {
+    "orcamento_para_financeiro_agenda": true,
+    "financeiro_recorrencia_12_meses": true,
+    "agenda_fotos": true,
+    "agenda_entrega_para_financeiro": true,
+    "metas_recebe_core": true,
+    "relatorios_recebe_core": true
+  },
+  "validation": {
+    "unit": true,
+    "syntax": true
+  },
+  "status": "candidato_reteste_navegador",
+  "next": "V700.50 — Release Candidate após reteste"
+}

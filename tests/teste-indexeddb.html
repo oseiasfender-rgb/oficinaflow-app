@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Teste IndexedDB OficinaOS</title>
+<button id="run">Rodar teste</button><pre id="out"></pre>
+<script src="../core/oficinaos-core-indexeddb.js"></script>
+<script>
+run.onclick=async()=>{
+  await OficinaOSCore.ready;
+  const checks=[
+    ["IndexedDB API",typeof indexedDB!=="undefined"],
+    ["CORE carregado",!!OficinaOSCore],
+    ["Banco correto",OficinaOSCore.DB_NAME==="OficinaOSDB"],
+    ["Exportação JSON",typeof OficinaOSCore.exportBackup==="function"],
+    ["Importação JSON",typeof OficinaOSCore.importFile==="function"],
+    ["Clientes",Array.isArray(OficinaOSCore.getState().clientes)],
+    ["Orçamentos",Array.isArray(OficinaOSCore.getState().orcamentos)],
+    ["Agenda",Array.isArray(OficinaOSCore.getState().agenda.os)],
+    ["Financeiro",Array.isArray(OficinaOSCore.getState().financeiro.lancamentos)]
+  ];
+  out.textContent=checks.map(x=>(x[1]?"✅ ":"❌ ")+x[0]).join("\n");
+};
+</script>
