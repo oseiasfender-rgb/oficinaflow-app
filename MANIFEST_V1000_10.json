@@ -1,0 +1,9 @@
+{
+  "version": "1000.10.0",
+  "name": "Banco, Migrações e Multiempresa",
+  "base": "V1000.00",
+  "status": "IMPLEMENTATION_BASELINE",
+  "cleanReferencesPreserved": true,
+  "legacyDataImported": false,
+  "deliverables": ["prisma-schema", "initial-migration", "tenant-context", "seed", "tenant-isolation-tests", "audit-outbox-idempotency"]
+}

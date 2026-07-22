@@ -1,0 +1,22 @@
+{
+  "version": "V1000.80",
+  "name": "IA Integrada aos Dados Reais do CORE",
+  "generatedAt": "2026-07-20T22:45:00-03:00",
+  "base": "V1000.70",
+  "cleanReferencesPreserved": true,
+  "features": [
+    "AI provider abstraction",
+    "tenant-grounded context",
+    "read-only guardrails",
+    "conversation persistence",
+    "usage metering",
+    "local grounded fallback",
+    "React AI page"
+  ],
+  "checksums": {
+    "packages/ai/src/index.ts": "a1d305df0a0365e347e21b8876f47f77d6656f3a36d4effecfdb3ca57a8a0bf5",
+    "apps/api/src/modules/ai/routes.ts": "d671327cb5a6908c4d7cad9c05077d678170d2ee043dfb1f80f15368c018c74b",
+    "apps/web/src/pages/AiPage.tsx": "c1568c99dc9650a270d0d1ec9d4a76d78219e0b240a630975131c6a92dcf87ca",
+    "packages/database/prisma/schema.prisma": "39dbe1f4455c1a5dc1e4b032e837786516b9ae9e25cc89c724e4e8cf053460a3"
+  }
+}
