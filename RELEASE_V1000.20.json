@@ -1,8 +1,0 @@
-{
-  "version":"1000.20.0",
-  "name":"Backend, Autenticação e CORE Executável",
-  "status":"IMPLEMENTED_BASELINE",
-  "preservesCleanReferences":true,
-  "features":["fastify-api","jwt-access","rotating-refresh-token","revocable-sessions","tenant-selection","rbac","tenant-context","customer-core","audit","outbox","rate-limit","security-headers"],
-  "next":"V1000.30 — Frontend/PWA e Design System"
-}
