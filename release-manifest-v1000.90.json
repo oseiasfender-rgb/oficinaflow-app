@@ -1,9 +1,0 @@
-{
-  "version": "V1000.90",
-  "title": "Infraestrutura, Observabilidade, Segurança e Deploy Enterprise",
-  "base": "V1000.80",
-  "status": "STRUCTURALLY_VALIDATED",
-  "features": ["Prometheus metrics","structured redacted logs","request correlation","production compose","Nginx reverse proxy","Grafana provisioning","Kubernetes manifests","security CI","container image deploy","database backup and restore","incident and rollback runbooks"],
-  "cleanReferencesPreserved": true,
-  "runtimeHomologationRequired": true
-}
