@@ -1,9 +1,0 @@
-{
-  "release":"V1000.50",
-  "title":"Integrações Reais",
-  "base":"V1000.40",
-  "status":"IMPLEMENTED_REQUIRES_PROVIDER_CREDENTIALS",
-  "integrations":["SMTP","WhatsApp Cloud API","Mercado Pago Pix","S3-compatible storage","Signed webhooks","Outbox/Worker"],
-  "cleanReferences":"PRESERVED",
-  "breakingChanges":false
-}
