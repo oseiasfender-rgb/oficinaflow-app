@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <title>Ofix — Gestão Inteligente para Oficinas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --bg-soft:#121934;
+      --card:#ffffff;
+      --card-2:#f7f8fc;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#c46a1f;
+      --accent-2:#e49339;
+      --accent-dark:#8f4a15;
+      --success:#16a34a;
+      --warning:#d97706;
+      --danger:#dc2626;
+      --shadow:0 24px 60px rgba(10,18,40,.18);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1320px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(228,147,57,.16), transparent 20%),
+        radial-gradient(circle at top right, rgba(45,85,255,.18), transparent 18%),
+        linear-gradient(180deg, #f3f5fb 0%, #eef1f7 100%);
+      min-height:100vh;
+    }
+    button,input,select,textarea{font:inherit}
+    .hidden{display:none!important}
+    .app-shell{min-height:100vh}
+    .login-screen{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(228,147,57,.16), transparent 20%),
+        radial-gradient(circle at 85% 15%, rgba(65,105,225,.16), transparent 20%),
+        linear-gradient(135deg, #0b1020 0%, #141d39 55%, #1c274a 100%);
+    }
+    .login-wrap{
+      width:min(1120px,100%);
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,.32);
+      backdrop-filter: blur(14px);
+    }
+    .brand-pane{
+      padding:42px;
+      color:#fff;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
+        linear-gradient(135deg, rgba(196,106,31,.28), rgba(228,147,57,.08));
+      position:relative;
+      isolation:isolate;
+    }
+    .brand-pane:before{
+      content:"";
+      position:absolute;
+      inset:auto -10% -18% auto;
+      width:420px;height:420px;
+      background:radial-gradient(circle, rgba(255,255,255,.16), transparent 60%);
+      z-index:-1;
+    }
+    .brand-badge{
+      width:72px;height:72px;border-radius:22px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      font-weight:800;font-size:1.25rem;
+      box-shadow:0 16px 32px rgba(196,106,31,.35);
+      margin-bottom:28px;
+    }
+    .brand-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:4rem;line-height:.9;letter-spacing:1px;
+      margin:0 0 10px;
+    }
+    .brand-copy{
+      margin:0;
+      color:rgba(255,255,255,.82);
+      line-height:1.65;
+      max-width:54ch;
+      font-size:1rem;
+    }
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:28px;
+    }
+    .feature{
+      padding:16px 18px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;
+    }
+    .feature strong{display:block;margin-bottom:6px}
+    .feature span{font-size:.92rem;color:rgba(255,255,255,.78)}
+    .login-pane{
+      padding:38px;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .eyebrow{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      background:#fff3e8;color:var(--accent-dark);
+      font-size:.84rem;font-weight:700;margin-bottom:16px;
+      width:max-content;
+    }
+    .login-pane h2{
+      margin:0 0 8px;
+      font-size:2rem;line-height:1.05;
+    }
+    .login-pane p{
+      margin:0 0 24px;color:var(--muted);line-height:1.6;
+    }
+    .form-grid{display:grid;gap:14px}
+    .field{display:grid;gap:8px}
+    .field label{font-size:.92rem;font-weight:600}
+    .input{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 16px;
+      background:#fbfcff;
+      transition:.2s ease;
+      outline:none;
+    }
+    .input:focus{border-color:rgba(196,106,31,.55); box-shadow:0 0 0 4px rgba(196,106,31,.12)}
+    .password-wrap{position:relative}
+    .toggle-pass{
+      position:absolute;right:12px;top:50%;transform:translateY(-50%);
+      border:none;background:transparent;cursor:pointer;color:var(--muted);font-weight:700;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:16px;padding:14px 18px;
+      font-weight:700;transition:.2s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff; box-shadow:0 14px 28px rgba(196,106,31,.24);
+    }
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-secondary{background:#fff;border:1px solid var(--line);color:var(--text)}
+    .btn-danger{background:#fff1f2;border:1px solid #fecdd3;color:#be123c}
+    .btn-ghost{background:#f7f8fc;color:#334155;border:1px solid #e5e7eb}
+    .btn-sm{padding:10px 12px;border-radius:12px;font-size:.92rem}
+    .login-actions{display:flex;gap:10px;margin-top:8px}
+    .hint{
+      margin-top:16px;padding:14px 16px;border-radius:16px;
+      background:#f8fafc;border:1px dashed #dbe2ea;color:#475569;font-size:.92rem;line-height:1.55;
+    }
+    .alert{
+      margin-top:14px;padding:12px 14px;border-radius:14px;font-size:.94rem;display:none
+    }
+    .alert.show{display:block}
+    .alert.success{background:#ecfdf5;color:#166534;border:1px solid #bbf7d0}
+    .alert.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+    .topbar{
+      position:sticky;top:0;z-index:40;
+      background:rgba(11,16,32,.88);backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .topbar-inner{
+      max-width:var(--max);margin:0 auto;padding:14px 20px;
+      display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+    }
+    .brand{
+      display:flex;align-items:center;gap:14px;min-width:0;color:#fff;
+    }
+    .logo{
+      width:52px;height:52px;border-radius:18px;display:grid;place-items:center;
+      font-weight:800;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 16px 32px rgba(196,106,31,.28);
+    }
+    .brand h1{
+      margin:0;font-family:'Bebas Neue',sans-serif;font-size:2.2rem;line-height:.9;letter-spacing:1px;
+    }
+    .brand small{display:block;color:rgba(255,255,255,.68);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+    .nav{
+      display:flex;gap:10px;overflow:auto;padding-bottom:4px;
+    }
+    .nav button{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.8);
+      padding:11px 14px;border-radius:999px;white-space:nowrap;cursor:pointer;
+    }
+    .nav button.active,.nav button:hover{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;
+    }
+    .topbar-right{
+      display:flex;align-items:center;gap:10px;color:#fff;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);font-size:.92rem;
+    }
+    .main{
+      max-width:var(--max);margin:0 auto;padding:22px 20px 54px;
+    }
+    .hero{
+      display:grid;grid-template-columns:1.3fr .9fr;gap:18px;margin-bottom:18px;
+    }
+    .panel,.card{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(226,232,240,.9);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+    }
+    .panel{padding:24px}
+    .hero-main{
+      background:
+        radial-gradient(circle at top right, rgba(228,147,57,.15), transparent 26%),
+        linear-gradient(180deg,#fff,#f8fafe);
+    }
+    .hero-main h2{
+      margin:0 0 10px;font-size:2.2rem;line-height:1.05;
+    }
+    .hero-main p{margin:0;color:var(--muted);line-height:1.7;max-width:75ch}
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px;
+    }
+    .mini-card{
+      padding:16px;border-radius:18px;background:#fff;border:1px solid #edf2f7;
+    }
+    .mini-card span{display:block;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .mini-card strong{display:block;margin-top:6px;font-size:1.15rem}
+    .summary{
+      background:linear-gradient(180deg,#111827,#0f172a);color:#fff;display:flex;flex-direction:column;justify-content:center
+    }
+    .summary .big{
+      font-size:3rem;font-weight:800;line-height:.95;margin:6px 0;
+    }
+    .summary .muted{color:rgba(255,255,255,.74)}
+    .grid{
+      display:grid;grid-template-columns:1.18fr .82fr;gap:18px;
+    }
+    .stack{display:grid;gap:18px}
+    .card{padding:22px}
+    .card h3{margin:0 0 6px;font-size:1.15rem}
+    .card p.section-copy{margin:0 0 18px;color:var(--muted);line-height:1.6}
+    .section-head{
+      display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px;
+    }
+    .section-head h3{margin:0}
+    .two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .three-col{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .muted{color:var(--muted)}
+    .mat-list{display:grid;gap:10px}
+    .mat-row,.user-row,.item-row{
+      display:grid;grid-template-columns:1.2fr .8fr auto;gap:10px;align-items:center;
+    }
+    .calc-box{
+      display:grid;gap:14px;padding:18px;border-radius:22px;background:#fcfcfe;border:1px solid #edf2f7;
+    }
+    .money{
+      font-size:2rem;font-weight:800;letter-spacing:-.02em;
+    }
+    .bar{
+      height:12px;border-radius:999px;background:#eef2f7;overflow:hidden;
+    }
+    .bar > div{height:100%;width:0;transition:.25s ease;border-radius:999px}
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:8px 10px;border-radius:999px;font-size:.82rem;font-weight:700;
+    }
+    .profit-high{background:#dcfce7;color:#166534}
+    .profit-mid{background:#fef3c7;color:#92400e}
+    .profit-low{background:#fee2e2;color:#991b1b}
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px 10px;border-bottom:1px solid #eef2f7;text-align:left;font-size:.95rem}
+    th{color:#64748b;font-weight:700;background:#fafbff}
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .kpi{padding:16px;border-radius:18px;background:#fff;border:1px solid #edf2f7}
+    .kpi span{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .kpi strong{display:block;margin-top:8px;font-size:1.25rem}
+    .chat-box{
+      min-height:260px;max-height:420px;overflow:auto;padding:16px;border-radius:18px;border:1px solid #edf2f7;background:#fbfcff;
+      display:grid;gap:12px;
+    }
+    .msg{
+      max-width:86%;padding:14px 16px;border-radius:18px;line-height:1.55;
+    }
+    .msg.user{margin-left:auto;background:#111827;color:#fff;border-bottom-right-radius:8px}
+    .msg.bot{background:#fff3e8;color:#7c4a17;border-bottom-left-radius:8px}
+    .footer-note{
+      margin-top:16px;padding:14px 16px;border-radius:16px;background:#fff8f1;border:1px solid #fde5c8;color:#8a5a1f;font-size:.92rem;line-height:1.55
+    }
+    .panel-page{display:none}
+    .panel-page.active{display:block}
+    .empty{
+      padding:18px;border:1px dashed #d6dbe5;border-radius:18px;background:#fbfcff;color:#64748b;text-align:center
+    }
+    .user-card{
+      padding:16px;border:1px solid #edf2f7;border-radius:18px;background:#fbfcff;
+      display:flex;justify-content:space-between;align-items:center;gap:14px;
+    }
+    .small{font-size:.88rem}
+    @media (max-width: 1080px){
+      .login-wrap,.hero,.grid{grid-template-columns:1fr}
+      .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width: 720px){
+      .topbar-inner{grid-template-columns:1fr;gap:12px}
+      .topbar-right{justify-content:space-between}
+      .hero-stats,.two-col,.three-col,.kpi-grid,.mat-row,.user-row,.item-row{grid-template-columns:1fr}
+      .main{padding:16px 14px 40px}
+      .panel,.card{padding:18px}
+      .brand-pane,.login-pane{padding:24px}
+      .brand-title{font-size:3rem}
+      .login-actions{flex-direction:column}
+      .money{font-size:1.6rem}
+    }
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-wrap">
+      <section class="brand-pane">
+        <div class="brand-badge">OF</div>
+        <h1 class="brand-title">OFIX</h1>
+        <p class="brand-copy">Sistema de gestão para oficina com visual moderno, orçamento rápido, painel financeiro e acesso por usuário. Esta versão já entrega login local e cadastro de usuários no mesmo navegador.</p>
+        <div class="feature-grid">
+          <div class="feature"><strong>Orçamento rápido</strong><span>Cálculo de mão de obra, materiais e margem com histórico.</span></div>
+          <div class="feature"><strong>Financeiro</strong><span>Entradas, saídas, saldo e tickets médios.</span></div>
+          <div class="feature"><strong>Usuários</strong><span>Admin cria e remove logins futuros dentro do sistema.</span></div>
+          <div class="feature"><strong>Layout comercial</strong><span>Interface mais limpa, moderna e pronta para apresentação.</span></div>
+        </div>
+      </section>
+
+      <section class="login-pane">
+        <div class="eyebrow">Acesso protegido</div>
+        <h2>Entrar no Ofix</h2>
+        <p>Use o login inicial abaixo para o primeiro acesso. Depois disso, altere a senha e crie os próximos usuários no painel de administração.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="loginUser">Usuário</label>
+            <input id="loginUser" class="input" placeholder="Digite o usuário" autocomplete="username">
+          </div>
+          <div class="field">
+            <label for="loginPass">Senha</label>
+            <div class="password-wrap">
+              <input id="loginPass" class="input" type="password" placeholder="Digite a senha" autocomplete="current-password">
+              <button class="toggle-pass" type="button" onclick="togglePassword('loginPass', this)">ver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button class="btn btn-primary" onclick="login()">Entrar</button>
+          <button class="btn btn-secondary" onclick="prefillAdmin()">Usar acesso inicial</button>
+        </div>
+
+        <div class="hint">
+          <strong>Login inicial da primeira abertura:</strong><br>
+          Usuário: <code>admin</code><br>
+          Senha: <code>Ofix123</code>
+        </div>
+
+        <div id="loginAlert" class="alert"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell hidden">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo">OF</div>
+          <div>
+            <h1>OFIX</h1>
+            <small>Gestão Inteligente para Oficinas</small>
+          </div>
+        </div>
+
+        <nav class="nav" id="navTabs">
+          <button class="active" data-panel="dashboard" onclick="showPanel('dashboard', this)">Dashboard</button>
+          <button data-panel="orcamentos" onclick="showPanel('orcamentos', this)">Orçamentos</button>
+          <button data-panel="financeiro" onclick="showPanel('financeiro', this)">Financeiro</button>
+          <button data-panel="consultor" onclick="showPanel('consultor', this)">Consultor</button>
+          <button data-panel="usuarios" id="usersTab" onclick="showPanel('usuarios', this)">Usuários</button>
+        </nav>
+
+        <div class="topbar-right">
+          <div class="pill" id="syncStatus">● Dados locais salvos</div>
+          <div class="pill"><span id="currentUserBadge">admin</span></div>
+          <button class="btn btn-ghost btn-sm" onclick="logout()">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="hero">
+        <div class="panel hero-main">
+          <h2>Controle da oficina com visual mais atual</h2>
+          <p>Esta entrega já inclui login local por usuário, área administrativa para futuros acessos e um layout mais moderno. O foco aqui é estabilidade em navegador e publicação simples no GitHub Pages.</p>
+          <div class="hero-stats">
+            <div class="mini-card"><span>Usuários</span><strong id="heroUsers">0</strong></div>
+            <div class="mini-card"><span>Orçamentos</span><strong id="heroQuotes">0</strong></div>
+            <div class="mini-card"><span>Saldo atual</span><strong id="heroBalance">R$ 0,00</strong></div>
+          </div>
+        </div>
+        <div class="panel summary">
+          <span class="muted">Visão rápida</span>
+          <div class="big" id="summaryRevenue">R$ 0,00</div>
+          <div class="muted">Receita lançada</div>
+          <div class="footer-note">Login local funciona no mesmo navegador. Para usuários reais em vários dispositivos, ainda será necessário backend e banco de dados.</div>
+        </div>
+      </section>
+
+      <section id="panel-dashboard" class="panel-page active">
+        <div class="kpi-grid">
+          <div class="kpi"><span>Receita</span><strong id="kpiRevenue">R$ 0,00</strong></div>
+          <div class="kpi"><span>Despesas</span><strong id="kpiExpense">R$ 0,00</strong></div>
+          <div class="kpi"><span>Saldo</span><strong id="kpiBalance">R$ 0,00</strong></div>
+          <div class="kpi"><span>Ticket médio</span><strong id="kpiAverage">R$ 0,00</strong></div>
+        </div>
+
+        <div class="grid" style="margin-top:18px;">
+          <div class="stack">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h3>Últimos orçamentos</h3>
+                  <p class="section-copy">Histórico local dos orçamentos mais recentes salvos no navegador.</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Veículo</th>
+                      <th>Total</th>
+                      <th>Margem</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentQuotesTable"></tbody>
+                </table>
+              </div>
+              <div id="recentQuotesEmpty" class="empty">Nenhum orçamento salvo ainda.</div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <h3>Resumo operacional</h3>
+              <p class="section-copy">Números de apoio para acompanhamento rápido.</p>
+              <div class="three-col">
+                <div class="mini-card"><span>Total de usuários</span><strong id="sumUsers">0</strong></div>
+                <div class="mini-card"><span>Entradas</span><strong id="sumIncomeCount">0</strong></div>
+                <div class="mini-card"><span>Saídas</span><strong id="sumExpenseCount">0</strong></div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Aviso importante</h3>
+              <p class="section-copy">Sem backend, o sistema grava tudo em <code>localStorage</code>.</p>
+              <div class="footer-note">Isso significa que os dados ficam no navegador atual. Não há sincronização entre celular e PC nesta versão.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-orcamentos" class="panel-page">
+        <div class="grid">
+          <div class="card">
+            <h3>Novo orçamento</h3>
+            <p class="section-copy">Cadastre o serviço, materiais e acompanhe a margem em tempo real.</p>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="quoteClient">Cliente</label>
+                <input id="quoteClient" class="input" placeholder="Nome do cliente">
+              </div>
+              <div class="field">
+                <label for="quoteVehicle">Veículo</label>
+                <input id="quoteVehicle" class="input" placeholder="Ex: Focus 2012">
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="quoteService">Serviço</label>
+                <input id="quoteService" class="input" placeholder="Ex: Funilaria e pintura">
+              </div>
+              <div class="field">
+                <label for="laborValue">Mão de obra (R$)</label>
+                <input id="laborValue" class="input" type="number" min="0" step="0.01" placeholder="0,00" oninput="updateQuoteCalc()">
+              </div>
+            </div>
+
+            <div class="section-head" style="margin-top:18px;">
+              <h3>Materiais</h3>
+              <button class="btn btn-secondary btn-sm" onclick="addMaterialRow()">+ Adicionar material</button>
+            </div>
+
+            <div id="materialsList" class="mat-list"></div>
+
+            <div class="login-actions" style="margin-top:18px;">
+              <button class="btn btn-primary" onclick="saveQuote()">Salvar orçamento</button>
+              <button class="btn btn-secondary" onclick="clearQuoteForm()">Limpar</button>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <h3>Resumo financeiro do orçamento</h3>
+              <p class="section-copy">Leitura rápida para decidir preço e margem.</p>
+
+              <div class="calc-box">
+                <div>
+                  <div class="muted small">Custo de materiais</div>
+                  <div class="money" id="materialsTotal">R$ 0,00</div>
+                </div>
+                <div>
+                  <div class="muted small">Preço total</div>
+                  <div class="money" id="quoteTotal">R$ 0,00</div>
+                </div>
+                <div>
+                  <div class="muted small">Margem estimada</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                    <strong id="marginPercent">0,0%</strong>
+                    <span id="marginBadge" class="badge profit-low">Baixa</span>
+                  </div>
+                </div>
+                <div class="bar"><div id="marginFill"></div></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Histórico de orçamentos</h3>
+              <p class="section-copy">Registros locais do navegador atual.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Total</th>
+                      <th>Margem</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="quotesTable"></tbody>
+                </table>
+              </div>
+              <div id="quotesEmpty" class="empty">Nenhum orçamento salvo.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-financeiro" class="panel-page">
+        <div class="grid">
+          <div class="card">
+            <h3>Lançamento financeiro</h3>
+            <p class="section-copy">Registre entradas e saídas para acompanhar o caixa.</p>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="entryType">Tipo</label>
+                <select id="entryType" class="input">
+                  <option value="entrada">Entrada</option>
+                  <option value="saida">Saída</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="entryValue">Valor (R$)</label>
+                <input id="entryValue" class="input" type="number" min="0" step="0.01" placeholder="0,00">
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="entryDesc">Descrição</label>
+                <input id="entryDesc" class="input" placeholder="Ex: compra de material">
+              </div>
+              <div class="field">
+                <label for="entryDate">Data</label>
+                <input id="entryDate" class="input" type="date">
+              </div>
+            </div>
+
+            <div class="login-actions" style="margin-top:18px;">
+              <button class="btn btn-primary" onclick="saveFinanceEntry()">Salvar lançamento</button>
+              <button class="btn btn-secondary" onclick="clearFinanceForm()">Limpar</button>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <h3>Resumo do caixa</h3>
+              <p class="section-copy">Valores consolidados a partir dos lançamentos.</p>
+              <div class="three-col">
+                <div class="mini-card"><span>Entradas</span><strong id="finRevenue">R$ 0,00</strong></div>
+                <div class="mini-card"><span>Saídas</span><strong id="finExpense">R$ 0,00</strong></div>
+                <div class="mini-card"><span>Saldo</span><strong id="finBalance">R$ 0,00</strong></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Histórico financeiro</h3>
+              <p class="section-copy">Lista dos lançamentos registrados localmente.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Descrição</th>
+                      <th>Valor</th>
+                      <th>Data</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="financeTable"></tbody>
+                </table>
+              </div>
+              <div id="financeEmpty" class="empty">Nenhum lançamento salvo.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-consultor" class="panel-page">
+        <div class="grid">
+          <div class="card">
+            <h3>Consultor local</h3>
+            <p class="section-copy">Simulação simples de atendimento interno. Não envia dados para API nesta versão.</p>
+            <div id="chatBox" class="chat-box"></div>
+            <div class="two-col" style="margin-top:14px;">
+              <input id="chatInput" class="input" placeholder="Digite sua pergunta">
+              <button class="btn btn-primary" onclick="sendChat()">Enviar</button>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="card">
+              <h3>Como está funcionando</h3>
+              <p class="section-copy">Nesta entrega, o consultor responde por regras locais.</p>
+              <div class="footer-note">Se você quiser IA real com múltiplos usuários, sessão segura e acesso remoto, isso exige backend, autenticação de servidor e banco de dados. Esta versão não faz isso.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-usuarios" class="panel-page">
+        <div class="grid">
+          <div class="card">
+            <h3>Cadastro de usuários</h3>
+            <p class="section-copy">Somente administrador pode criar e remover usuários. Os acessos ficam gravados no navegador local.</p>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="newUserName">Usuário</label>
+                <input id="newUserName" class="input" placeholder="Novo usuário">
+              </div>
+              <div class="field">
+                <label for="newUserRole">Perfil</label>
+                <select id="newUserRole" class="input">
+                  <option value="operador">Operador</option>
+                  <option value="admin">Administrador</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div class="field">
+                <label for="newUserPass">Senha</label>
+                <div class="password-wrap">
+                  <input id="newUserPass" class="input" type="password" placeholder="Senha do novo usuário">
+                  <button class="toggle-pass" type="button" onclick="togglePassword('newUserPass', this)">ver</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary" onclick="createUser()">Criar usuário</button>
+              </div>
+            </div>
+
+            <div class="footer-note">Recomendação prática: troque a senha inicial do admin logo após o primeiro acesso.</div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <h3>Usuários atuais</h3>
+              <p class="section-copy">Lista de acessos salvos neste navegador.</p>
+              <div id="usersList" class="stack"></div>
+              <div id="usersEmpty" class="empty">Nenhum usuário cadastrado.</div>
+            </div>
+
+            <div class="card">
+              <h3>Alterar minha senha</h3>
+              <p class="section-copy">Troca de senha do usuário que está logado.</p>
+              <div class="field">
+                <label for="myNewPass">Nova senha</label>
+                <div class="password-wrap">
+                  <input id="myNewPass" class="input" type="password" placeholder="Nova senha">
+                  <button class="toggle-pass" type="button" onclick="togglePassword('myNewPass', this)">ver</button>
+                </div>
+              </div>
+              <div class="login-actions">
+                <button class="btn btn-primary" onclick="changeMyPassword()">Salvar nova senha</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      users: 'ofix_users',
+      session: 'ofix_session',
+      quotes: 'ofix_quotes',
+      finance: 'ofix_finance'
+    };
+
+    let state = {
+      users: [],
+      quotes: [],
+      finance: [],
+      currentUser: null
+    };
+
+    function seedUsers(){
+      const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.users) || '[]');
+      if(!Array.isArray(existing) || existing.length === 0){
+        const seed = [{ id: uid(), username: 'admin', password: 'Ofix123', role: 'admin', createdAt: new Date().toISOString() }];
+        localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(seed));
+      }
+    }
+
+    function uid(){
+      return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+    }
+
+    function money(v){
+      return Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function todayISO(){
+      const d = new Date();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${d.getFullYear()}-${m}-${day}`;
+    }
+
+    function loadState(){
+      seedUsers();
+      state.users = JSON.parse(localStorage.getItem(STORAGE_KEYS.users) || '[]');
+      state.quotes = JSON.parse(localStorage.getItem(STORAGE_KEYS.quotes) || '[]');
+      state.finance = JSON.parse(localStorage.getItem(STORAGE_KEYS.finance) || '[]');
+      state.currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.session) || 'null');
+    }
+
+    function saveUsers(){
+      localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(state.users));
+      pingSync('Usuários salvos');
+    }
+
+    function saveQuotes(){
+      localStorage.setItem(STORAGE_KEYS.quotes, JSON.stringify(state.quotes));
+      pingSync('Orçamentos salvos');
+    }
+
+    function saveFinance(){
+      localStorage.setItem(STORAGE_KEYS.finance, JSON.stringify(state.finance));
+      pingSync('Financeiro salvo');
+    }
+
+    let syncTimer;
+    function pingSync(message){
+      const el = document.getElementById('syncStatus');
+      if(!el) return;
+      el.textContent = '● Salvando localmente...';
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(() => {
+        el.textContent = '● ' + message;
+      }, 500);
+    }
+
+    function showAlert(id, text, type='error'){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = `alert show ${type}`;
+    }
+
+    function clearAlert(id){
+      const el = document.getElementById(id);
+      el.textContent = '';
+      el.className = 'alert';
+    }
+
+    function togglePassword(inputId, btn){
+      const input = document.getElementById(inputId);
+      if(!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.textContent = input.type === 'password' ? 'ver' : 'ocultar';
+    }
+
+    function prefillAdmin(){
+      document.getElementById('loginUser').value = 'admin';
+      document.getElementById('loginPass').value = 'Ofix123';
+    }
+
+    function login(){
+      clearAlert('loginAlert');
+      const username = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value;
+      const user = state.users.find(u => u.username === username && u.password === password);
+      if(!user){
+        showAlert('loginAlert', 'Usuário ou senha inválidos.');
+        return;
+      }
+      state.currentUser = { id: user.id, username: user.username, role: user.role };
+      localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(state.currentUser));
+      initApp();
+      if(user.username === 'admin' && user.password === 'Ofix123'){
+        setTimeout(() => alert('Troque a senha inicial do admin assim que entrar.'), 400);
+      }
+    }
+
+    function logout(){
+      localStorage.removeItem(STORAGE_KEYS.session);
+      state.currentUser = null;
+      document.getElementById('appShell').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('loginPass').value = '';
+    }
+
+    function initApp(){
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('hidden');
+      document.getElementById('currentUserBadge').textContent = `${state.currentUser.username} · ${state.currentUser.role}`;
+      const isAdmin = state.currentUser.role === 'admin';
+      document.getElementById('usersTab').style.display = isAdmin ? 'inline-flex' : 'none';
+      if(!isAdmin && document.querySelector('#navTabs button.active')?.dataset.panel === 'usuarios'){
+        showPanel('dashboard', document.querySelector('#navTabs button[data-panel="dashboard"]'));
+      }
+      renderAll();
+      if(!document.getElementById('entryDate').value){
+        document.getElementById('entryDate').value = todayISO();
+      }
+      if(document.getElementById('materialsList').children.length === 0){
+        addMaterialRow();
+      }
+      if(document.getElementById('chatBox').children.length === 0){
+        seedChat();
+      }
+    }
+
+    function showPanel(name, btn){
+      document.querySelectorAll('.panel-page').forEach(el => el.classList.remove('active'));
+      const panel = document.getElementById('panel-' + name);
+      if(panel) panel.classList.add('active');
+      document.querySelectorAll('#navTabs button').forEach(b => b.classList.remove('active'));
+      if(btn) btn.classList.add('active');
+    }
+
+    function addMaterialRow(name='', value=''){
+      const row = document.createElement('div');
+      row.className = 'mat-row';
+      row.innerHTML = `
+        <input class="input mat-name" placeholder="Material" value="${escapeHtml(name)}">
+        <input class="input mat-value" type="number" min="0" step="0.01" placeholder="0,00" value="${value}" oninput="updateQuoteCalc()">
+        <button class="btn btn-danger btn-sm" type="button">Remover</button>
+      `;
+      row.querySelector('button').onclick = () => {
+        row.remove();
+        updateQuoteCalc();
+      };
+      document.getElementById('materialsList').appendChild(row);
+      updateQuoteCalc();
+    }
+
+    function updateQuoteCalc(){
+      const labor = Number(document.getElementById('laborValue').value || 0);
+      const mats = [...document.querySelectorAll('.mat-value')].reduce((acc, el) => acc + Number(el.value || 0), 0);
+      const total = labor + mats;
+      const margin = total > 0 ? ((labor / total) * 100) : 0;
+
+      document.getElementById('materialsTotal').textContent = money(mats);
+      document.getElementById('quoteTotal').textContent = money(total);
+      document.getElementById('marginPercent').textContent = `${margin.toFixed(1)}%`;
+
+      const fill = document.getElementById('marginFill');
+      const badge = document.getElementById('marginBadge');
+      fill.style.width = `${Math.min(margin, 100)}%`;
+      badge.className = 'badge';
+      if(margin > 30){
+        badge.classList.add('profit-high');
+        badge.textContent = 'Alta';
+        fill.style.background = '#16a34a';
+      } else if(margin >= 15){
+        badge.classList.add('profit-mid');
+        badge.textContent = 'Média';
+        fill.style.background = '#d97706';
+      } else {
+        badge.classList.add('profit-low');
+        badge.textContent = 'Baixa';
+        fill.style.background = '#dc2626';
+      }
+    }
+
+    function clearQuoteForm(){
+      ['quoteClient','quoteVehicle','quoteService','laborValue'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('materialsList').innerHTML = '';
+      addMaterialRow();
+      updateQuoteCalc();
+    }
+
+    function saveQuote(){
+      const client = document.getElementById('quoteClient').value.trim();
+      const vehicle = document.getElementById('quoteVehicle').value.trim();
+      const service = document.getElementById('quoteService').value.trim();
+      const labor = Number(document.getElementById('laborValue').value || 0);
+      const materialRows = [...document.querySelectorAll('#materialsList .mat-row')].map(row => ({
+        name: row.querySelector('.mat-name').value.trim(),
+        value: Number(row.querySelector('.mat-value').value || 0)
+      })).filter(item => item.name || item.value > 0);
+      const materialsTotal = materialRows.reduce((a,b) => a + b.value, 0);
+      const total = labor + materialsTotal;
+      const margin = total > 0 ? ((labor / total) * 100) : 0;
+
+      if(!client || !vehicle || !service || total <= 0){
+        alert('Preencha cliente, veículo, serviço e valores do orçamento.');
+        return;
+      }
+
+      state.quotes.unshift({
+        id: uid(),
+        client, vehicle, service,
+        labor, materials: materialRows, materialsTotal,
+        total, margin,
+        createdAt: new Date().toISOString(),
+        user: state.currentUser.username
+      });
+      saveQuotes();
+      clearQuoteForm();
+      renderAll();
+      alert('Orçamento salvo.');
+    }
+
+    function removeQuote(id){
+      state.quotes = state.quotes.filter(q => q.id !== id);
+      saveQuotes();
+      renderAll();
+    }
+
+    function saveFinanceEntry(){
+      const type = document.getElementById('entryType').value;
+      const value = Number(document.getElementById('entryValue').value || 0);
+      const desc = document.getElementById('entryDesc').value.trim();
+      const date = document.getElementById('entryDate').value;
+      if(!desc || value <= 0 || !date){
+        alert('Preencha tipo, valor, descrição e data.');
+        return;
+      }
+      state.finance.unshift({ id: uid(), type, value, desc, date, createdBy: state.currentUser.username });
+      saveFinance();
+      clearFinanceForm();
+      renderAll();
+      alert('Lançamento salvo.');
+    }
+
+    function clearFinanceForm(){
+      document.getElementById('entryType').value = 'entrada';
+      document.getElementById('entryValue').value = '';
+      document.getElementById('entryDesc').value = '';
+      document.getElementById('entryDate').value = todayISO();
+    }
+
+    function removeFinanceEntry(id){
+      state.finance = state.finance.filter(item => item.id !== id);
+      saveFinance();
+      renderAll();
+    }
+
+    function createUser(){
+      if(state.currentUser.role !== 'admin'){
+        alert('Somente administrador pode criar usuários.');
+        return;
+      }
+      const username = document.getElementById('newUserName').value.trim();
+      const password = document.getElementById('newUserPass').value;
+      const role = document.getElementById('newUserRole').value;
+
+      if(username.length < 3 || password.length < 4){
+        alert('Usuário precisa ter pelo menos 3 caracteres e senha pelo menos 4.');
+        return;
+      }
+      if(state.users.some(u => u.username.toLowerCase() === username.toLowerCase())){
+        alert('Esse usuário já existe.');
+        return;
+      }
+      state.users.push({ id: uid(), username, password, role, createdAt: new Date().toISOString() });
+      saveUsers();
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserPass').value = '';
+      document.getElementById('newUserRole').value = 'operador';
+      renderAll();
+      alert('Usuário criado.');
+    }
+
+    function deleteUser(id){
+      if(state.currentUser.role !== 'admin'){
+        alert('Somente administrador pode remover usuários.');
+        return;
+      }
+      const user = state.users.find(u => u.id === id);
+      if(!user) return;
+      if(user.username === 'admin'){
+        alert('O admin inicial não pode ser removido nesta versão.');
+        return;
+      }
+      state.users = state.users.filter(u => u.id !== id);
+      saveUsers();
+      renderAll();
+    }
+
+    function changeMyPassword(){
+      const newPass = document.getElementById('myNewPass').value;
+      if(newPass.length < 4){
+        alert('A nova senha precisa ter pelo menos 4 caracteres.');
+        return;
+      }
+      const user = state.users.find(u => u.id === state.currentUser.id);
+      if(!user) return;
+      user.password = newPass;
+      saveUsers();
+      document.getElementById('myNewPass').value = '';
+      alert('Senha alterada.');
+    }
+
+    function renderUsers(){
+      const wrap = document.getElementById('usersList');
+      const empty = document.getElementById('usersEmpty');
+      wrap.innerHTML = '';
+      const visible = state.users.slice().sort((a,b) => a.username.localeCompare(b.username));
+      if(visible.length === 0){
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      visible.forEach(user => {
+        const item = document.createElement('div');
+        item.className = 'user-card';
+        item.innerHTML = `
+          <div>
+            <strong>${escapeHtml(user.username)}</strong>
+            <div class="small muted">${user.role} · criado em ${formatDateTime(user.createdAt)}</div>
+          </div>
+          <div>
+            ${state.currentUser.role === 'admin' && user.username !== 'admin'
+              ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Remover</button>`
+              : `<span class="badge ${user.role === 'admin' ? 'profit-high' : 'profit-mid'}">${user.role}</span>`}
+          </div>
+        `;
+        wrap.appendChild(item);
+      });
+    }
+
+    function renderQuotes(){
+      const tbody = document.getElementById('quotesTable');
+      const empty = document.getElementById('quotesEmpty');
+      const recentBody = document.getElementById('recentQuotesTable');
+      const recentEmpty = document.getElementById('recentQuotesEmpty');
+
+      tbody.innerHTML = '';
+      recentBody.innerHTML = '';
+
+      if(state.quotes.length === 0){
+        empty.style.display = 'block';
+        recentEmpty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+      recentEmpty.style.display = 'none';
+
+      state.quotes.forEach(q => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(q.client)}</td>
+          <td>${money(q.total)}</td>
+          <td>${profitBadge(q.margin)}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="removeQuote('${q.id}')">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      state.quotes.slice(0,5).forEach(q => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(q.client)}</td>
+          <td>${escapeHtml(q.vehicle)}</td>
+          <td>${money(q.total)}</td>
+          <td>${profitBadge(q.margin)}</td>
+          <td>${formatDateTime(q.createdAt)}</td>
+        `;
+        recentBody.appendChild(tr);
+      });
+    }
+
+    function renderFinance(){
+      const tbody = document.getElementById('financeTable');
+      const empty = document.getElementById('financeEmpty');
+      tbody.innerHTML = '';
+
+      if(state.finance.length === 0){
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'block';
+      if(state.finance.length > 0) empty.style.display = 'none';
+
+      state.finance.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.type === 'entrada' ? 'Entrada' : 'Saída'}</td>
+          <td>${escapeHtml(item.desc)}</td>
+          <td>${money(item.value)}</td>
+          <td>${formatDate(item.date)}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="removeFinanceEntry('${item.id}')">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function recalcDashboard(){
+      const revenue = state.finance.filter(i => i.type === 'entrada').reduce((a,b) => a + Number(b.value || 0), 0);
+      const expense = state.finance.filter(i => i.type === 'saida').reduce((a,b) => a + Number(b.value || 0), 0);
+      const balance = revenue - expense;
+      const avg = state.quotes.length ? state.quotes.reduce((a,b) => a + Number(b.total || 0), 0) / state.quotes.length : 0;
+
+      document.getElementById('summaryRevenue').textContent = money(revenue);
+      document.getElementById('kpiRevenue').textContent = money(revenue);
+      document.getElementById('kpiExpense').textContent = money(expense);
+      document.getElementById('kpiBalance').textContent = money(balance);
+      document.getElementById('kpiAverage').textContent = money(avg);
+      document.getElementById('heroBalance').textContent = money(balance);
+      document.getElementById('heroUsers').textContent = String(state.users.length);
+      document.getElementById('heroQuotes').textContent = String(state.quotes.length);
+      document.getElementById('finRevenue').textContent = money(revenue);
+      document.getElementById('finExpense').textContent = money(expense);
+      document.getElementById('finBalance').textContent = money(balance);
+      document.getElementById('sumUsers').textContent = String(state.users.length);
+      document.getElementById('sumIncomeCount').textContent = String(state.finance.filter(i => i.type === 'entrada').length);
+      document.getElementById('sumExpenseCount').textContent = String(state.finance.filter(i => i.type === 'saida').length);
+    }
+
+    function profitBadge(margin){
+      if(margin > 30) return `<span class="badge profit-high">${margin.toFixed(1)}%</span>`;
+      if(margin >= 15) return `<span class="badge profit-mid">${margin.toFixed(1)}%</span>`;
+      return `<span class="badge profit-low">${margin.toFixed(1)}%</span>`;
+    }
+
+    function seedChat(){
+      const box = document.getElementById('chatBox');
+      const welcome = document.createElement('div');
+      welcome.className = 'msg bot';
+      welcome.textContent = 'Consultor local pronto. Pergunte sobre orçamento, margem, caixa ou rotina da oficina.';
+      box.appendChild(welcome);
+    }
+
+    function sendChat(){
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if(!text) return;
+      appendMsg(text, 'user');
+
+      const low = text.toLowerCase();
+      let reply = 'Nesta versão local, eu consigo orientar de forma básica sobre orçamento, margem, entradas e saídas.';
+      if(low.includes('margem')) reply = 'Margem estimada aqui é baseada em mão de obra ÷ preço total. É útil como indicador rápido, não como DRE completa.';
+      else if(low.includes('caixa') || low.includes('financeiro')) reply = 'Use a aba Financeiro para registrar entradas e saídas. O saldo é calculado automaticamente a partir desses lançamentos.';
+      else if(low.includes('orçamento') || low.includes('orcamento')) reply = 'Na aba Orçamentos, informe cliente, veículo, serviço, mão de obra e materiais. O total e a margem são atualizados na hora.';
+      else if(low.includes('usuário') || low.includes('usuario') || low.includes('login')) reply = 'O login desta entrega é local. O admin cria novos acessos na aba Usuários, mas tudo fica salvo somente neste navegador.';
+      appendMsg(reply, 'bot');
+      input.value = '';
+    }
+
+    function appendMsg(text, type){
+      const box = document.getElementById('chatBox');
+      const div = document.createElement('div');
+      div.className = `msg ${type}`;
+      div.textContent = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function renderAll(){
+      renderQuotes();
+      renderFinance();
+      renderUsers();
+      recalcDashboard();
+    }
+
+    function escapeHtml(text){
+      return String(text ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatDate(iso){
+      if(!iso) return '-';
+      const d = new Date(iso + 'T12:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+
+    function formatDateTime(iso){
+      if(!iso) return '-';
+      const d = new Date(iso);
+      return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      document.getElementById('entryDate').value = todayISO();
+      if(state.currentUser){
+        initApp();
+      } else {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('appShell').classList.add('hidden');
+      }
+      document.getElementById('loginPass').addEventListener('keydown', e => {
+        if(e.key === 'Enter') login();
+      });
+      document.getElementById('chatInput').addEventListener('keydown', e => {
+        if(e.key === 'Enter') sendChat();
+      });
+    });
+  </script>
+</body>
+</html>
