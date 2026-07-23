@@ -1,0 +1,24 @@
+name: Deploy Homologação
+
+on:
+  push:
+    branches: [ "main" ] # Executa quando houver alteração na branch main
+  workflow_dispatch: # Permite disparar manualmente no painel do GitHub
+
+jobs:
+  deploy-homologacao:
+    name: Publicar em Homologação
+    runs-on: ubuntu-latest
+
+    # Associa o job ao ambiente 'homologation' criado nas configurações
+    environment:
+      name: homologation
+
+    steps:
+      - name: Baixar Código do Repositório
+        uses: actions/checkout@v4
+
+      - name: Validar e Publicar Arquivos
+        run: |
+          echo "🚀 Executando deploy do ambiente de homologação..."
+          ls -la
